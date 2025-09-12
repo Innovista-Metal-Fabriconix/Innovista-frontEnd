@@ -1,0 +1,225 @@
+nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: var(--color-white);
+  margin-top: var(--spacing-sm);
+  animation: slideDown 0.4s ease-out;
+}
+
+.logoContainer img {
+  height: clamp(10px, 10vw, 50px);
+  width: auto;
+}
+.links {
+  display: flex;
+  padding-top: var(--spacing-md);
+  gap: clamp(40px, 2vw, 60px);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-secondary);
+}
+.link:hover {
+  color: var(--color-primary);
+}
+.activeLink {
+  color: var(--color-primary);
+}
+.activeLink::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-primary);
+  margin-top: var(--spacing-xs);
+  animation: underline 0.3s ease-in-out;
+}
+@keyframes underline {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+.quoteBtn {
+  background-color: var(--color-black);
+  color: var(--color-white);
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--spacing-sm);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.quoteBtn::before {
+  position: absolute;
+  content: "";
+  width: 105%;
+  height: 145%;
+  border-radius: inherit;
+  background: linear-gradient(red, yellow);
+  animation: rotate 4s linear infinite;
+  z-index: -1;
+}
+.quoteBtn::after {
+  content: "";
+  position: absolute;
+  background: var(--color-black);
+  inset: 3px;
+  z-index: -1;
+}
+.quoteBtn:hover {
+  color: var(--color-black);
+}
+.quoteBtn:hover::after,
+.quoteBtn:focus::after {
+  background: var(--color-white);
+  animation: none;
+}
+.quoteBtn:hover::before,
+.quoteBtn:focus::before {
+  animation: none;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .links,
+  .quoteBtn {
+    display: none;
+  }
+}
+
+.navbar {
+  position: relative;
+}
+
+.showButton {
+  display: none;
+  cursor: pointer;
+  z-index: 1002;
+}
+
+.mobileMenu {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--color-white);
+  box-shadow: -2px 0 16px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  animation: slideIn 0.3s;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.mobileMenuHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.mobileLogo {
+  height: 40px;
+  width: auto;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.mobileLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem 1.5rem;
+}
+
+.mobileLinks .link,
+.mobileLinks .activeLink {
+  font-size: 1.1rem;
+  color: var(--color-secondary);
+  text-decoration: none;
+}
+
+.mobileLinks .activeLink {
+  color: var(--color-primary);
+}
+
+.mobileLinks .quoteBtn {
+  margin-top: 2rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.mobileQuoteBtn {
+  background: var(--color-logo-red);
+  color: #fff;
+  border: none;
+  border-radius: var(--spacing-sm);
+  font-weight: var(--font-weight-bold);
+  padding: 1rem 0;
+  margin-top: 2rem;
+  width: 100%;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  transition: background 0.2s, color 0.2s;
+}
+
+.mobileQuoteBtn:hover,
+.mobileQuoteBtn:focus {
+  background: #fff;
+  color: var(--color-logo-red);
+  border: 2px solid var(--color-logo-red);
+}
+
+@media screen and (max-width: 900px) {
+  .links,
+  .quoteBtn {
+    display: none;
+  }
+  .showButton {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 901px) {
+  .mobileMenu {
+    display: none !important;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
