@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
-@import "tailwindcss";
+/* @import "tailwindcss"; */
+
 
 @theme {
   --color-primary: #22577A;
@@ -34,12 +35,6 @@
 }
 
 
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 body {
   @apply bg-white font-sans text-base text-black;
 }

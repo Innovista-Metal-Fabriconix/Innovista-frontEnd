@@ -6,6 +6,7 @@ import Products from "../pages/Products";
 import Blogs from "../pages/Blogs";
 import Projects from "../pages/Projects";
 import About from "../pages/About";
+import Footer from "../components/Footer";
 
 function PageRoute() {
   return (
@@ -18,6 +19,7 @@ function PageRoute() {
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/projects" element={<Projects />} />
       </Routes>
+      <Footer />
     </Router>
   )
 }
