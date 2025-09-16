@@ -44,55 +44,72 @@ nav {
 .quoteBtn {
   background-color: var(--color-black);
   color: var(--color-white);
-  border: none;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--spacing-sm);
+  aspect-ratio: 3 / 0.8;
+  padding: 5px 15px;
+  border-radius: var(--spacing-lg);
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
   position: relative;
-  overflow: hidden;
-  z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.quoteBtn::before {
-  position: absolute;
-  content: "";
-  width: 105%;
-  height: 145%;
-  border-radius: inherit;
-  background: linear-gradient(red, yellow);
-  animation: rotate 4s linear infinite;
-  z-index: -1;
-}
-.quoteBtn::after {
-  content: "";
-  position: absolute;
-  background: var(--color-black);
-  inset: 3px;
-  z-index: -1;
-}
-.quoteBtn:hover {
-  color: var(--color-black);
-}
-.quoteBtn:hover::after,
-.quoteBtn:focus::after {
-  background: var(--color-white);
-  animation: none;
-}
-.quoteBtn:hover::before,
-.quoteBtn:focus::before {
-  animation: none;
+  overflow: hidden;
+  z-index: 10;
+  border: none;
+  transition: background 0.3s, color 0.3s;
 }
 
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
+@property --deg {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+
+.quoteBtn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 3px;
+  background: conic-gradient(
+    from var(--deg) at center,
+    #c63500,
+    #db4d1a,
+    #f6830c,
+    #fbb806,
+    #ffee00,
+    #db4d1a,
+    #f6830c,
+    #fbb806,
+    #f24d11
+  );
+  z-index: 0;
+  animation: autorotate 4s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 1;
+}
+
+.quoteBtn::after {
+  background: var(--color-black);
+}
+
+@keyframes autorotate {
   to {
-    transform: rotate(360deg);
+    --deg: 360deg;
   }
+}
+
+.quoteBtn:hover {
+  background-color: var(--color-white);
+  color: var(--color-black);
+  box-shadow: 0 1px 15px rgba(0, 0, 0, 0.2);
+}
+
+.quoteBtn:hover::before {
+  opacity: 0;
 }
 
 @media screen and (max-width: 600px) {
