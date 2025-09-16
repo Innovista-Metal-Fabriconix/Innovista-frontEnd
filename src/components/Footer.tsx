@@ -57,49 +57,49 @@ function Footer() {
         </Col>
 
         <Col xs={24} md={12} style={{ textAlign: "center" }}>
+          {" "}
           <Typography.Title
             level={3}
             style={{ color: "white", marginBottom: "20px" }}
           >
-            Get in Touch
-          </Typography.Title>
-
-          <div style={{ marginBottom: "30px" }}>
+            {" "}
+            Get in Touch{" "}
+          </Typography.Title>{" "}
+          <div style={{ marginBottom: "30px" , gap: "30px"}}>
+            {" "}
             {contactInfo.map((item, idx) => (
               <div
                 key={idx}
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "flex-end",
+                  justifyContent: "center",
                   margin: "10px 0",
-                  gap: "10px",
+                  gap: "20px",
                 }}
               >
+                {" "}
                 <img
                   src={item.icon}
                   alt={item.alt}
-                  style={{
-                    width: "35px",
-                    height: "35px",
-                    cursor: "pointer",
-                  }}
-                />
+                  style={{ width: "35px", height: "35px", cursor: "pointer" }}
+                />{" "}
                 <Typography.Text style={{ color: "white", fontSize: "16px" }}>
-                  {item.label}
-                </Typography.Text>
+                  {" "}
+                  {item.label}{" "}
+                </Typography.Text>{" "}
               </div>
-            ))}
-          </div>
-
+            ))}{" "}
+          </div>{" "}
           <div
             style={{
               display: "flex",
-              justifyContent: "flex-end",
+              justifyContent: "center",
               gap: "20px",
               flexWrap: "wrap",
             }}
           >
+            {" "}
             {socialIcons.map((icon, idx) => (
               <img
                 key={idx}
@@ -118,8 +118,8 @@ function Footer() {
                   (e.currentTarget.style.transform = "scale(1)")
                 }
               />
-            ))}
-          </div>
+            ))}{" "}
+          </div>{" "}
         </Col>
       </Row>
       <div
