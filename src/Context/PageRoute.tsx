@@ -14,19 +14,23 @@ import ManageAllAdmins from "../pages/ManageAllAdmins";
 function PageRoute() {
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/blogs" element={<Blogs />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/admin-login" element={<AdminLogin />} />
-        <Route path="/admin-home" element={<AdminHome />} />
-        <Route path="/admin-register" element={<AdminRegister />} />
-        <Route path="/ManageAllAdmins" element={<ManageAllAdmins />} />
-      </Routes>
-      <Footer />
+      <div style={{ position: "relative", minHeight: "100vh" }}>
+        <Navbar />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/blogs" element={<Blogs />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/admin-login" element={<AdminLogin />} />
+            <Route path="/admin-home" element={<AdminHome />} />
+            <Route path="/admin-register" element={<AdminRegister />} />
+            <Route path="/ManageAllAdmins" element={<ManageAllAdmins />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
     </Router>
   );
 }
