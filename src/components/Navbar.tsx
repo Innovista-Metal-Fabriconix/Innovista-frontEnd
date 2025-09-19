@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
-import logo from "../assets/Images/CompanyLogo.png";
+import logo from "../assets/Images/logo/CompanyLogo.png";
 import styles from "../cssModules/Navbar.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

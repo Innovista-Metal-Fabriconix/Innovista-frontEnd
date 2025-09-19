@@ -1,7 +1,7 @@
 import type { FormProps } from "antd";
 import { Button, Checkbox, Form, Input, message, Flex, Col, Row } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import AdminLogo from "../assets/Images/AdminLogin.jpg";
+import AdminLogo from "../assets/Images/logo/AdminLogin.jpg";
 import axios from "axios";
 
 

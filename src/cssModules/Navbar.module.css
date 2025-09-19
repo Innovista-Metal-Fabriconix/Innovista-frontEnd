@@ -2,13 +2,15 @@ nav {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: var(--color-white);
-  margin-top: var(--spacing-sm);
   animation: slideDown 0.4s ease-out;
+  padding: calc(var(--spacing-sm) + 5px) var(--spacing-lg);
+  z-index: 1001;
+  width: 100%;
+  align-self: center;
+  margin: auto;
 }
-
 .logoContainer img {
-  height: clamp(10px, 10vw, 50px);
+  height: clamp(40px, 4vw, 60px);
   width: auto;
 }
 .links {
@@ -17,6 +19,7 @@ nav {
   gap: clamp(40px, 2vw, 60px);
   font-weight: var(--font-weight-semibold);
   color: var(--color-secondary);
+  font-size: clamp(var(--text-sm), 1.5vw, var(--text-lg));
 }
 .link:hover {
   color: var(--color-primary);
@@ -45,17 +48,18 @@ nav {
   background-color: var(--color-black);
   color: var(--color-white);
   aspect-ratio: 3 / 0.8;
-  padding: 5px 15px;
+  padding: 10px 20px;
   border-radius: var(--spacing-lg);
   font-weight: var(--font-weight-semibold);
+  font-size: clamp(var(--text-sm), 1.5vw, var(--text-lg));
   cursor: pointer;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  z-index: 10;
   border: none;
+  z-index: 30;
   transition: background 0.3s, color 0.3s;
 }
 
@@ -70,7 +74,7 @@ nav {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  padding: 3px;
+  padding: 0.2rem;
   background: conic-gradient(
     from var(--deg) at center,
     #c63500,
@@ -91,28 +95,27 @@ nav {
   pointer-events: none;
   opacity: 1;
 }
-
 .quoteBtn::after {
   background: var(--color-black);
 }
-
 @keyframes autorotate {
   to {
     --deg: 360deg;
   }
 }
-
 .quoteBtn:hover {
   background-color: var(--color-white);
   color: var(--color-black);
+  scale: 1.05;
   box-shadow: 0 1px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--color-black);
 }
 
 .quoteBtn:hover::before {
   opacity: 0;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: var(--screen-sm)) {
   .links,
   .quoteBtn {
     display: none;
