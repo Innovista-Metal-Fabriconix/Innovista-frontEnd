@@ -68,7 +68,6 @@ const ManageAllAdmins: React.FC = () => {
 
         if (response.status !== 200) throw new Error('Failed to fetch admins');
 
-        // Handle both plain array and wrapped response
         const result = Array.isArray(response.data)
           ? response.data
           : response.data?.data || [];
