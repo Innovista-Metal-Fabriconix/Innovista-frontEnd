@@ -7,10 +7,10 @@ import { Link } from "react-router-dom";
 function AdminHome() {
   return (
     <>
-    <div>
-      <Link to="/DesignAdded">Go to Design Added Page</Link> {" >"}
-      
-    </div>
+      <div style={{ color: "blue",  marginTop: "10px" }}>
+        <Link to="/DesignAdded">Go to Design Added Page</Link> {" >"}
+        <Link to="/ViewAllDesigns">Go to View All Designs Page</Link>
+      </div>
       <h1
         style={{ textAlign: "center", marginTop: "20px", marginBottom: "20px" }}
       >
