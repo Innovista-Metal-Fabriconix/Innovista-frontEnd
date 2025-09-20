@@ -46,12 +46,6 @@ const columns: TableProps<AdminType>['columns'] = [
       ),
   },
   {
-    title: 'Password',
-    dataIndex: 'Admin_Password',
-    key: 'Admin_Password',
-    render: () => <Tag color="red">********</Tag>, // Always hidden
-  },
-  {
     title: 'Action',
     key: 'action',
     render: (_, record) => (
