@@ -10,6 +10,8 @@ import AdminLogin from "../pages/AdminLogin";
 import AdminHome from "../pages/AdminHome";
 import AdminRegister from "../pages/AdminRegisterForm";
 import ManageAllAdmins from "../pages/ManageAllAdmins";
+import DesignAdded from "../pages/DesignAdded";
+import ViewAllDesigns from "../pages/ViewAllDesigns";
 
 function PageRoute() {
   return (
@@ -27,6 +29,8 @@ function PageRoute() {
             <Route path="/admin-home" element={<AdminHome />} />
             <Route path="/admin-register" element={<AdminRegister />} />
             <Route path="/ManageAllAdmins" element={<ManageAllAdmins />} />
+            <Route path="/DesignAdded" element={<DesignAdded />} />
+            <Route path="/ViewAllDesigns" element={<ViewAllDesigns />} />
           </Routes>
         </main>
         <Footer />
