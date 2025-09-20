@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AxiosConfig from "../Context/AxiosConfig";
-import { jwtDecode } from "jwt-decode";
+
 
 interface Design {
   DesignID: number | string;
@@ -32,17 +32,6 @@ function ViewAllDesigns() {
       });
   }, []);
 
-  const fetchTokendata = () => {
-    try {
-      const token = sessionStorage.getItem("accessToken");
-      if (token) {
-        const AdminID = jwtDecode(token).sub;
-        return AdminID;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   if (loading) {
     return <p style={{ textAlign: "center" }}>Loading designs...</p>;
