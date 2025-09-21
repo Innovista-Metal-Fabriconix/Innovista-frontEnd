@@ -12,6 +12,7 @@ import AdminRegister from "../pages/AdminRegisterForm";
 import ManageAllAdmins from "../pages/ManageAllAdmins";
 import DesignAdded from "../pages/DesignAdded";
 import ViewAllDesigns from "../pages/ViewAllDesigns";
+import CustomerManager from "../pages/CustomerManager";
 
 function PageRoute() {
   return (
@@ -31,6 +32,7 @@ function PageRoute() {
             <Route path="/ManageAllAdmins" element={<ManageAllAdmins />} />
             <Route path="/DesignAdded" element={<DesignAdded />} />
             <Route path="/ViewAllDesigns" element={<ViewAllDesigns />} />
+            <Route path="/CustomerManager" element={<CustomerManager />} />
           </Routes>
         </main>
         <Footer />

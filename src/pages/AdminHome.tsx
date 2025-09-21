@@ -2,15 +2,12 @@ import AdminReAdminRegisterForm from "./AdminRegisterForm";
 import PasswordReset from "../components/PasswordReset";
 import LogoutButton from "../components/LogoutButton";
 import ManageAllAdmins from "./ManageAllAdmins";
-import { Link } from "react-router-dom";
+import SidebarOFADmin from "../components/SidebarOFADmin";
 
 function AdminHome() {
   return (
     <>
-      <div style={{ color: "blue",  marginTop: "10px" }}>
-        <Link to="/DesignAdded">Go to Design Added Page</Link> {" >"}
-        <Link to="/ViewAllDesigns">Go to View All Designs Page</Link>
-      </div>
+      <SidebarOFADmin />
       <h1
         style={{ textAlign: "center", marginTop: "20px", marginBottom: "20px" }}
       >

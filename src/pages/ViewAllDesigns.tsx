@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import AxiosConfig from "../Context/AxiosConfig";
+import SidebarOFADmin from "../components/SidebarOFADmin";
 
 
 interface Design {
@@ -112,6 +113,7 @@ function ViewAllDesigns() {
 
   return (
     <>
+      <SidebarOFADmin />
       <h2 style={{ textAlign: "center", margin: "20px 0" }}>
         View All Designs
       </h2>
