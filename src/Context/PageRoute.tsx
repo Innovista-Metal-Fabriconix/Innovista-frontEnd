@@ -14,6 +14,7 @@ import DesignAdded from "../pages/DesignAdded";
 import ViewAllDesigns from "../pages/ViewAllDesigns";
 import CustomerManager from "../pages/CustomerManager";
 import CustomerVerify from "../pages/CustomerVerify";
+import OrdermanageAdmin from "../pages/OrdermanageAdmin";
 
 function PageRoute() {
   return (
@@ -35,6 +36,7 @@ function PageRoute() {
             <Route path="/ViewAllDesigns" element={<ViewAllDesigns />} />
             <Route path="/CustomerManager" element={<CustomerManager />} />
             <Route path="/CustomerVerify" element={<CustomerVerify />} />
+            <Route path="/OrdermanageAdmin" element={<OrdermanageAdmin />} />
           </Routes>
         </main>
         <Footer />

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import LogoutButton from "./LogoutButton";
 
 function SidebarOFADmin() {
   return (
@@ -10,6 +11,9 @@ function SidebarOFADmin() {
         <Link to="/ViewAllDesigns">Go to View All Designs Page</Link>
         {" >"}
         <Link to="/CustomerManager">Go to Customer Manager Page</Link>
+        {" >"}
+        <Link to="/OrdermanageAdmin">Go to Order Manage Page</Link> {" >"}
+        <LogoutButton />
       </div>
     </>
   );

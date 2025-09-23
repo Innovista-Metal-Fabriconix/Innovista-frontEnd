@@ -1,6 +1,5 @@
 import AdminReAdminRegisterForm from "./AdminRegisterForm";
 import PasswordReset from "../components/PasswordReset";
-import LogoutButton from "../components/LogoutButton";
 import ManageAllAdmins from "./ManageAllAdmins";
 import SidebarOFADmin from "../components/SidebarOFADmin";
 
@@ -14,7 +13,6 @@ function AdminHome() {
         Admin Home Page
       </h1>
       <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-        <LogoutButton />
         <PasswordReset />
         <h2
           style={{
