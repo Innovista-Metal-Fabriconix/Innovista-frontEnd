@@ -12,7 +12,7 @@ import {
   Input,
   Card,
 } from "antd";
-import AxiosConfig from "../../Context/AxiosConfig";
+import AxiosConfig from "../../../Context/AxiosConfig";
 
 const { Title } = Typography;
 

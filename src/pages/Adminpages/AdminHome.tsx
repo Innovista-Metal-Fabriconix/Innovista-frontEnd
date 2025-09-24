@@ -1,7 +1,7 @@
-import AdminReAdminRegisterForm from "./AdminRegisterForm";
-import PasswordReset from "../components/PasswordReset";
+import AdminReAdminRegisterForm from "../AdminRegisterForm";
+import PasswordReset from "../../components/PasswordReset";
 import ManageAllAdmins from "./ManageAllAdmins";
-import SidebarOFADmin from "../components/SidebarOFADmin";
+import SidebarOFADmin from "../../components/SidebarOFADmin";
 
 function AdminHome() {
   return (

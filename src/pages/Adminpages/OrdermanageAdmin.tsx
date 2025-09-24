@@ -1,5 +1,5 @@
-import SidebarOFADmin from "../components/SidebarOFADmin";
-import ViewAllorder from "./AdminOrdermanage/ViewAllorder";
+import SidebarOFADmin from "../../components/SidebarOFADmin";
+import ViewAllorder from "./ViewAllorder";
 
 function OrdermanageAdmin() {
   return (

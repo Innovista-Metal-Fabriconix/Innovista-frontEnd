@@ -1,5 +1,5 @@
 import { Form, Input, Button, message, Select } from "antd";
-import AxiosConfig from "../../Context/AxiosConfig";
+import AxiosConfig from "../../../Context/AxiosConfig";
 
 function CreateCustomer() {
   const [form] = Form.useForm();

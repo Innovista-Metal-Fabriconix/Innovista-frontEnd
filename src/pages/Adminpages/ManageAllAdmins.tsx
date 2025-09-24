@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Space, Table, Tag, Avatar, Spin, message } from 'antd';
 import type { TableProps } from 'antd';
-import AxiosConfig from '../Context/AxiosConfig';
+import AxiosConfig from '../../Context/AxiosConfig';
 
 interface AdminType {
   key: number;

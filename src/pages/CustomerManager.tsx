@@ -1,7 +1,7 @@
 import React from "react";
-import CreateCustomer from "./CustomerManager/CreateCustomer";
+import CreateCustomer from "./Adminpages/CustomerManager/CreateCustomer";
 import SidebarOFADmin from "../components/SidebarOFADmin";
-import PreviewCustomer from "./CustomerManager/PreviewCustomer";
+import PreviewCustomer from "./Adminpages/CustomerManager/PreviewCustomer";
 
 function CustomerManager() {
   return (
