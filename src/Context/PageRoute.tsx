@@ -6,12 +6,17 @@ import Blogs from "../pages/Blogs";
 import Projects from "../pages/Projects";
 import About from "../pages/About";
 import Footer from "../components/Footer";
-import AdminLogin from "../pages/AdminLogin";
-import AdminHome from "../pages/AdminHome";
+import AdminLogin from "../pages/Adminpages/AdminLogin";
+import AdminHome from "../pages/Adminpages/AdminHome";
 import AdminRegister from "../pages/AdminRegisterForm";
-import ManageAllAdmins from "../pages/ManageAllAdmins";
+import ManageAllAdmins from "../pages/Adminpages/ManageAllAdmins";
 import DesignAdded from "../pages/DesignAdded";
 import ViewAllDesigns from "../pages/ViewAllDesigns";
+import CustomerManager from "../pages/CustomerManager";
+import CustomerVerify from "../pages/CustomerVerify";
+import OrdermanageAdmin from "../pages/Adminpages/OrdermanageAdmin";
+import AdminFeedback from "../pages/Adminpages/AdminFeedback";
+import Notification from "../pages/Adminpages/Notification";
 
 function PageRoute() {
   return (
@@ -31,6 +36,11 @@ function PageRoute() {
             <Route path="/ManageAllAdmins" element={<ManageAllAdmins />} />
             <Route path="/DesignAdded" element={<DesignAdded />} />
             <Route path="/ViewAllDesigns" element={<ViewAllDesigns />} />
+            <Route path="/CustomerManager" element={<CustomerManager />} />
+            <Route path="/CustomerVerify" element={<CustomerVerify />} />
+            <Route path="/OrdermanageAdmin" element={<OrdermanageAdmin />} />
+            <Route path="/AdminFeedback" element={<AdminFeedback />} />
+            <Route path="/Notification" element={<Notification />} />
           </Routes>
         </main>
         <Footer />

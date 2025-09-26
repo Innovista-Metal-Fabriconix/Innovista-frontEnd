@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Space, Table, Tag, Avatar, Spin, message } from 'antd';
 import type { TableProps } from 'antd';
-import AxiosConfig from '../Context/AxiosConfig';
+import AxiosConfig from '../../Context/AxiosConfig';
 
 interface AdminType {
   key: number;
@@ -68,7 +68,6 @@ const ManageAllAdmins: React.FC = () => {
 
         if (response.status !== 200) throw new Error('Failed to fetch admins');
 
-        // Handle both plain array and wrapped response
         const result = Array.isArray(response.data)
           ? response.data
           : response.data?.data || [];

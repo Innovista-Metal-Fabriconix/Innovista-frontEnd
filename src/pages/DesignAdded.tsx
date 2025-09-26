@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Card, Input, Form, Typography, Space, Divider } from "antd";
 import AxiosConfig from "../Context/AxiosConfig";
+import SidebarOFADmin from "../components/SidebarOFADmin";
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -80,57 +81,64 @@ export default function DesignForm() {
   }
 
   return (
-    <Card style={{ maxWidth: 600, margin: "40px auto" }}>
-      <Title level={3} style={{ textAlign: "center" }}>
-        Add New Design
-      </Title>
-      <Divider />
-      <Form layout="vertical" onFinish={handleSubmit}>
-        <Form.Item label="Design Name" required>
-          <Input
-            value={formData.Design_Name}
-            onChange={(e) => handleChange(e, "Design_Name")}
-          />
-        </Form.Item>
-
-        <Form.Item label="Design Description" required>
-          <TextArea
-            rows={4}
-            value={formData.Design_Description}
-            onChange={(e) => handleChange(e, "Design_Description")}
-          />
-        </Form.Item>
-
-        {[
-          "Design_Image",
-          "Categories",
-          "Design_Colors",
-          "Design_BlogPosts",
-          "Design_Sizes",
-        ].map((field) => (
-          <Form.Item key={field} label={field.replace(/_/g, " ")}>
-            <Space direction="vertical" style={{ width: "100%" }}>
-              {(formData as any)[field].map((val: string, i: number) => (
-                <Input
-                  key={i}
-                  placeholder={`Enter ${field}`}
-                  value={val}
-                  onChange={(e) => handleChange(e, field, i)}
-                />
-              ))}
-              <Button type="dashed" onClick={() => addArrayField(field)} block>
-                + Add {field}
-              </Button>
-            </Space>
+    <>
+      <SidebarOFADmin />
+      <Card style={{ maxWidth: 600, margin: "40px auto" }}>
+        <Title level={3} style={{ textAlign: "center" }}>
+          Add New Design
+        </Title>
+        <Divider />
+        <Form layout="vertical" onFinish={handleSubmit}>
+          <Form.Item label="Design Name" required>
+            <Input
+              value={formData.Design_Name}
+              onChange={(e) => handleChange(e, "Design_Name")}
+            />
           </Form.Item>
-        ))}
 
-        <Form.Item>
-          <Button type="primary" htmlType="submit" block>
-            Submit Design
-          </Button>
-        </Form.Item>
-      </Form>
-    </Card>
+          <Form.Item label="Design Description" required>
+            <TextArea
+              rows={4}
+              value={formData.Design_Description}
+              onChange={(e) => handleChange(e, "Design_Description")}
+            />
+          </Form.Item>
+
+          {[
+            "Design_Image",
+            "Categories",
+            "Design_Colors",
+            "Design_BlogPosts",
+            "Design_Sizes",
+          ].map((field) => (
+            <Form.Item key={field} label={field.replace(/_/g, " ")}>
+              <Space direction="vertical" style={{ width: "100%" }}>
+                {(formData as any)[field].map((val: string, i: number) => (
+                  <Input
+                    key={i}
+                    placeholder={`Enter ${field}`}
+                    value={val}
+                    onChange={(e) => handleChange(e, field, i)}
+                  />
+                ))}
+                <Button
+                  type="dashed"
+                  onClick={() => addArrayField(field)}
+                  block
+                >
+                  + Add {field}
+                </Button>
+              </Space>
+            </Form.Item>
+          ))}
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" block>
+              Submit Design
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
+    </>
   );
 }

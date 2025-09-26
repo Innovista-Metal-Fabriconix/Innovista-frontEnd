@@ -1,23 +1,18 @@
-import AdminReAdminRegisterForm from "./AdminRegisterForm";
-import PasswordReset from "../components/PasswordReset";
-import LogoutButton from "../components/LogoutButton";
+import AdminReAdminRegisterForm from "../AdminRegisterForm";
+import PasswordReset from "../../components/PasswordReset";
 import ManageAllAdmins from "./ManageAllAdmins";
-import { Link } from "react-router-dom";
+import SidebarOFADmin from "../../components/SidebarOFADmin";
 
 function AdminHome() {
   return (
     <>
-    <div>
-      <Link to="/DesignAdded">Go to Design Added Page</Link> {" >"}
-      
-    </div>
+      <SidebarOFADmin />
       <h1
         style={{ textAlign: "center", marginTop: "20px", marginBottom: "20px" }}
       >
         Admin Home Page
       </h1>
       <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-        <LogoutButton />
         <PasswordReset />
         <h2
           style={{
