@@ -17,6 +17,7 @@ import CustomerVerify from "../pages/CustomerVerify";
 import OrdermanageAdmin from "../pages/Adminpages/OrdermanageAdmin";
 import AdminFeedback from "../pages/Adminpages/AdminFeedback";
 import Notification from "../pages/Adminpages/Notification";
+import ProductDetails from "../pages/ProductDetails";
 
 function PageRoute() {
   return (
@@ -41,6 +42,7 @@ function PageRoute() {
             <Route path="/OrdermanageAdmin" element={<OrdermanageAdmin />} />
             <Route path="/AdminFeedback" element={<AdminFeedback />} />
             <Route path="/Notification" element={<Notification />} />
+            <Route path="/product-details" element={<ProductDetails />} />
           </Routes>
         </main>
         <Footer />
