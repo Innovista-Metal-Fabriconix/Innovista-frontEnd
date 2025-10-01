@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 0 10px;
+}
+.heading {
+  position: relative;
+  letter-spacing: min-max(2px, 0.5vw);
+  font-weight: 700;
+  font-size: var(--text-heading-1);
+  text-transform: capitalize;
+  background: linear-gradient(
+    to right,
+    #e60000,
+    #22577a,
+    #22577a,
+    #22577a,
+    #e60000
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.heading::after {
+  content: "";
+  position: absolute;
+  width: calmp(50px, 10vw, 150px);
+  height: clamp(10px, 2vw, 15px);
+  bottom: max(-8px);
+  left: 0;
+  right: 0;
+  margin: auto;
+  background: url("../assets/svg/Vec.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+@media (max-width: 600px) {
+  .heading::after {
+    visibility: hidden;
+  }
+  .heading {
+    background: radial-gradient(circle, #22577a, #e60000);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
