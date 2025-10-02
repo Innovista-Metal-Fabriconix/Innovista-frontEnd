@@ -2,7 +2,7 @@
 import styles from "../cssModules/MainHeading.module.css";
 import { gsap } from "gsap";
 
-function MainHeading({ heading }: { heading: string }) {
+function MainHeading({ heading, description="" }: { heading: string; description: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     gsap.fromTo(
@@ -22,6 +22,7 @@ function MainHeading({ heading }: { heading: string }) {
   return (
     <div className={styles.container} ref={containerRef}>
       <span className={styles.heading}>{heading}</span>
+      <span className={styles.description}>{description}</span>
     </div>
   );
 }

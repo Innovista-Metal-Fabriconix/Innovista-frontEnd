@@ -7,8 +7,8 @@ function Home() {
       <div
         style={{
           position: "relative",
-          minHeight: "100vh",
           display: "flex",
+          marginBottom: "50px",
           justifyContent: "center",
         }}
       >

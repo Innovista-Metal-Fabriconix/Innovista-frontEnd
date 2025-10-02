@@ -294,7 +294,7 @@
 
 @media (max-height: 500px) and (orientation: landscape) {
   .sliderContainer {
-    height: 100vh;
+    height: 90vh;
   }
 
   .statContainer {

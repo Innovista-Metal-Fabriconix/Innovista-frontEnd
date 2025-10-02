@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 type Service = {
   image: string;
@@ -10,7 +11,15 @@ type Service = {
   description: string;
 };
 
-function ServiceComponent({ items , duration = 5000 }: { items: Service[]; duration?: number }) {
+gsap.registerPlugin(ScrollTrigger);
+
+function ServiceComponent({
+  items,
+  duration = 5000,
+}: {
+  items: Service[];
+  duration?: number;
+}) {
   const [index, setIndex] = useState(0);
   const [displayItems, setDisplayItems] = useState<Service[]>([]);
   const textRef = useRef<HTMLDivElement>(null);
@@ -48,7 +57,17 @@ function ServiceComponent({ items , duration = 5000 }: { items: Service[]; durat
         gsap.fromTo(
           textRef.current,
           { y: 100, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: textRef.current,
+              start: "top 80%",
+              toggleActions: "play none none reverse",
+            },
+          }
         );
       }
     });
@@ -58,7 +77,17 @@ function ServiceComponent({ items , duration = 5000 }: { items: Service[]; durat
         gsap.fromTo(
           textRef.current,
           { y: 50, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: textRef.current,
+              start: "top 80%",
+              toggleActions: "play none none reverse",
+            },
+          }
         );
       }
     });
@@ -70,12 +99,13 @@ function ServiceComponent({ items , duration = 5000 }: { items: Service[]; durat
     gsap.fromTo(
       imageRef.current,
       { x: -100, opacity: 0 },
-      { x: 0, opacity: 1, duration: 1.5, ease: "power3.out" }
-    );
-    gsap.fromTo(
-      contentRef.current,
-      { x: 100, opacity: 0 },
-      { x: 0, opacity: 1, duration: 1.5, ease: "power3.out" }
+      { x: 0, opacity: 1, duration: 1.5, ease: "power3.out",
+        scrollTrigger: {
+          trigger: imageRef.current,
+          start: "top 70%",
+          toggleActions: "play none none reverse",
+       }
+      }
     );
   });
 
@@ -94,12 +124,8 @@ function ServiceComponent({ items , duration = 5000 }: { items: Service[]; durat
       <div className={styles.textContainer} ref={contentRef}>
         <div className={styles.textContent} ref={textRef}>
           <span className={styles.title}>{displayItems[0]?.title}</span>
-          <p className={styles.description}>
-            {displayItems[0]?.description}
-          </p>
-          <p className={styles.description}>
-            {displayItems[0]?.description}
-          </p>
+          <p className={styles.description}>{displayItems[0]?.description}</p>
+          <p className={styles.description}>{displayItems[0]?.description}</p>
         </div>
         <div className={styles.buttonContainer}>
           <button

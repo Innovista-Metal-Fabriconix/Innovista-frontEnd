@@ -1,5 +1,6 @@
 .container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -48,4 +49,9 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+}
+.description {
+  margin-top: clamp(10px, 2vw, 15px);
+  font-size: var(--text-paragraph);
+  color: var(--color-primary);
 }

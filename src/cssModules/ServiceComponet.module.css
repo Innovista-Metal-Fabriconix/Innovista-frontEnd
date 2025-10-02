@@ -3,7 +3,7 @@
   grid-template-columns: 1fr 1.1fr;
   column-gap: clamp(20px, 5vw, 50px);
   justify-content: center;
-  padding: clamp(30px, 5vw, 60px) clamp(60px, 10vw, 70px);
+  padding: clamp(15px, 10vw, 25px) clamp(60px, 10vw, 70px);
 }
 
 .imageContainer {
@@ -81,7 +81,7 @@
   margin-bottom: clamp(10px, 2vw, 15px);
 }
 .description {
-  font-size: var(--text-paragraph-lg);
+  font-size: var(--text-paragraph);
   color: var(--color-black);
   opacity: 0.7;
   font-weight: var(--font-weight-regular);
@@ -116,7 +116,7 @@
     justify-items: center;
   }
   .imageContainer {
-    height: 40vh;
+    height: 28vh;
     width: 90vw;
   }
   .imageContainer img {
@@ -138,7 +138,6 @@
   .textContainer {
     align-items: center;
     text-align: center;
-    margin: 0 clamp(10px, 2vw, 15px);
   }
   .buttonContainer {
     display: none;
