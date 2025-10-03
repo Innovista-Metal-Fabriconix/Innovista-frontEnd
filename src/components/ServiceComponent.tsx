@@ -8,7 +8,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 type Service = {
   image: string;
   title: string;
-  description: string;
+  description1: string;
+  description2: string;
 };
 
 gsap.registerPlugin(ScrollTrigger);
@@ -21,12 +22,16 @@ function ServiceComponent({
   duration?: number;
 }) {
   const [index, setIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
   const [displayItems, setDisplayItems] = useState<Service[]>([]);
-  const textRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef(null);
-  const contentRef = useRef(null);
+
+  const textRefs = useRef<(HTMLDivElement | HTMLSpanElement)[]>([]);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!isAnimating) return;
+
     const updateItems = () => {
       const endIndex = index + 4;
       let currentItems;
@@ -48,69 +53,68 @@ function ServiceComponent({
     }, duration);
 
     return () => clearTimeout(timeout);
+  }, [index, isAnimating]);
+
+  useEffect(() => {
+    if (textRefs.current.length > 0) {
+      const tl = gsap.timeline();
+
+      tl.fromTo(
+        textRefs.current[0],
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }
+      )
+        .fromTo(
+          textRefs.current[1],
+          { y: 50, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" },
+          "+=0.1"
+        )
+        .fromTo(
+          textRefs.current[2],
+          { y: 50, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" },
+          "+=0.1"
+        );
+    }
   }, [index]);
 
   useGSAP(() => {
-    let mm = gsap.matchMedia();
-    mm.add("(min-width: 769px)", () => {
-      if (textRef.current) {
-        gsap.fromTo(
-          textRef.current,
-          { y: 100, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: textRef.current,
-              start: "top 80%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      }
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: contentRef.current,
+        start: "top 50%",
+        end: "top 30%",
+        markers: true,
+        toggleActions: "play none none reverse",
+        onEnter: () => setIsAnimating(true),
+        onEnterBack: () => setIsAnimating(false),
+      },
     });
 
-    mm.add("(max-width: 768px)", () => {
-      if (textRef.current) {
-        gsap.fromTo(
-          textRef.current,
-          { y: 50, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: textRef.current,
-              start: "top 80%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-      }
-    });
+    if (imageRef.current && textRefs.current.length > 0) {
+      tl.fromTo(
+        imageRef.current,
+        { x: -150, opacity: 0 },
+        { x: 0, opacity: 1, duration: 1.2, ease: "power3.out" }
+      );
 
-    return () => mm.revert();
-  }, [displayItems]);
+      tl.fromTo(
+        textRefs.current,
+        { x: 100, opacity: 0 },
+        { x: 0, opacity: 1, duration: 1.2, ease: "power3.out" },
+        "-=0.8"
+      );
+    }
+  }, []);
 
-  useGSAP(() => {
-    gsap.fromTo(
-      imageRef.current,
-      { x: -100, opacity: 0 },
-      { x: 0, opacity: 1, duration: 1.5, ease: "power3.out",
-        scrollTrigger: {
-          trigger: imageRef.current,
-          start: "top 70%",
-          toggleActions: "play none none reverse",
-       }
-      }
-    );
-  });
+  // Function to go to specific service
+  const goToService = (serviceIndex: number) => {
+    setIndex(serviceIndex);
+  };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} ref={contentRef}>
       <div className={styles.imageContainer} ref={imageRef}>
         {displayItems.map((item, i) => (
           <img
@@ -121,12 +125,30 @@ function ServiceComponent({
           />
         ))}
       </div>
-      <div className={styles.textContainer} ref={contentRef}>
-        <div className={styles.textContent} ref={textRef}>
-          <span className={styles.title}>{displayItems[0]?.title}</span>
-          <p className={styles.description}>{displayItems[0]?.description}</p>
-          <p className={styles.description}>{displayItems[0]?.description}</p>
+
+      <div className={styles.textContainer}>
+        <div className={styles.textContent}>
+          <span
+            className={styles.title}
+            ref={(el) => { if (el) textRefs.current[0] = el; }}
+          >
+            {displayItems[0]?.title}
+          </span>
+          <p
+            className={styles.description}
+            ref={(el) => { if (el) textRefs.current[1] = el; }}
+          >
+            {displayItems[0]?.description1}
+          </p>
+          <p
+            className={styles.description}
+            ref={(el) => { if (el) textRefs.current[2] = el; }}
+          >
+            {displayItems[0]?.description2}
+          </p>
         </div>
+
+        {/* Desktop buttons */}
         <div className={styles.buttonContainer}>
           <button
             className={styles.prevButton}
@@ -146,6 +168,19 @@ function ServiceComponent({
           >
             <FaArrowRight />
           </button>
+        </div>
+
+        <div className={styles.mobileIndicators}>
+          {items.map((_, i) => (
+            <button
+              key={i}
+              className={`${styles.indicator} ${
+                i === index ? styles.indicatorActive : ''
+              }`}
+              onClick={() => goToService(i)}
+              aria-label={`Go to service ${i + 1}`}
+            />
+          ))}
         </div>
       </div>
     </div>

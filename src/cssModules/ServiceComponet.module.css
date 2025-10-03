@@ -38,6 +38,7 @@
   bottom: 0;
   right: 0;
   z-index: 2;
+  opacity: 0.8;
   transform: scale(0.9) translateX(calc(-100% / 3.5));
   filter: grayscale(100%);
 }
@@ -47,6 +48,7 @@
   top: 0;
   bottom: 0;
   right: 0;
+  opacity: 0.6;
   z-index: 1;
   filter: grayscale(100%);
   transform: scale(0.8) translateX(calc(-100% / 1.6));
@@ -58,6 +60,7 @@
   bottom: 0;
   right: 0;
   z-index: 0;
+  opacity: 0.4;
   filter: grayscale(100%);
   transform: scale(0.7) translateX(calc(-100%));
 }
@@ -109,6 +112,36 @@
   cursor: pointer;
 }
 
+.mobileIndicators {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--color-secondary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.indicator:hover {
+  background-color: rgba(34, 87, 122, 0.6);
+  transform: scale(1.1);
+}
+
+.indicatorActive {
+  background-color: var(--color-primary);
+  transform: scale(1.2);
+  box-shadow: 0 2px 8px rgba(34, 87, 122, 0.4);
+}
+
 @media (max-width: 900px) {
   .container {
     grid-template-columns: 1fr;
@@ -141,5 +174,21 @@
   }
   .buttonContainer {
     display: none;
+  }
+
+  .mobileIndicators {
+    display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .indicator {
+    width: 10px;
+    height: 10px;
+  }
+
+  .mobileIndicators {
+    gap: 8px;
+    margin-top: 15px;
   }
 }
