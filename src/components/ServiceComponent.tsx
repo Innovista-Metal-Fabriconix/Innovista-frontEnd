@@ -85,7 +85,6 @@ function ServiceComponent({
         trigger: contentRef.current,
         start: "top 50%",
         end: "top 30%",
-        markers: true,
         toggleActions: "play none none reverse",
         onEnter: () => setIsAnimating(true),
         onEnterBack: () => setIsAnimating(false),
@@ -108,7 +107,6 @@ function ServiceComponent({
     }
   }, []);
 
-  // Function to go to specific service
   const goToService = (serviceIndex: number) => {
     setIndex(serviceIndex);
   };
@@ -148,7 +146,6 @@ function ServiceComponent({
           </p>
         </div>
 
-        {/* Desktop buttons */}
         <div className={styles.buttonContainer}>
           <button
             className={styles.prevButton}

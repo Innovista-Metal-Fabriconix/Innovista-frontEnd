@@ -18,11 +18,13 @@ import OrdermanageAdmin from "../pages/Adminpages/OrdermanageAdmin";
 import AdminFeedback from "../pages/Adminpages/AdminFeedback";
 import Notification from "../pages/Adminpages/Notification";
 import ProductDetails from "../pages/ProductDetails";
+import TargetCursor from "../components/cursor/TragetCursor";
 
 function PageRoute() {
   return (
     <Router>
       <div style={{ position: "relative", minHeight: "100vh" }}>
+        <TargetCursor spinDuration={2} hideDefaultCursor={true} />
         <Navbar />
         <main>
           <Routes>
