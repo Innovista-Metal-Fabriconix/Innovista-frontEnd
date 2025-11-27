@@ -11,6 +11,7 @@ import {
   Form,
   Input,
   Card,
+  Popconfirm,
 } from "antd";
 import AxiosConfig from "../../../Context/AxiosConfig";
 
@@ -175,9 +176,14 @@ function PreviewCustomer() {
           <Button type="primary" onClick={() => handleEdit(record)}>
             Edit
           </Button>
-          <Button danger onClick={() => handleDelete(record.CustomerId)}>
-            Delete
-          </Button>
+          <Popconfirm
+            title="Are you sure to delete this customer?"
+            onConfirm={() => handleDelete(record.CustomerId)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button danger>Delete</Button>
+          </Popconfirm>
         </Space>
       ),
     },

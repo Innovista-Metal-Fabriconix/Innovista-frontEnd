@@ -20,7 +20,6 @@ function PasswordReset() {
 
   return (
     <>
-      <h3 className="text-xl font-semibold mb-4">Reset Password</h3>
       <Form
         layout="vertical"
         form={form}
