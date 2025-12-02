@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Card, Row, Col, Tag, Typography } from "antd";
+import { Card, Row, Col, Tag, Typography, Image } from "antd";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 
@@ -25,6 +25,9 @@ interface Project {
 
 function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
+  const [previewIndex, setPreviewIndex] = useState(0);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -38,81 +41,135 @@ function Projects() {
       }
     };
     fetchProjects();
-    getProjectDuration();
   }, []);
 
+  const openPreview = (images: string[], index: number) => {
+    setPreviewImages(images);
+    setPreviewIndex(index);
+    setPreviewVisible(true);
+  };
 
   const getProjectDuration = (start?: string, end?: string | null) => {
     if (!start) return "";
     if (!end) return "Ongoing";
 
-    console.log(`Calculating duration from start: ${start} to end: ${end}`);
-
     const startDate = dayjs(start);
     const endDate = dayjs(end);
     const diffMonths = endDate.diff(startDate, "month");
-
-    console.log(`Project duration from ${startDate.format("YYYY-MM-DD")} to ${endDate.format("YYYY-MM-DD")}: ${diffMonths} months`);
 
     return `Completed in ${diffMonths} month${diffMonths > 1 ? "s" : ""}`;
   };
 
   return (
-    <Row gutter={[16, 16]} style={{ padding: 15 }}>
-      {projects.map((project) => (
-        <Col xs={24} sm={12} md={12} lg={8} xl={6} key={project.ProjectID}>
-          <Card
-            hoverable
-            cover={
-              project.Project_Images && project.Project_Images.length > 0 ? (
-                <img
-                  alt={project.Project_Title}
-                  src={project.Project_Images[0]}
-                  style={{ height: 200, objectFit: "cover" }}
-                />
-              ) : null
-            }
-          >
-            <Title level={4}>{project.Project_Title}</Title>
-            <Paragraph ellipsis={{ rows: 3 }}>
-              {project.Project_Description}
-            </Paragraph>
+    <>
+    
+      <Image.PreviewGroup
+        preview={{
+          visible: previewVisible,
+          current: previewIndex,
+          onVisibleChange: (vis) => setPreviewVisible(vis),
+        }}
+      >
+   
+        {previewImages.map((img, i) => (
+          <Image key={i} src={img} style={{ display: "none" }} />
+        ))}
+      </Image.PreviewGroup>
 
-            <div style={{ marginBottom: 12 }}>
-              <Text strong>Client:</Text> {project.Client_Name} <br />
-              <Text strong>Email:</Text> {project.Client_Email} <br />
-              {project.Client_Company && (
-                <>
-                  <Text strong>Company:</Text> {project.Client_Company}
-                  <br />
-                </>
-              )}
-            </div>
-
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
+      <div style={{ width: "100%", overflowX: "hidden", padding: 15 }}>
+        <Row gutter={[16, 16]}>
+          {projects.map((project) => (
+            <Col
+              xs={24}
+              sm={12}
+              md={12}
+              lg={8}
+              xl={6}
+              key={project.ProjectID}
+              style={{ display: "flex" }}
             >
-              <Tag color="blue">📍 {project.Location}</Tag>
-              <Tag color="green">${project.Budget.toLocaleString()}</Tag>
-            </div>
+              <Card
+                hoverable
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  height: "100%",
+                  overflow: "hidden",
+                }}
+                cover={
+                  project.Project_Images?.[0] ? (
+                    <img
+                      src={project.Project_Images[0]}
+                      alt={project.Project_Title}
+                      style={{
+                        width: "100%",
+                        height: 200,
+                        objectFit: "cover",
+                        cursor: "pointer",
+                      }}
+                      onClick={() =>
+                        openPreview(project.Project_Images || [], 0)
+                      }
+                    />
+                  ) : null
+                }
+              >
+                <div style={{ flex: 1, overflow: "hidden" }}>
+                  <Title level={5} style={{ marginBottom: 5 }}>
+                    {project.Project_Title}
+                  </Title>
 
-            {project.Project_FinishedDate ? (
-              <Tag color="geekblue" style={{ marginTop: 8 }}>
-                {getProjectDuration(project.Project_CreatedAt, project.Project_FinishedDate)}
-              </Tag>
-            ) : (
-              <Tag color="green" style={{ marginTop: 8 }}>
-                Completed
-              </Tag>
-            )}
-          </Card>
-        </Col>
-      ))}
-    </Row>
+                  <Paragraph
+                    ellipsis={{ rows: 3 }}
+                    style={{ fontSize: 13, marginBottom: 10 }}
+                  >
+                    {project.Project_Description}
+                  </Paragraph>
+
+                  <div style={{ marginBottom: 12, fontSize: 13 }}>
+                    <Text strong>Client:</Text> {project.Client_Name} <br />
+                    <Text strong>Email:</Text> {project.Client_Email} <br />
+                    {project.Client_Company && (
+                      <>
+                        <Text strong>Company:</Text> {project.Client_Company}
+                        <br />
+                      </>
+                    )}
+                  </div>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      flexWrap: "wrap",
+                      gap: 5,
+                      marginBottom: 10,
+                    }}
+                  >
+                    <Tag color="blue">📍 {project.Location}</Tag>
+                    <Tag color="green">
+                      ${project.Budget.toLocaleString()}
+                    </Tag>
+                  </div>
+
+                  {project.Project_FinishedDate ? (
+                    <Tag color="geekblue">
+                      {getProjectDuration(
+                        project.Project_CreatedAt,
+                        project.Project_FinishedDate
+                      )}
+                    </Tag>
+                  ) : (
+                    <Tag color="green">Completed</Tag>
+                  )}
+                </div>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </div>
+    </>
   );
 }
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Card,
@@ -10,38 +10,85 @@ import {
   DatePicker,
   InputNumber,
   message,
+  Upload,
 } from "antd";
+import { UploadOutlined, DeleteOutlined } from "@ant-design/icons";
 import SidebarOFADmin from "../../components/SidebarOFADmin";
 import ViewallProjects from "./ViewallProjects";
+import AxiosConfig from "../../Context/AxiosConfig";
 
 const { Title } = Typography;
 const { TextArea } = Input;
 
 function AddProjects() {
-  const [submitted, setSubmitted] = React.useState(false);
-
   const [form] = Form.useForm();
+  const [images, setImages] = useState<string[]>([]);
 
-  const onFinish = (values: any) => {
-    console.log("Form Values:", values);
+  const CLOUD_NAME = "dqabfysqj";
+  const UPLOAD_PRESET = "InnovistaImage";
 
+  const handleImageUpload = async (event: any, folderName: string) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", UPLOAD_PRESET);
+    data.append("cloud_name", CLOUD_NAME);
+    data.append("Project_Folder", folderName);
+
+    try {
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+
+      const result = await res.json();
+
+      if (!result.secure_url) {
+        message.error("Image upload failed");
+        return;
+      }
+
+      setImages((prev) => [...prev, result.secure_url]);
+
+      message.success("Image uploaded successfully!");
+    } catch (error) {
+      message.error("Upload error");
+    }
+  };
+
+
+  const removeImage = (url: string) => {
+    setImages(images.filter((img) => img !== url));
+  };
+
+  const onFinish = async (values: any) => {
     const projectData = {
       ...values,
-      Project_Images: values.Project_Images
-        ? values.Project_Images.split(",").map((url: string) => url.trim())
-        : [],
+      Project_Images: images,
+      Project_FinishedDate: values.Project_FinishedDate
+        ? values.Project_FinishedDate.format("YYYY-MM-DD")
+        : null,
     };
 
-    console.log("Prepared Project Data:", projectData);
-
-    setSubmitted(true);
-    message.success("Project submitted successfully!");
-    form.resetFields();
+    try {
+      await AxiosConfig.post("/projects/createProject", projectData);
+      message.success("Project created successfully!");
+      form.resetFields();
+      setImages([]);
+    } catch (error) {
+      message.error("Failed to create project");
+    }
   };
 
   return (
     <>
       <SidebarOFADmin />
+
       <Card style={{ maxWidth: 700, margin: "20px auto", padding: 20 }}>
         <Title level={3}>Add New Project</Title>
         <Divider />
@@ -50,9 +97,7 @@ function AddProjects() {
           <Form.Item
             label="Project Title"
             name="Project_Title"
-            rules={[
-              { required: true, message: "Please enter the project title" },
-            ]}
+            rules={[{ required: true }]}
           >
             <Input placeholder="Enter project title" />
           </Form.Item>
@@ -60,26 +105,46 @@ function AddProjects() {
           <Form.Item
             label="Project Description"
             name="Project_Description"
-            rules={[
-              { required: true, message: "Please enter project description" },
-            ]}
+            rules={[{ required: true }]}
           >
             <TextArea rows={4} placeholder="Enter project description" />
           </Form.Item>
 
-          <Form.Item
-            label="Project Images (comma separated URLs)"
-            name="Project_Images"
-          >
-            <Input placeholder="Enter image URLs separated by commas" />
+
+          <Form.Item label="Upload Project Images">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleImageUpload(e, "Project_Images")}
+            />
+
+            <div style={{ marginTop: 10 }}>
+              {images.map((url) => (
+                <div key={url} style={{ display: "flex", marginTop: 10 }}>
+                  <img
+                    src={url}
+                    alt="Uploaded"
+                    width={80}
+                    height={80}
+                    style={{ borderRadius: 5, marginRight: 10 }}
+                  />
+                  <Button
+                    danger
+                    icon={<DeleteOutlined />}
+                    onClick={() => removeImage(url)}
+                  >
+                    Remove
+                  </Button>
+                </div>
+              ))}
+            </div>
           </Form.Item>
+        
 
           <Form.Item
             label="Location"
             name="Location"
-            rules={[
-              { required: true, message: "Please enter project location" },
-            ]}
+            rules={[{ required: true }]}
           >
             <Input placeholder="Enter project location" />
           </Form.Item>
@@ -87,7 +152,7 @@ function AddProjects() {
           <Form.Item
             label="Client Name"
             name="Client_Name"
-            rules={[{ required: true, message: "Please enter client name" }]}
+            rules={[{ required: true }]}
           >
             <Input placeholder="Enter client name" />
           </Form.Item>
@@ -95,16 +160,13 @@ function AddProjects() {
           <Form.Item
             label="Client Email"
             name="Client_Email"
-            rules={[
-              { required: true, message: "Please enter client email" },
-              { type: "email", message: "Invalid email format" },
-            ]}
+            rules={[{ required: true }, { type: "email" }]}
           >
             <Input placeholder="Enter client email" />
           </Form.Item>
 
           <Form.Item label="Client Number" name="Client_Number">
-            <Input placeholder="Enter client phone number" />
+            <Input placeholder="Enter client number" />
           </Form.Item>
 
           <Form.Item label="Client Company" name="Client_Company">
@@ -115,15 +177,11 @@ function AddProjects() {
             <DatePicker style={{ width: "100%" }} />
           </Form.Item>
 
-          <Form.Item
-            label="Budget"
-            name="Budget"
-            rules={[{ required: true, message: "Please enter project budget" }]}
-          >
+          <Form.Item label="Budget" name="Budget" rules={[{ required: true }]}>
             <InputNumber
-              placeholder="Enter budget"
               style={{ width: "100%" }}
               min={0}
+              placeholder="Enter budget"
               formatter={(value) => `$ ${value}`}
             />
           </Form.Item>
@@ -133,13 +191,12 @@ function AddProjects() {
               <Button type="primary" htmlType="submit">
                 Submit
               </Button>
-              <Button htmlType="button" onClick={() => form.resetFields()}>
-                Reset
-              </Button>
+              <Button onClick={() => form.resetFields()}>Reset</Button>
             </Space>
           </Form.Item>
         </Form>
       </Card>
+
       <ViewallProjects />
     </>
   );
