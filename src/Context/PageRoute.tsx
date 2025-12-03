@@ -19,6 +19,8 @@ import AdminFeedback from "../pages/Adminpages/AdminFeedback";
 import Notification from "../pages/Adminpages/Notification";
 import ProductDetails from "../pages/ProductDetails";
 import AddProjects from "../pages/Adminpages/AddProjects";
+import DesignViwe from "../pages/DesignViwe";
+import OrderCart from "../pages/OrderCart";
 
 function PageRoute() {
   return (
@@ -45,6 +47,8 @@ function PageRoute() {
             <Route path="/Notification" element={<Notification />} />
             <Route path="/product-details" element={<ProductDetails />} />
             <Route path="/AddProjects" element={<AddProjects />} />
+            <Route path="/DesignViwe" element={<DesignViwe />} />
+            <Route path="/OrderCart" element={<OrderCart />} />
           </Routes>
         </main>
         <Footer />

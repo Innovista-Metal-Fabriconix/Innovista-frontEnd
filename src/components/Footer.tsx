@@ -43,7 +43,7 @@ function Footer() {
     <div
       style={{
         background: "linear-gradient(135deg, #f30f0f, #a50d0d)",
-        padding: "70px 40px",
+        padding: "50px 40px",
         color: "white",
       }}
     >
@@ -135,7 +135,7 @@ function Footer() {
 
       <div
         style={{
-          width: "90%",
+          width: "95%",
           height: "1px",
           backgroundColor: "rgba(255,255,255,0.3)",
           margin: "50px auto 30px",
@@ -149,6 +149,7 @@ function Footer() {
           marginBottom: "20px",
           fontSize: "17px",
           letterSpacing: "0.5px",
+          fontWeight: "500",
         }}
       >
         Follow us
@@ -195,7 +196,7 @@ function Footer() {
 
       <div
         style={{
-          width: "90%",
+          width: "95%",
           height: "1px",
           backgroundColor: "rgba(255,255,255,0.3)",
           margin: "0 auto",
@@ -206,3 +207,6 @@ function Footer() {
 }
 
 export default Footer;
+
+
+//  service ID :- service_63w7zuo 

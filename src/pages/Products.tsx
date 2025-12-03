@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+
 import Productpage from "../assets/Images/Productpage.jpg";
-import { Typography, Card, Row, Col } from "antd";
+import { Typography, Card, Row, Col, Button } from "antd";
 import { motion } from "framer-motion";
 
 import DoorsImg from "../assets/Images/Productpage.jpg";
@@ -16,7 +16,6 @@ import RacksImg from "../assets/Images/Productpage.jpg";
 import WardrobeImg from "../assets/Images/Productpage.jpg";
 import PantryImg from "../assets/Images/Productpage.jpg";
 import SteelImage from "../assets/Images/Productpage.jpg";
-
 
 const categories = [
   { name: "Doors", img: DoorsImg },
@@ -34,6 +33,12 @@ const categories = [
 ];
 
 function Products() {
+  const handleNavigate = (categoryName: string) => {
+    window.location.href = `/DesignViwe?category=${encodeURIComponent(
+      categoryName
+    )}`;
+  };
+
   return (
     <div style={{ width: "100%", overflow: "hidden" }}>
       <motion.div
@@ -168,18 +173,20 @@ function Products() {
                   <Typography.Text strong style={{ fontSize: "16px" }}>
                     {cat.name}
                   </Typography.Text>
+                  <Button
+                    style={{
+                      margin: 10,
+                    }}
+                    onClick={() => handleNavigate(cat.name)}
+                  >
+                    View Details
+                  </Button>
                 </Card>
               </motion.div>
             </Col>
           ))}
         </Row>
-        <div style={{ textAlign: "center", marginTop: "20px" }}>
-          <Link to="/categories">
-            <Typography.Link style={{ fontSize: "18px" }}>
-              View more +
-            </Typography.Link>
-          </Link>
-        </div>
+        <div style={{ textAlign: "center", marginTop: "20px" }}></div>
       </div>
       <div>
         <Row
@@ -192,7 +199,6 @@ function Products() {
             overflow: "hidden",
           }}
         >
-
           <Col xs={24} md={8} style={{ padding: "40px 30px" }}>
             <motion.div
               initial={{ x: -50, opacity: 0 }}
@@ -213,7 +219,6 @@ function Products() {
             </motion.div>
           </Col>
 
-      
           <Col xs={24} md={16} style={{ padding: "40px 30px" }}>
             <motion.div
               initial={{ x: 50, opacity: 0 }}
@@ -243,85 +248,90 @@ function Products() {
         </Row>
       </div>
       <div
-      style={{
-        padding: "80px 40px",
-        background: "#fff",
-        position: "relative",
-      }}
-    >
-      <Row gutter={[32, 32]} align="middle" justify="center">
+        style={{
+          padding: "80px 40px",
+          background: "#fff",
+          position: "relative",
+        }}
+      >
+        <Row gutter={[32, 32]} align="middle" justify="center">
+          <Col xs={24} md={8} style={{ textAlign: "left" }}>
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              style={{ marginBottom: "60px" }}
+            >
+              <Typography.Title level={4}>Unmatched Quality</Typography.Title>
+              <Typography.Paragraph>
+                We use premium materials and strict quality checks to ensure
+                every product lasts for years.
+              </Typography.Paragraph>
+            </motion.div>
 
-        <Col xs={24} md={8} style={{ textAlign: "left" }}>
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            style={{ marginBottom: "60px" }}
-          >
-            <Typography.Title level={4}>Unmatched Quality</Typography.Title>
-            <Typography.Paragraph>
-              We use premium materials and strict quality checks to ensure every
-              product lasts for years.
-            </Typography.Paragraph>
-          </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <Typography.Title level={4}>
+                Modern & Elegant Designs
+              </Typography.Title>
+              <Typography.Paragraph>
+                We provide customized solutions to meet your unique property
+                requirements.
+              </Typography.Paragraph>
+            </motion.div>
+          </Col>
+          <Col xs={24} md={8} style={{ textAlign: "left" }}>
+            <motion.img
+              src={SteelImage}
+              alt="Why Choose Us"
+              initial={{ scale: 0.9, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 1 }}
+              style={{
+                width: "100%",
+                maxWidth: "420px",
+                borderRadius: "0 0 50% 50%",
+                objectFit: "cover",
+                boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
+              }}
+            />
+          </Col>
 
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <Typography.Title level={4}>Modern & Elegant Designs</Typography.Title>
-            <Typography.Paragraph>
-              We provide customized solutions to meet your unique property
-              requirements.
-            </Typography.Paragraph>
-          </motion.div>
-        </Col>
-        <Col xs={24} md={8} style={{ textAlign: "left" }}>
-          <motion.img
-            src={SteelImage}
-            alt="Why Choose Us"
-            initial={{ scale: 0.9, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1 }}
-            style={{
-              width: "100%",
-              maxWidth: "420px",
-              borderRadius: "0 0 50% 50%", 
-              objectFit: "cover",
-              boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
-            }}
-          />
-        </Col>
+          <Col xs={24} md={8} style={{ textAlign: "left" }}>
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              style={{ marginBottom: "60px" }}
+            >
+              <Typography.Title level={4}>
+                Trusted Partnerships
+              </Typography.Title>
+              <Typography.Paragraph>
+                Our team has an in-depth understanding of the industry and
+                strong collaborations worldwide.
+              </Typography.Paragraph>
+            </motion.div>
 
-        <Col xs={24} md={8} style={{ textAlign: "left" }}>
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            style={{ marginBottom: "60px" }}
-          >
-            <Typography.Title level={4}>Trusted Partnerships</Typography.Title>
-            <Typography.Paragraph>
-              Our team has an in-depth understanding of the industry and strong
-              collaborations worldwide.
-            </Typography.Paragraph>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <Typography.Title level={4}>Customer-Centered Service</Typography.Title>
-            <Typography.Paragraph>
-              We are proud members of leading associations and have received
-              accolades for our outstanding service.
-            </Typography.Paragraph>
-          </motion.div>
-        </Col>
-      </Row>
-    </div>
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <Typography.Title level={4}>
+                Customer-Centered Service
+              </Typography.Title>
+              <Typography.Paragraph>
+                We are proud members of leading associations and have received
+                accolades for our outstanding service.
+              </Typography.Paragraph>
+            </motion.div>
+          </Col>
+        </Row>
+      </div>
     </div>
   );
 }

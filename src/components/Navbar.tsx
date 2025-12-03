@@ -80,6 +80,19 @@ export default function Navbar() {
         >
           Projects
         </NavLink>
+        <NavLink
+          to="/OrderCart"
+          className={({ isActive }) =>
+            isActive ? styles.activeLink : styles.link
+          }
+        >
+          <img
+            width="30"
+            height="30"
+            src="https://img.icons8.com/badges/48/shopping-cart.png"
+            alt="shopping-cart"
+          />
+        </NavLink>
       </div>
       <button className={styles.quoteBtn}>Get a Free Quote</button>
 

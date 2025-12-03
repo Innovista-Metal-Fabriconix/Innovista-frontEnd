@@ -4,6 +4,7 @@ import { Card, Row, Col, Tag, Typography, Image } from "antd";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 
+
 dayjs.extend(duration);
 
 const { Title, Paragraph, Text } = Typography;
@@ -62,7 +63,6 @@ function Projects() {
 
   return (
     <>
-    
       <Image.PreviewGroup
         preview={{
           visible: previewVisible,
@@ -70,13 +70,20 @@ function Projects() {
           onVisibleChange: (vis) => setPreviewVisible(vis),
         }}
       >
-   
         {previewImages.map((img, i) => (
           <Image key={i} src={img} style={{ display: "none" }} />
         ))}
       </Image.PreviewGroup>
 
-      <div style={{ width: "100%", overflowX: "hidden", padding: 15 }}>
+      <div
+        style={{
+          width: "100%",
+          overflowX: "hidden",
+          padding: 15,
+          paddingBottom: 60,
+          paddingTop: 40,
+        }}
+      >
         <Row gutter={[16, 16]}>
           {projects.map((project) => (
             <Col
@@ -86,7 +93,7 @@ function Projects() {
               lg={8}
               xl={6}
               key={project.ProjectID}
-              style={{ display: "flex" }}
+              style={{ display: "flex", paddingBottom: 20 }}
             >
               <Card
                 hoverable
@@ -148,9 +155,7 @@ function Projects() {
                     }}
                   >
                     <Tag color="blue">📍 {project.Location}</Tag>
-                    <Tag color="green">
-                      ${project.Budget.toLocaleString()}
-                    </Tag>
+                    <Tag color="green">${project.Budget.toLocaleString()}</Tag>
                   </div>
 
                   {project.Project_FinishedDate ? (
@@ -163,6 +168,7 @@ function Projects() {
                   ) : (
                     <Tag color="green">Completed</Tag>
                   )}
+                 
                 </div>
               </Card>
             </Col>
