@@ -108,18 +108,39 @@ function ViewAllorder() {
       render: (goods: string[]) =>
         goods?.map((g, i) => <Tag key={i}>{g}</Tag>),
     },
+
+  
     {
-      title: "Design Name",
-      dataIndex: ["Designs", 0, "Design", "Design_Name"],
-      key: "Design_Name",
+      title: "Design Names",
+      dataIndex: "Designs",
+      key: "Design_Names",
+      render: (designs: any[]) =>
+        designs?.map((item, i) => (
+          <Tag key={i} color="blue">
+            {item.Design?.Design_Name}
+          </Tag>
+        )),
     },
     {
-      title: "Design Image",
-      dataIndex: ["Designs", 0, "Design", "Design_Image"],
-      key: "Design_Image",
-      render: (images: string[]) =>
-        images?.map((src, i) => <Image key={i} src={src} width={70} />),
+      title: "Design Images",
+      dataIndex: "Designs",
+      key: "Design_Images",
+      render: (designs: any[]) =>
+        designs?.flatMap((item, i) =>
+          (Array.isArray(item.Design?.Design_Image)
+            ? item.Design.Design_Image
+            : [item.Design.Design_Image]
+          ).map((img: string, index: number) => (
+            <Image
+              key={`${i}-${index}`}
+              src={img}
+              width={70}
+              style={{ marginRight: 8 }}
+            />
+          ))
+        ),
     },
+
     {
       title: "Update Status",
       key: "action",
@@ -144,7 +165,9 @@ function ViewAllorder() {
 
   return (
     <div style={{ padding: 20 }}>
-      <h2 style={{ marginBottom: 20, textAlign: "center" , fontSize:"24px", padding:"10px 10px"}}>📦 All Orders</h2>
+      <h2 style={{ marginBottom: 20, textAlign: "center", fontSize: "24px", padding: "10px" }}>
+        📦 All Orders
+      </h2>
 
       <Table
         rowKey={(r) => r.OrderID}
