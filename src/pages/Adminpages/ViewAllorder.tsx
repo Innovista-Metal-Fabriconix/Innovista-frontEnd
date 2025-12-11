@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table, Tag, Image, Select, message } from "antd";
 import AxiosConfig from "../../Context/AxiosConfig";
+import XlfileGenerate from "./XlfileGenerate"
 
 export const OrderStatus = {
   PENDING: "PENDING",
@@ -9,7 +10,7 @@ export const OrderStatus = {
   COMPLETED: "COMPLETED",
 } as const;
 
-type OrderStatus = typeof OrderStatus[keyof typeof OrderStatus];
+type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
 
 function ViewAllorder() {
   const [orders, setOrders] = useState<any[]>([]);
@@ -30,7 +31,6 @@ function ViewAllorder() {
   const updateOrderStatus = async (orderId: number, status: OrderStatus) => {
     try {
       setLoadingOrder(orderId);
-
       await AxiosConfig.put(
         `/order/ChangeStates?orderId=${orderId}&Status=${status}`
       );
@@ -105,11 +105,8 @@ function ViewAllorder() {
       title: "Purchase Goods",
       dataIndex: ["Customer", "Purchase_Goods"],
       key: "Purchase_Goods",
-      render: (goods: string[]) =>
-        goods?.map((g, i) => <Tag key={i}>{g}</Tag>),
+      render: (goods: string[]) => goods?.map((g, i) => <Tag key={i}>{g}</Tag>),
     },
-
-  
     {
       title: "Design Names",
       dataIndex: "Designs",
@@ -117,7 +114,7 @@ function ViewAllorder() {
       render: (designs: any[]) =>
         designs?.map((item, i) => (
           <Tag key={i} color="blue">
-            {item.Design?.Design_Name}
+            {item.Design?.Design_Name}{" "}
           </Tag>
         )),
     },
@@ -140,7 +137,6 @@ function ViewAllorder() {
           ))
         ),
     },
-
     {
       title: "Update Status",
       key: "action",
@@ -157,7 +153,7 @@ function ViewAllorder() {
             <Select.Option key={status} value={status}>
               {status}
             </Select.Option>
-          ))}
+          ))}{" "}
         </Select>
       ),
     },
@@ -165,9 +161,18 @@ function ViewAllorder() {
 
   return (
     <div style={{ padding: 20 }}>
-      <h2 style={{ marginBottom: 20, textAlign: "center", fontSize: "24px", padding: "10px" }}>
-        📦 All Orders
+      <h2
+        style={{
+          marginBottom: 10,
+          textAlign: "center",
+          fontSize: "24px",
+          padding: "10px",
+        }}
+      >
+        📦 All Orders{" "}
       </h2>
+
+      <XlfileGenerate orders={orders} />
 
       <Table
         rowKey={(r) => r.OrderID}
