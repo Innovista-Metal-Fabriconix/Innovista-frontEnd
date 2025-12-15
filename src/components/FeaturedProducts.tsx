@@ -120,7 +120,6 @@ function FeaturedProducts() {
     });
 
     return () => {
-      // Cleanup ScrollTriggers on unmount
       ScrollTrigger.getAll().forEach((st) => st.kill());
       sm.revert();
     };
