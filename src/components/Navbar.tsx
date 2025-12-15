@@ -40,7 +40,7 @@ export default function Navbar() {
         <NavLink
           to="/"
           className={({ isActive }) =>
-            isActive ? styles.activeLink : styles.link
+            `${isActive ? styles.activeLink : styles.link} cursor-target`
           }
         >
           Home
@@ -48,7 +48,7 @@ export default function Navbar() {
         <NavLink
           to="/about"
           className={({ isActive }) =>
-            isActive ? styles.activeLink : styles.link
+            `${isActive ? styles.activeLink : styles.link} cursor-target`
           }
         >
           About
@@ -56,7 +56,7 @@ export default function Navbar() {
         <NavLink
           to="/products"
           className={({ isActive }) =>
-            isActive ? styles.activeLink : styles.link
+            `${isActive ? styles.activeLink : styles.link} cursor-target`
           }
         >
           <span>
@@ -67,7 +67,7 @@ export default function Navbar() {
         <NavLink
           to="/blogs"
           className={({ isActive }) =>
-            isActive ? styles.activeLink : styles.link
+            `${isActive ? styles.activeLink : styles.link} cursor-target`
           }
         >
           Blogs
@@ -75,7 +75,7 @@ export default function Navbar() {
         <NavLink
           to="/projects"
           className={({ isActive }) =>
-            isActive ? styles.activeLink : styles.link
+            `${isActive ? styles.activeLink : styles.link} cursor-target`
           }
         >
           Projects
@@ -83,7 +83,7 @@ export default function Navbar() {
         <NavLink
           to="/OrderCart"
           className={({ isActive }) =>
-            isActive ? styles.activeLink : styles.link
+            `${isActive ? styles.activeLink : styles.link} cursor-target`
           }
         >
           <img
@@ -94,7 +94,7 @@ export default function Navbar() {
           />
         </NavLink>
       </div>
-      <button className={styles.quoteBtn}>Get a Free Quote</button>
+      <button className={`${styles.quoteBtn} cursor-target`}>Get a Free Quote</button>
 
       <div
         className={styles.showButton}

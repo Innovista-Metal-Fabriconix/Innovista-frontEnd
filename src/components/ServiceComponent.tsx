@@ -148,7 +148,7 @@ function ServiceComponent({
 
         <div className={styles.buttonContainer}>
           <button
-            className={styles.prevButton}
+            className={`${styles.prevButton} cursor-target`}
             onClick={() =>
               setIndex(
                 (prevIndex) => (prevIndex - 1 + items.length) % items.length
@@ -158,7 +158,7 @@ function ServiceComponent({
             <FaArrowLeft />
           </button>
           <button
-            className={styles.nextButton}
+            className={`${styles.nextButton} cursor-target`}
             onClick={() =>
               setIndex((prevIndex) => (prevIndex + 1) % items.length)
             }
