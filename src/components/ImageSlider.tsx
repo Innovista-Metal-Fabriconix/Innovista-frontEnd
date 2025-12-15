@@ -114,7 +114,7 @@ export default function ImageSlider() {
             }}
           />
           <button
-            className={styles.exploreBtn}
+            className={`${styles.exploreBtn} cursor-target`}
             onClick={() => {
               navigate("/products");
             }}

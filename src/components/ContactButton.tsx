@@ -4,7 +4,7 @@ const ContactButton = () => {
   return (
     <StyledWrapper>
       <div>
-        <button className="btn"><i className="animation" />Contact Us<i className="animation" />
+        <button className="btn cursor-target"><i className="animation" />Contact Us<i className="animation" />
         </button>
       </div>
     </StyledWrapper>
@@ -17,10 +17,10 @@ const StyledWrapper = styled.div`
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
-    background: #22577a;
+    background: #e60000;
     min-width: 200px;
     border: 0;
-    border-radius: 4px;
+    border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
     box-sizing: border-box;
     padding: 8px 15px;
@@ -44,11 +44,11 @@ const StyledWrapper = styled.div`
 
   @keyframes ripple {
     0% {
-      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.1), 0 0 0 20px rgba(255, 255, 255, 0.1), 0 0 0 40px rgba(255, 255, 255, 0.1), 0 0 0 60px rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 0 0 rgba(34, 87, 122, 0.1), 0 0 0 20px rgba(34, 87, 122, 0.1), 0 0 0 40px rgba(34, 87, 122, 0.1), 0 0 0 60px rgba(34, 87, 122, 0.1);
     }
 
     100% {
-      box-shadow: 0 0 0 20px rgba(255, 255, 255, 0.1), 0 0 0 40px rgba(255, 255, 255, 0.1), 0 0 0 60px rgba(255, 255, 255, 0.1), 0 0 0 80px rgba(255, 255, 255, 0);
+      box-shadow: 0 0 0 20px rgba(34, 87, 122, 0.1), 0 0 0 40px rgba(34, 87, 122, 0.1), 0 0 0 60px rgba(34, 87, 122, 0.1), 0 0 0 80px rgba(34, 87, 122, 0);
     }
   }`;
 
