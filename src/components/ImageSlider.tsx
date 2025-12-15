@@ -7,6 +7,7 @@ import image4 from "../assets/Images/ImageSlider/image4.png";
 import image5 from "../assets/Images/ImageSlider/image5.png";
 import CountUpComp from "./CountUpComp";
 import { useNavigate } from "react-router-dom";
+import ContactButton from "./ContactButton";
 
 const images = [image1, image2, image3, image4, image5];
 
@@ -105,9 +106,15 @@ export default function ImageSlider() {
           life built to last for decades.
         </span>
         <div className={styles.buttonGroup}>
-          <button className={styles.contactBtn}>Contact Us</button>
+          <ContactButton
+            size="small"
+            variant="accent"
+            onClick={() => {
+              navigate("/contact");
+            }}
+          />
           <button
-            className={styles.exploreBtn}
+            className={`${styles.exploreBtn} cursor-target`}
             onClick={() => {
               navigate("/products");
             }}

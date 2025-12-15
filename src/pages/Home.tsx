@@ -1,13 +1,23 @@
-import React from "react";
+import FeaturedProducts from "../components/FeaturedProducts";
 import ImageSlider from "../components/ImageSlider";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import ServicesCarousel from "../components/ServiceCarousel";
 
 function Home() {
   return (
-    <div style={{ position: "relative", minHeight: "100vh" , display: "flex", justifyContent: "center"}}>
-      <ImageSlider />
-    </div>
+    <>
+      <div
+        style={{
+          position: "relative",
+          display: "flex",
+          marginBottom: "50px",
+          justifyContent: "center",
+        }}
+      >
+        <ImageSlider />
+      </div>
+      <ServicesCarousel />
+      <FeaturedProducts />
+    </>
   );
 }
 

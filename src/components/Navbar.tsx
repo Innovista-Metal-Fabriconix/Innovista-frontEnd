@@ -164,7 +164,10 @@ export default function Navbar() {
             >
               Projects
             </NavLink>
-            <button className={styles.mobileQuoteBtn} onClick={handleLinkClick}>
+            <button
+              className={`${styles.mobileQuoteBtn} cursor-target`}
+              onClick={handleLinkClick}
+            >
               Get a Free Quote
             </button>
           </div>

@@ -18,6 +18,7 @@ import OrdermanageAdmin from "../pages/Adminpages/OrdermanageAdmin";
 import AdminFeedback from "../pages/Adminpages/AdminFeedback";
 import Notification from "../pages/Adminpages/Notification";
 import ProductDetails from "../pages/ProductDetails";
+import TargetCursor from "../components/cursor/TragetCursor";
 import AddProjects from "../pages/Adminpages/AddProjects";
 import DesignViwe from "../pages/DesignViwe";
 import OrderCart from "../pages/OrderCart";
@@ -26,6 +27,7 @@ function PageRoute() {
   return (
     <Router>
       <div style={{ position: "relative", minHeight: "100vh" }}>
+        <TargetCursor spinDuration={2} hideDefaultCursor={true} />
         <Navbar />
         <main>
           <Routes>
