@@ -28,6 +28,7 @@ function ServiceComponent({
   const textRefs = useRef<(HTMLDivElement | HTMLSpanElement)[]>([]);
   const imageRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const textContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isAnimating) return;
@@ -83,26 +84,27 @@ function ServiceComponent({
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: contentRef.current,
-        start: "top 50%",
-        end: "top 30%",
+        start: "top 80%",
+        end: "top 40%",
         toggleActions: "play none none reverse",
         onEnter: () => setIsAnimating(true),
         onEnterBack: () => setIsAnimating(false),
       },
     });
 
-    if (imageRef.current && textRefs.current.length > 0) {
+    if (imageRef.current && textContainerRef.current) {
+      // Animate both image and text container together for smoother appearance
       tl.fromTo(
         imageRef.current,
-        { x: -150, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1.2, ease: "power3.out" }
+        { x: -80, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.8, ease: "power2.out" }
       );
 
       tl.fromTo(
-        textRefs.current,
-        { x: 100, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1.2, ease: "power3.out" },
-        "-=0.8"
+        textContainerRef.current,
+        { x: 50, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
+        "<0.1" // Start almost at the same time as image
       );
     }
   }, []);
@@ -124,23 +126,29 @@ function ServiceComponent({
         ))}
       </div>
 
-      <div className={styles.textContainer}>
+      <div className={styles.textContainer} ref={textContainerRef}>
         <div className={styles.textContent}>
           <span
             className={styles.title}
-            ref={(el) => { if (el) textRefs.current[0] = el; }}
+            ref={(el) => {
+              if (el) textRefs.current[0] = el;
+            }}
           >
             {displayItems[0]?.title}
           </span>
           <p
             className={styles.description}
-            ref={(el) => { if (el) textRefs.current[1] = el; }}
+            ref={(el) => {
+              if (el) textRefs.current[1] = el;
+            }}
           >
             {displayItems[0]?.description1}
           </p>
           <p
             className={styles.description}
-            ref={(el) => { if (el) textRefs.current[2] = el; }}
+            ref={(el) => {
+              if (el) textRefs.current[2] = el;
+            }}
           >
             {displayItems[0]?.description2}
           </p>
@@ -172,7 +180,7 @@ function ServiceComponent({
             <button
               key={i}
               className={`${styles.indicator} ${
-                i === index ? styles.indicatorActive : ''
+                i === index ? styles.indicatorActive : ""
               }`}
               onClick={() => goToService(i)}
               aria-label={`Go to service ${i + 1}`}

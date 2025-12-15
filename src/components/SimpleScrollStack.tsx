@@ -17,7 +17,10 @@ interface SimpleScrollStackProps {
 const SimpleScrollStack: React.FC<SimpleScrollStackProps> = ({ children }) => {
   return (
     <div className={styles.container}>
-      <div className={styles.inner}>{children}</div>
+      <div className={styles.inner}>
+        {children}
+        <div className={styles.spacer}></div>
+      </div>
     </div>
   );
 };
