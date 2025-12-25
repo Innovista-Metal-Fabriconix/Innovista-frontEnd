@@ -191,7 +191,7 @@ function ViewAllDesigns() {
     {
       title: "Actions",
       key: "actions",
-      render: (_: any, record: Design) => (
+      render: (_: undefined, record: Design) => (
         <Space>
           <Button type="primary" onClick={() => handleEdit(record)}>
             Edit

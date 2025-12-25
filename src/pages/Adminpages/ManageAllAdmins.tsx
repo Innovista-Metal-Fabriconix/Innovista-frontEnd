@@ -41,8 +41,7 @@ const ManageAllAdmins: React.FC = () => {
       }));
 
       setData(formattedData);
-    } catch (error: any) {
-      console.error(error);
+    } catch {
       message.error("Error fetching admins");
     } finally {
       setLoading(false);
@@ -54,14 +53,12 @@ const ManageAllAdmins: React.FC = () => {
       await AxiosConfig.delete(`/auth/RemoveAdmin?adminId=${adminId}`);
       message.success("Admin deleted successfully!");
       fetchAdmins();
-    } catch (error) {
-      console.error("Error deleting admin:", error);
+    } catch {
       message.error("Failed to delete admin");
     }
   };
 
   const columns: TableProps<AdminType>["columns"] = [
- 
     {
       title: "Name",
       dataIndex: "Admin_Name",
@@ -120,7 +117,7 @@ const ManageAllAdmins: React.FC = () => {
         rowKey="AdminId"
         pagination={{ pageSize: 5 }}
         style={{
-          margin:"20px"
+          margin: "20px",
         }}
       />
     </Spin>

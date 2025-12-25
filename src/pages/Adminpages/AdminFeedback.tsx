@@ -5,7 +5,7 @@ import AxiosConfig from "../../Context/AxiosConfig";
 import SidebarOFADmin from "../../components/SidebarOFADmin";
 
 function AdminFeedback() {
-  const [feedbacks, setFeedbacks] = useState<any[]>([]);
+  const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // Fetch all feedbacks
@@ -38,6 +38,22 @@ function AdminFeedback() {
   useEffect(() => {
     fetchFeedbacks();
   }, []);
+
+
+  type Feedback = {
+    Feed_backId: number;
+    Customer: { 
+      Cus_Name: string;
+      Cus_CompanyName: string;
+    };
+    Rating: number;
+    Feed_back_comment: string;
+    Feed_Back_Images: string[];
+    Design: {
+      Design_Name: string;
+    };
+  };
+
 
   // Define table columns
   const columns = [
@@ -87,7 +103,7 @@ function AdminFeedback() {
     {
       title: "Action",
       key: "action",
-      render: (_: any, record: any) => (
+      render: (_: undefined, record: Feedback) => (
         <Popconfirm
           title="Are you sure to delete this feedback?"
           onConfirm={() => handleDelete(record.Feed_backId)}

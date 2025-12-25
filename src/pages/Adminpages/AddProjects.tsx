@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
   Button,
   Card,
@@ -10,9 +10,8 @@ import {
   DatePicker,
   InputNumber,
   message,
-  Upload,
 } from "antd";
-import { UploadOutlined, DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined } from "@ant-design/icons";
 import SidebarOFADmin from "../../components/SidebarOFADmin";
 import ViewallProjects from "./ViewallProjects";
 import AxiosConfig from "../../Context/AxiosConfig";
@@ -56,11 +55,10 @@ function AddProjects() {
       setImages((prev) => [...prev, result.secure_url]);
 
       message.success("Image uploaded successfully!");
-    } catch (error) {
+    } catch {
       message.error("Upload error");
     }
   };
-
 
   const removeImage = (url: string) => {
     setImages(images.filter((img) => img !== url));
@@ -80,7 +78,7 @@ function AddProjects() {
       message.success("Project created successfully!");
       form.resetFields();
       setImages([]);
-    } catch (error) {
+    } catch {
       message.error("Failed to create project");
     }
   };
@@ -110,9 +108,8 @@ function AddProjects() {
             <TextArea rows={4} placeholder="Enter project description" />
           </Form.Item>
 
-
           <Form.Item label="Upload Project Images">
-            <input
+            <Input
               type="file"
               accept="image/*"
               onChange={(e) => handleImageUpload(e, "Project_Images")}
@@ -139,7 +136,6 @@ function AddProjects() {
               ))}
             </div>
           </Form.Item>
-        
 
           <Form.Item
             label="Location"

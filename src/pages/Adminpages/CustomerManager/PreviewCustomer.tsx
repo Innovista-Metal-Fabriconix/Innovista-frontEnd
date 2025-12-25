@@ -171,7 +171,7 @@ function PreviewCustomer() {
     {
       title: "Actions",
       key: "actions",
-      render: (_: any, record: Customer) => (
+      render: (_: undefined, record: Customer) => (
         <Space>
           <Button type="primary" onClick={() => handleEdit(record)}>
             Edit

@@ -55,7 +55,6 @@ function Notification() {
 
   return (
     <>
-    
       <div
         onClick={openModal}
         style={{

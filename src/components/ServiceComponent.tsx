@@ -4,6 +4,7 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Button } from "antd";
 
 type Service = {
   image: string;
@@ -128,26 +129,32 @@ function ServiceComponent({
         <div className={styles.textContent}>
           <span
             className={styles.title}
-            ref={(el) => { if (el) textRefs.current[0] = el; }}
+            ref={(el) => {
+              if (el) textRefs.current[0] = el;
+            }}
           >
             {displayItems[0]?.title}
           </span>
           <p
             className={styles.description}
-            ref={(el) => { if (el) textRefs.current[1] = el; }}
+            ref={(el) => {
+              if (el) textRefs.current[1] = el;
+            }}
           >
             {displayItems[0]?.description1}
           </p>
           <p
             className={styles.description}
-            ref={(el) => { if (el) textRefs.current[2] = el; }}
+            ref={(el) => {
+              if (el) textRefs.current[2] = el;
+            }}
           >
             {displayItems[0]?.description2}
           </p>
         </div>
 
         <div className={styles.buttonContainer}>
-          <button
+          <Button
             className={`${styles.prevButton} cursor-target`}
             onClick={() =>
               setIndex(
@@ -156,23 +163,23 @@ function ServiceComponent({
             }
           >
             <FaArrowLeft />
-          </button>
-          <button
+          </Button>
+          <Button
             className={`${styles.nextButton} cursor-target`}
             onClick={() =>
               setIndex((prevIndex) => (prevIndex + 1) % items.length)
             }
           >
             <FaArrowRight />
-          </button>
+          </Button>
         </div>
 
         <div className={styles.mobileIndicators}>
           {items.map((_, i) => (
-            <button
+            <Button
               key={i}
               className={`${styles.indicator} ${
-                i === index ? styles.indicatorActive : ''
+                i === index ? styles.indicatorActive : ""
               }`}
               onClick={() => goToService(i)}
               aria-label={`Go to service ${i + 1}`}
