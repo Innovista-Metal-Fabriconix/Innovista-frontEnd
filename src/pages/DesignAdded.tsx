@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Card, Input, Form, Typography, Space, Divider } from "antd";
+import { Button, Card, Input, Form, Typography, Space, Divider, message } from "antd";
 import AxiosConfig from "../Context/AxiosConfig";
 import SidebarOFADmin from "../components/SidebarOFADmin";
 
@@ -88,8 +88,8 @@ export default function DesignForm() {
         Design_BlogPosts: [],
         Design_Sizes: [],
       });
-    } catch (error) {
-      alert("Error submitting design.");
+    } catch  {
+       message.error("Error submitting design.");
     }
   };
 

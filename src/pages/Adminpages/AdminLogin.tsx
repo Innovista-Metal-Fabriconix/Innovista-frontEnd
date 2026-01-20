@@ -35,9 +35,8 @@ function AdminLogin() {
       localStorage.setItem("refreshToken", response.data.tokens.refreshToken);
 
       window.location.href = "/admin-home";
-    } catch (error: any) {
-      
-      alert(error.response?.data?.message);
+    } catch {
+      message.error("Login failed! Please check your credentials.");
     }
   };
 
@@ -176,7 +175,7 @@ function AdminLogin() {
               </Form>
             </Card>
           </Col>
-          <div >
+          <div>
             <p
               style={{
                 textAlign: "center",
@@ -194,7 +193,7 @@ function AdminLogin() {
               onCancel={() => setIsModalOpen(false)}
               footer={null}
               style={{
-                marginTop:"240px"
+                marginTop: "240px",
               }}
             >
               <p

@@ -34,14 +34,21 @@ const AdminRegisterForm: React.FC = () => {
       } else {
         throw new Error("Image upload failed");
       }
-    } catch (err) {
+    } catch {
       message.error("Image upload error!");
     } finally {
       setUploading(false);
     }
   };
 
-  const onFinish = async (values: any) => {
+  type Adminvalues = {
+    Admin_Name: string;
+    Admin_Email: string;
+    Admin_Phone: string;
+    Admin_Profile: string;
+  };
+
+  const onFinish = async (values: Adminvalues) => {
     try {
       const response = await AxiosConfig.post("/auth/register", {
         Admin_Name: values.Admin_Name,
@@ -54,7 +61,7 @@ const AdminRegisterForm: React.FC = () => {
       form.resetFields();
       setImageUrl(null);
       console.log("Success:", response);
-    } catch (err) {
+    } catch {
       message.error("Registration failed!");
     }
   };

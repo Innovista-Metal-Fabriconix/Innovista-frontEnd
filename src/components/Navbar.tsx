@@ -8,6 +8,7 @@ import {
   faBars,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "antd";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -97,9 +98,8 @@ export default function Navbar() {
       <button className={`${styles.quoteBtn} cursor-target`}>Get a Free Quote</button>
 
       <div
-        className={styles.showButton}
+        className={`${styles.showButton} ${isOpen ? styles.hidden : styles.visible}`}
         onClick={() => setIsOpen(true)}
-        style={isOpen ? { visibility: "hidden" } : { visibility: "visible" }}
       >
         <FontAwesomeIcon icon={faBars} size="2xl" />
       </div>
@@ -108,12 +108,12 @@ export default function Navbar() {
         <div className={styles.mobileMenu} ref={menuRef}>
           <div className={styles.mobileMenuHeader}>
             <img src={logo} alt="Company Logo" className={styles.mobileLogo} />
-            <button
+            <Button
               className={styles.closeBtn}
               onClick={() => setIsOpen(false)}
             >
               <FontAwesomeIcon icon={faTimes} size="lg" />
-            </button>
+            </Button>
           </div>
           <div className={styles.mobileLinks}>
             <NavLink

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table, Tag, Image, Select, message } from "antd";
 import AxiosConfig from "../../Context/AxiosConfig";
-import XlfileGenerate from "./XlfileGenerate"
+import XlfileGenerate from "./XlfileGenerate";
 
 export const OrderStatus = {
   PENDING: "PENDING",
@@ -12,8 +12,23 @@ export const OrderStatus = {
 
 type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
 
+type Order = {
+  OrderID: number;
+  Order_Date: string;
+  Order_Status: OrderStatus;
+  Client_Name: string;
+  Client_Email: string;
+  Customer?: {
+    Cus_CompanyName?: string;
+    Cus_Logo?: string;
+    Purchase_Goods?: string[];
+  };
+  Designs?: any[];
+  // Add other fields as needed
+};
+
 function ViewAllorder() {
-  const [orders, setOrders] = useState<any[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loadingOrder, setLoadingOrder] = useState<number | null>(null);
 
   useEffect(() => {
@@ -140,7 +155,7 @@ function ViewAllorder() {
     {
       title: "Update Status",
       key: "action",
-      render: (_: any, record: any) => (
+      render: (_: string, record: Order) => (
         <Select
           value={record.Order_Status}
           style={{ width: 160 }}

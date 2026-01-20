@@ -80,7 +80,7 @@ function OrderCart() {
         "http://localhost:4000/order/createOrder",
         orderPayload
       );
-
+      console.log("Order created successfully:", res.data);
       message.success("Order successfully created!");
 
       localStorage.removeItem("cart");
