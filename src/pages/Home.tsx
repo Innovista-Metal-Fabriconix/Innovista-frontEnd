@@ -19,6 +19,7 @@ function Home() {
       <ServicesCarousel />
       <FeaturedProducts />
       <CustomerFeedback/>
+      
     </>
   );
 }
