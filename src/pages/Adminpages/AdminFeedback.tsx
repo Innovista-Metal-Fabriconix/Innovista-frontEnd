@@ -5,17 +5,26 @@ import AxiosConfig from "../../Context/AxiosConfig";
 import SidebarOFADmin from "../../components/SidebarOFADmin";
 
 function AdminFeedback() {
-  const [feedbacks, setFeedbacks] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const[currentPage, setCurrentPage]=useState(1);
+  const[pageSize, setPageSize]=useState(10);
+  const[total, setTotal]=useState(0);
 
   // Fetch all feedbacks
-  const fetchFeedbacks = async () => {
+  const fetchFeedbacks = async (page = 1, limit = 10) => {
     try {
       setLoading(true);
       const response = await axios.get(
-        "http://localhost:4000/feedback/allFeedbacks"
+        "http://localhost:4000/feedback/allFeedbacks",{
+          params: { page, limit },  
+        }
       );
-      setFeedbacks(response.data);
+      setFeedbacks(response.data.data);
+      setTotal(response.data.total);
+      setCurrentPage(response.data.page);
+      setPageSize(response.data.limit);
     } catch (error) {
       console.error("Error fetching feedbacks:", error);
       message.error("Failed to load feedbacks");
@@ -28,7 +37,7 @@ function AdminFeedback() {
     try {
       await AxiosConfig.delete(`/feedback/deleteFeedback?feedbackId=${id}`);
       message.success("Feedback deleted successfully");
-      fetchFeedbacks();
+      fetchFeedbacks(currentPage, pageSize);
     } catch (error) {
       console.error("Error deleting feedback:", error);
       message.error("Failed to delete feedback");
@@ -36,7 +45,7 @@ function AdminFeedback() {
   };
 
   useEffect(() => {
-    fetchFeedbacks();
+    fetchFeedbacks(currentPage, pageSize);
   }, []);
 
 
@@ -128,6 +137,17 @@ function AdminFeedback() {
         columns={columns}
         loading={loading}
         bordered
+        scroll={{ x: true }}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: total,
+          showSizeChanger: true,
+          pageSizeOptions: ["5", "10", "20", "50"],
+          onChange: (page, limit) => {
+            fetchFeedbacks(page, limit);
+          },
+        }}
       />
     </div>
   );

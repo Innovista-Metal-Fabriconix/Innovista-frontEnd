@@ -4,7 +4,6 @@ import {
   Tag,
   Image,
   Typography,
-  Spin,
   Space,
   Button,
   Modal,
@@ -31,47 +30,71 @@ type Customer = {
 
 function PreviewCustomer() {
   const [customers, setCustomers] = useState<Customer[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [total, setTotal] = useState(0);
+
   const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    const fetchCustomers = async () => {
-      try {
-        const response = await AxiosConfig.get("/customer/getAllCustomers");
-        setCustomers(response.data); // API should return array of customers
-      } catch (error) {
-        console.error("Error fetching customers:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Fetch customers with pagination
+  const fetchCustomers = async (page = 1, limit = 10) => {
+    try {
+      setLoading(true);
 
-    fetchCustomers();
+      const response = await AxiosConfig.get("/customer/getAllCustomers", {
+        params: { page, limit },
+      });
+
+      // Expected response:
+      // { data: Customer[], total: number, page: number, limit: number }
+
+      setCustomers(response.data.data);
+      setTotal(response.data.total);
+      setCurrentPage(response.data.page);
+      setPageSize(response.data.limit);
+    } catch (error) {
+      console.error("Error fetching customers:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCustomers(currentPage, pageSize);
   }, []);
 
+  // Delete customer
   const handleDelete = async (customerId: number) => {
     try {
-      await AxiosConfig.delete(
-        `/customer/deleteCustomer?customerId=${customerId}`
-      );
-      setCustomers(customers.filter((c) => c.CustomerId !== customerId));
-      alert("Customer deleted successfully");
+      await AxiosConfig.delete("/customer/deleteCustomer", {
+        params: { customerId },
+      });
+
+      // Refetch current page after delete
+      fetchCustomers(currentPage, pageSize);
     } catch (error) {
       console.error("Error deleting customer:", error);
     }
   };
 
+  // Edit customer
   const handleEdit = (customer: Customer) => {
     setEditingCustomer(customer);
+
     form.setFieldsValue({
       ...customer,
       Purchase_Goods: customer.Purchase_Goods?.join(", ") || "",
     });
+
     setIsModalVisible(true);
   };
 
+  // Update customer
   const handleUpdate = async () => {
     try {
       const values = await form.validateFields();
@@ -84,25 +107,20 @@ function PreviewCustomer() {
         Cus_CompanyName: values.Cus_CompanyName,
         Cus_Logo: values.Cus_Logo,
         Cus_Password: editingCustomer?.Cus_Password ?? "",
+        Verify_State: editingCustomer?.Verify_State ?? false,
         Purchase_Goods: values.Purchase_Goods
           ? values.Purchase_Goods.split(",").map((item: string) => item.trim())
           : [],
-        Verify_State: editingCustomer?.Verify_State ?? false,
       };
 
-      console.log("Updating customer:", updatedCustomer);
-
-      await AxiosConfig.put(`/customer/updateCustomer`, updatedCustomer);
-
-      setCustomers((prev) =>
-        prev.map((c) =>
-          c.CustomerId === updatedCustomer.CustomerId ? updatedCustomer : c
-        )
-      );
+      await AxiosConfig.put("/customer/updateCustomer", updatedCustomer);
 
       setIsModalVisible(false);
       setEditingCustomer(null);
       form.resetFields();
+
+      // Refetch current page after update
+      fetchCustomers(currentPage, pageSize);
     } catch (error) {
       console.error("Error updating customer:", error);
     }
@@ -167,11 +185,10 @@ function PreviewCustomer() {
           <Tag color="red">Not Verified</Tag>
         ),
     },
-
     {
       title: "Actions",
       key: "actions",
-      render: (_: undefined, record: Customer) => (
+      render: (_: unknown, record: Customer) => (
         <Space>
           <Button type="primary" onClick={() => handleEdit(record)}>
             Edit
@@ -192,24 +209,34 @@ function PreviewCustomer() {
   return (
     <div style={{ maxWidth: 1200, margin: "0 auto", padding: "20px" }}>
       <Title level={3}>Customer List</Title>
-      {loading ? (
-        <div style={{ textAlign: "center", padding: "40px" }}>
-          <Spin size="large" />
-        </div>
-      ) : (
-        <Table
-          rowKey="CustomerId"
-          columns={columns}
-          dataSource={customers}
-          bordered
-          pagination={{ pageSize: 5 }}
-        />
-      )}
 
+      <Table
+        rowKey="CustomerId"
+        columns={columns}
+        dataSource={customers}
+        loading={loading}
+        bordered
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: total,
+          showSizeChanger: true,
+          pageSizeOptions: ["5", "10", "20", "50"],
+          onChange: (page, limit) => {
+            fetchCustomers(page, limit);
+          },
+        }}
+      />
+
+      {/* Edit Modal */}
       <Modal
         title="Edit Customer"
         open={isModalVisible}
-        onCancel={() => setIsModalVisible(false)}
+        onCancel={() => {
+          setIsModalVisible(false);
+          setEditingCustomer(null);
+          form.resetFields();
+        }}
         onOk={handleUpdate}
         okText="Save Changes"
       >
@@ -222,6 +249,7 @@ function PreviewCustomer() {
             >
               <Input />
             </Form.Item>
+
             <Form.Item
               name="Cus_Email"
               label="Email"
@@ -229,15 +257,19 @@ function PreviewCustomer() {
             >
               <Input />
             </Form.Item>
+
             <Form.Item name="Cus_PhoneNumber" label="Phone">
               <Input />
             </Form.Item>
+
             <Form.Item name="Cus_CompanyName" label="Company">
               <Input />
             </Form.Item>
+
             <Form.Item name="Cus_Logo" label="Logo URL">
               <Input />
             </Form.Item>
+
             <Form.Item name="Purchase_Goods" label="Purchase Goods">
               <Input placeholder="Comma separated values" />
             </Form.Item>
