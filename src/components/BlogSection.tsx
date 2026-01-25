@@ -1,15 +1,11 @@
-import React from "react";
 import styles from "../cssModules/BlogSection.module.css";
 import MainHeading from "./MainHeading";
 import blogsMetaData from "../assets/Blogs/BlogsMetaData";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
 import BlogCard from "./BlogCard";
 
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
+import "swiper/swiper-bundle.css";
 
 function BlogSection() {
   return (
@@ -20,15 +16,18 @@ function BlogSection() {
       />
       <div className={styles.blogCardsContainer}>
         <Swiper
-          modules={[Navigation, Autoplay]}
-          spaceBetween={24}
+          modules={[Autoplay, Pagination]}
+          spaceBetween={28}
           slidesPerView={3}
-          navigation
-          autoplay={{ delay: 4000 }}
+          pagination={{
+            clickable: true,
+            dynamicBullets: false,
+          }}
+          autoplay={{ delay: 8000, pauseOnMouseEnter: true }}
           breakpoints={{
-            0: { slidesPerView: 1 },
-            640: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
+            0: { slidesPerView: 1, spaceBetween: 16 },
+            640: { slidesPerView: 2, spaceBetween: 20 },
+            1024: { slidesPerView: 3, spaceBetween: 28 },
           }}
         >
           {blogsMetaData.map((blog) => (
@@ -37,6 +36,9 @@ function BlogSection() {
             </SwiperSlide>
           ))}
         </Swiper>
+        <div className={styles.paginationContainer}>
+          <div className={styles.pagination}></div>
+        </div>
       </div>
     </div>
   );

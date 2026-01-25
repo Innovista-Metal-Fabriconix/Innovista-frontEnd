@@ -62,8 +62,6 @@ function FeaturedProducts() {
               scrollTrigger: {
                 trigger: card,
                 start: `top ${80 - index * 5}%`,
-                onEnter: () =>
-                  console.log(`Card ${index + 1} entered viewport`),
                 toggleActions: "play none none reverse",
               },
             }
@@ -83,8 +81,6 @@ function FeaturedProducts() {
               scrollTrigger: {
                 trigger: card,
                 start: `top ${80 - index * 5}%`,
-                onEnter: () =>
-                  console.log(`Card ${index + 1} entered viewport`),
                 toggleActions: "play none none reverse",
               },
             }

@@ -1,0 +1,181 @@
+.card {
+  display: block;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-decoration: none;
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.02);
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition:
+    transform 0.6s ease,
+    filter 0.4s ease;
+}
+
+.card:hover .image {
+  transform: scale(1.1);
+  filter: brightness(0.9);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.75) 0%,
+    rgba(0, 0, 0, 0.4) 25%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+.dateTag {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.card:hover .dateTag {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateX(5px);
+}
+
+.content {
+  padding: 20px 20px 25px;
+  background: linear-gradient(145deg, #1a1a2e, #0f0f1a);
+}
+
+.title {
+  color: #ffffff;
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 15px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.3s ease;
+}
+
+.card:hover .title {
+  color: var(--color-logo-red, #ff6b35);
+}
+
+.readMore {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.card:hover .readMore {
+  color: var(--color-logo-red, #ff6b35);
+}
+
+.arrow {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .arrow {
+  transform: translateX(5px);
+}
+
+/* Glow effect on hover */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 22px;
+  background: linear-gradient(
+    45deg,
+    var(--color-logo-red, #ff6b35),
+    #ff9f43,
+    var(--color-primary, #22577a),
+    #3498db
+  );
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  filter: blur(8px);
+}
+
+.card:hover::before {
+  opacity: 0.6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card {
+    max-width: 350px;
+  }
+
+  .title {
+    font-size: 1rem;
+  }
+
+  .content {
+    padding: 15px 15px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    max-width: 350px;
+  }
+
+  .dateTag {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+    bottom: 12px;
+    left: 12px;
+  }
+
+  .content {
+    padding: 12px 12px 18px;
+  }
+
+  .title {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+  }
+
+  .readMore {
+    font-size: 0.85rem;
+  }
+}

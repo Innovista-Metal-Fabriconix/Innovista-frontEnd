@@ -1,6 +1,7 @@
 import type { BlogMetaData } from "../assets/Blogs/BlogsMetaData";
+import styles from "../cssModules/BlogCard.module.css";
 
-type Props = {  
+type Props = {
   blog: BlogMetaData;
 };
 
@@ -10,18 +11,27 @@ const BlogCard = ({ blog }: Props) => {
       href={blog.link}
       target="_blank"
       rel="noopener noreferrer"
-      className="block group"
+      className={styles.card}
     >
-      <div className="rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
-        <img
-          src={blog.image}
-          alt={blog.title}
-          className="h-48 w-full object-cover group-hover:scale-105 transition"
-        />
-        <div className="p-4">
-          <p className="text-sm text-gray-500">{blog.date}</p>
-          <h3 className="font-semibold mt-2">{blog.title}</h3>
-        </div>
+      <div className={styles.imageWrapper}>
+        <img src={blog.image} alt={blog.title} className={styles.image} />
+        <div className={styles.overlay}></div>
+        <div className={styles.dateTag}>{blog.date}</div>
+      </div>
+      <div className={styles.content}>
+        <h3 className={styles.title}>{blog.title}</h3>
+        <span className={styles.readMore}>
+          Read More
+          <svg
+            className={styles.arrow}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </span>
       </div>
     </a>
   );
