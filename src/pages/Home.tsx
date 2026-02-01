@@ -1,3 +1,6 @@
+import BlogSection from "../components/BlogSection";
+import CustomerFeedback from "../components/CustomerFeedback";
+import FeaturedProducts from "../components/FeaturedProducts";
 import ImageSlider from "../components/ImageSlider";
 import ServicesCarousel from "../components/ServiceCarousel";
 
@@ -15,6 +18,9 @@ function Home() {
         <ImageSlider />
       </div>
       <ServicesCarousel />
+      <FeaturedProducts />
+      <CustomerFeedback/>
+      <BlogSection/>
     </>
   );
 }

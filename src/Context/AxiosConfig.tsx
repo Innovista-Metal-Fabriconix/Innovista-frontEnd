@@ -9,9 +9,14 @@ const AxiosConfig = axios.create({
 });
 
 let isRefreshing = false;
-let failedQueue: any[] = [];
+type FailedQueueItem = {
+  resolve: (token: string | null) => void;
+  reject: (error: unknown) => void;
+};
 
-const processQueue = (error: any, token: string | null = null) => {
+let failedQueue: FailedQueueItem[] = [];
+
+const processQueue = (error: unknown, token: string | null = null) => {
   failedQueue.forEach((prom) => {
     if (error) {
       prom.reject(error);

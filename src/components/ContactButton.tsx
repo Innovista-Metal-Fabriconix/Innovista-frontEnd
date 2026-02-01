@@ -1,60 +1,55 @@
-import React from 'react';
-import styles from '../cssModules/ContactButton.module.css';
+import styled from 'styled-components';
 
-interface ContactButtonProps {
-  onClick?: () => void;
-  href?: string;
-  children?: React.ReactNode;
-  size?: 'small' | 'medium' | 'large';
-  variant?: 'primary' | 'secondary' | 'accent';
-  disabled?: boolean;
+const ContactButton = () => {
+  return (
+    <StyledWrapper>
+      <div>
+        <button className="btn cursor-target"><i className="animation" />Contact Us<i className="animation" />
+        </button>
+      </div>
+    </StyledWrapper>
+  );
 }
 
-const ContactButton: React.FC<ContactButtonProps> = ({
-  onClick,
-  href,
-  children = "Contact Us",
-  size = 'medium',
-  variant = 'primary',
-  disabled = false
-}) => {
-  const buttonClasses = `${styles.button} ${styles[size]} ${styles[variant]} ${disabled ? styles.disabled : ''}`;
-
-  if (href && !disabled) {
-    return (
-      <a 
-        href={href} 
-        className={buttonClasses}
-        role="button"
-      >
-        <span className={styles.buttonText}>{children}</span>
-        <div className={styles.glow}></div>
-        <div className={styles.particles}>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </a>
-    );
+const StyledWrapper = styled.div`
+  .btn {
+    outline: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #e60000;
+    min-width: 200px;
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
+    box-sizing: border-box;
+    padding: 8px 15px;
+    color: #fff;
+    font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    overflow: hidden;
+    cursor: pointer;
   }
 
-  return (
-    <button 
-      onClick={onClick} 
-      className={buttonClasses}
-      disabled={disabled}
-    >
-      <span className={styles.buttonText}>{children}</span>
-      <div className={styles.glow}></div>
-      <div className={styles.particles}>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </button>
-  );
-};
+  .btn:hover {
+    opacity: .95;
+  }
+
+  .btn .animation {
+    border-radius: 100%;
+    animation: ripple 0.6s linear infinite;
+  }
+
+  @keyframes ripple {
+    0% {
+      box-shadow: 0 0 0 0 rgba(34, 87, 122, 0.1), 0 0 0 20px rgba(34, 87, 122, 0.1), 0 0 0 40px rgba(34, 87, 122, 0.1), 0 0 0 60px rgba(34, 87, 122, 0.1);
+    }
+
+    100% {
+      box-shadow: 0 0 0 20px rgba(34, 87, 122, 0.1), 0 0 0 40px rgba(34, 87, 122, 0.1), 0 0 0 60px rgba(34, 87, 122, 0.1), 0 0 0 80px rgba(34, 87, 122, 0);
+    }
+  }`;
 
 export default ContactButton;

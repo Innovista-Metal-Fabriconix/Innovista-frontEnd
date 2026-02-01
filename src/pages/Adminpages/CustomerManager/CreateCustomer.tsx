@@ -52,8 +52,8 @@ function CreateCustomer() {
       } else {
         message.error("Failed to register customer");
       }
-    } catch (err: any) {
-      message.error("Error: " + err.message);
+    } catch  {
+      message.error("An error occurred while registering the customer");
     }
   };
 

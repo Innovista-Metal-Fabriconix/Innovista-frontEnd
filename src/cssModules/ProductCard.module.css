@@ -1,0 +1,183 @@
+.cardContainer {
+  position: relative;
+  width: clamp(300px, 100%, 400px);
+  background: linear-gradient(145deg, #ffffff, #f5f5f5);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 1px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  cursor: pointer;
+}
+
+.cardContainer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cardContainer:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.cardContainer:hover::before {
+  opacity: 1;
+}
+
+.image {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  z-index: 0;
+}
+
+.cardContainer:hover .image {
+  transform: scale(1.08);
+}
+
+.content {
+  padding: 24px;
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.95),
+    rgba(255, 255, 255, 1)
+  );
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 12px 0;
+  line-height: 1.3;
+  letter-spacing: -0.5px;
+  transition: color 0.3s ease;
+}
+
+.cardContainer:hover .title {
+  color: var(--color-logo-red);
+}
+
+.description {
+  font-size: 15px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 12px;
+  padding: 0 24px 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.quoteBtn,
+.viewMoreBtn {
+  flex: 1;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.quoteBtn::before,
+.viewMoreBtn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.quoteBtn:hover::before,
+.viewMoreBtn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.quoteBtn {
+  background: linear-gradient(135deg, var(--color-primary), #2e73a2);
+  color: white;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+.quoteBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+}
+
+.quoteBtn:active {
+  transform: translateY(0);
+}
+
+.viewMoreBtn {
+  background: white;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.viewMoreBtn:hover {
+  color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+}
+
+.viewMoreBtn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .cardContainer {
+    max-width: 90%;
+  }
+
+  .image {
+    height: 220px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .description {
+    font-size: 14px;
+  }
+
+  .buttonContainer {
+    flex-direction: column;
+  }
+
+  .quoteBtn,
+  .viewMoreBtn {
+    width: 100%;
+  }
+}

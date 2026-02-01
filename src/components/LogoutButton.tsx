@@ -11,7 +11,7 @@ function LogoutButton() {
   useEffect(() => {
     const token = sessionStorage.getItem("accessToken");
     if (token) {
-      const decodedToken: any = jwtDecode(token);
+      const decodedToken: string = jwtDecode(token);
       setUserID(decodedToken.sub);
       console.log(decodedToken.sub);
     }

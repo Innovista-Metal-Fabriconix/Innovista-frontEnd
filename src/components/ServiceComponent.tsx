@@ -4,6 +4,7 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Button } from "antd";
 
 type Service = {
   image: string;
@@ -28,6 +29,7 @@ function ServiceComponent({
   const textRefs = useRef<(HTMLDivElement | HTMLSpanElement)[]>([]);
   const imageRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const textContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isAnimating) return;
@@ -83,32 +85,31 @@ function ServiceComponent({
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: contentRef.current,
-        start: "top 50%",
-        end: "top 30%",
-        markers: true,
+        start: "top 80%",
+        end: "top 40%",
         toggleActions: "play none none reverse",
         onEnter: () => setIsAnimating(true),
         onEnterBack: () => setIsAnimating(false),
       },
     });
 
-    if (imageRef.current && textRefs.current.length > 0) {
+    if (imageRef.current && textContainerRef.current) {
+      // Animate both image and text container together for smoother appearance
       tl.fromTo(
         imageRef.current,
-        { x: -150, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1.2, ease: "power3.out" }
+        { x: -80, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.8, ease: "power2.out" }
       );
 
       tl.fromTo(
-        textRefs.current,
-        { x: 100, opacity: 0 },
-        { x: 0, opacity: 1, duration: 1.2, ease: "power3.out" },
-        "-=0.8"
+        textContainerRef.current,
+        { x: 50, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
+        "<0.1" // Start almost at the same time as image
       );
     }
   }, []);
 
-  // Function to go to specific service
   const goToService = (serviceIndex: number) => {
     setIndex(serviceIndex);
   };
@@ -126,32 +127,37 @@ function ServiceComponent({
         ))}
       </div>
 
-      <div className={styles.textContainer}>
+      <div className={styles.textContainer} ref={textContainerRef}>
         <div className={styles.textContent}>
           <span
             className={styles.title}
-            ref={(el) => { if (el) textRefs.current[0] = el; }}
+            ref={(el) => {
+              if (el) textRefs.current[0] = el;
+            }}
           >
             {displayItems[0]?.title}
           </span>
           <p
             className={styles.description}
-            ref={(el) => { if (el) textRefs.current[1] = el; }}
+            ref={(el) => {
+              if (el) textRefs.current[1] = el;
+            }}
           >
             {displayItems[0]?.description1}
           </p>
           <p
             className={styles.description}
-            ref={(el) => { if (el) textRefs.current[2] = el; }}
+            ref={(el) => {
+              if (el) textRefs.current[2] = el;
+            }}
           >
             {displayItems[0]?.description2}
           </p>
         </div>
 
-        {/* Desktop buttons */}
         <div className={styles.buttonContainer}>
-          <button
-            className={styles.prevButton}
+          <Button
+            className={`${styles.prevButton} cursor-target`}
             onClick={() =>
               setIndex(
                 (prevIndex) => (prevIndex - 1 + items.length) % items.length
@@ -159,23 +165,23 @@ function ServiceComponent({
             }
           >
             <FaArrowLeft />
-          </button>
-          <button
-            className={styles.nextButton}
+          </Button>
+          <Button
+            className={`${styles.nextButton} cursor-target`}
             onClick={() =>
               setIndex((prevIndex) => (prevIndex + 1) % items.length)
             }
           >
             <FaArrowRight />
-          </button>
+          </Button>
         </div>
 
         <div className={styles.mobileIndicators}>
           {items.map((_, i) => (
-            <button
+            <Button
               key={i}
               className={`${styles.indicator} ${
-                i === index ? styles.indicatorActive : ''
+                i === index ? styles.indicatorActive : ""
               }`}
               onClick={() => goToService(i)}
               aria-label={`Go to service ${i + 1}`}

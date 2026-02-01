@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Card, Input, Form, Typography, Space, Divider } from "antd";
+import { Button, Card, Input, Form, Typography, Space, Divider, message } from "antd";
 import AxiosConfig from "../Context/AxiosConfig";
 import SidebarOFADmin from "../components/SidebarOFADmin";
 
@@ -8,8 +8,9 @@ const { TextArea } = Input;
 
 export default function DesignForm() {
   const [submitted, setSubmitted] = useState(false);
+
   const [formData, setFormData] = useState({
-    DesignID: 1,
+    DesignID:0,
     Design_Name: "",
     Design_Image: [],
     Design_Description: "",
@@ -19,34 +20,66 @@ export default function DesignForm() {
     Design_Sizes: [],
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    field: string,
-    index?: number
-  ) => {
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "InnovistaImage");
+    data.append("cloud_name", "dqabfysqj");
+
+    try {
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dqabfysqj/image/upload",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+
+      const result = await res.json();
+      if (!result.secure_url) {
+        alert("Upload failed");
+        return;
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        Design_Image: [...prev.Design_Image, result.secure_url],
+      }));
+    } catch (error) {
+      alert("Upload error");
+    }
+  };
+
+  const handleDeleteImage = (index) => {
+    const updated = [...formData.Design_Image];
+    updated.splice(index, 1);
+    setFormData({ ...formData, Design_Image: updated });
+  };
+
+  const handleChange = (e, field, index) => {
     if (index !== undefined) {
-      const copy = [...(formData as any)[field]];
-      copy[index] = e.target.value;
-      setFormData({ ...formData, [field]: copy });
+      const arr = [...formData[field]];
+      arr[index] = e.target.value;
+      setFormData({ ...formData, [field]: arr });
     } else {
       setFormData({ ...formData, [field]: e.target.value });
     }
   };
 
-  const addArrayField = (field: string) => {
-    setFormData({ ...formData, [field]: [...(formData as any)[field], ""] });
+  const addArrayField = (field) => {
+    setFormData({ ...formData, [field]: [...formData[field], ""] });
   };
 
   const handleSubmit = async () => {
-    console.log("Submitted:", formData);
-
+    console.log(formData);
     try {
-      const response = await AxiosConfig.post("/designs/create", {
-        ...formData,
-      });
-      console.log("Design submitted successfully:", response.data);
+      await AxiosConfig.post("/designs/create", formData);
+      setSubmitted(true);
       setFormData({
-        DesignID: 1,
+        DesignID:0,
         Design_Name: "",
         Design_Image: [],
         Design_Description: "",
@@ -55,26 +88,20 @@ export default function DesignForm() {
         Design_BlogPosts: [],
         Design_Sizes: [],
       });
-      alert("Design submitted successfully!");
-    } catch (error: any) {
-      if (error.response) {
-        console.error("Backend validation error:", error.response.data);
-        alert(`Error: ${JSON.stringify(error.response.data)}`);
-      } else {
-        console.error("Unexpected error:", error);
-      }
+    } catch  {
+       message.error("Error submitting design.");
     }
-    setSubmitted(true);
   };
 
   if (submitted) {
     return (
       <Card style={{ maxWidth: 600, margin: "40px auto", textAlign: "center" }}>
         <Title level={3} style={{ color: "green" }}>
-          Design Added Successfully 🎉
+          🎉 Design Added Successfully!
         </Title>
+
         <Button type="primary" onClick={() => setSubmitted(false)}>
-          Add Another Design
+          Add Another
         </Button>
       </Card>
     );
@@ -83,20 +110,22 @@ export default function DesignForm() {
   return (
     <>
       <SidebarOFADmin />
-      <Card style={{ maxWidth: 600, margin: "40px auto" }}>
+
+      <Card style={{ maxWidth: 650, margin: "40px auto" }}>
         <Title level={3} style={{ textAlign: "center" }}>
           Add New Design
         </Title>
         <Divider />
+
         <Form layout="vertical" onFinish={handleSubmit}>
-          <Form.Item label="Design Name" required>
+          <Form.Item label="Design Name">
             <Input
               value={formData.Design_Name}
               onChange={(e) => handleChange(e, "Design_Name")}
             />
           </Form.Item>
 
-          <Form.Item label="Design Description" required>
+          <Form.Item label="Design Description">
             <TextArea
               rows={4}
               value={formData.Design_Description}
@@ -104,8 +133,40 @@ export default function DesignForm() {
             />
           </Form.Item>
 
+          <Form.Item label="Upload Images">
+            <input type="file" onChange={handleImageUpload} />
+
+            <Space direction="vertical" style={{ marginTop: 10 }}>
+              {formData.Design_Image.map((img, i) => (
+                <div key={i} style={{ position: "relative" }}>
+                  <img
+                    src={img}
+                    alt="Preview"
+                    style={{
+                      width: 120,
+                      borderRadius: 8,
+                      border: "1px solid #ddd",
+                    }}
+                  />
+                  <Button
+                    danger
+                    type="primary"
+                    size="small"
+                    style={{
+                      position: "absolute",
+                      top: 5,
+                      right: 5,
+                    }}
+                    onClick={() => handleDeleteImage(i)}
+                  >
+                    X
+                  </Button>
+                </div>
+              ))}
+            </Space>
+          </Form.Item>
+
           {[
-            "Design_Image",
             "Categories",
             "Design_Colors",
             "Design_BlogPosts",
@@ -113,18 +174,19 @@ export default function DesignForm() {
           ].map((field) => (
             <Form.Item key={field} label={field.replace(/_/g, " ")}>
               <Space direction="vertical" style={{ width: "100%" }}>
-                {(formData as any)[field].map((val: string, i: number) => (
+                {formData[field].map((val, i) => (
                   <Input
                     key={i}
-                    placeholder={`Enter ${field}`}
                     value={val}
+                    placeholder={`Enter ${field}`}
                     onChange={(e) => handleChange(e, field, i)}
                   />
                 ))}
+
                 <Button
                   type="dashed"
-                  onClick={() => addArrayField(field)}
                   block
+                  onClick={() => addArrayField(field)}
                 >
                   + Add {field}
                 </Button>

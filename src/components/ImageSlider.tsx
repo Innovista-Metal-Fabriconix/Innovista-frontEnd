@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, use } from "react";
+import { useEffect, useState, useCallback } from "react";
 import styles from "../cssModules/ImageSlider.module.css";
 import image1 from "../assets/Images/ImageSlider/image1.jpg";
 import image2 from "../assets/Images/ImageSlider/image2.png";
@@ -19,6 +19,7 @@ export default function ImageSlider() {
   const goToSlide = useCallback((index: number) => {
     setCurrent(index);
     setProgress(0);
+    console.log(progress)
   }, []);
 
   const nextSlide = useCallback(() => {
@@ -114,7 +115,7 @@ export default function ImageSlider() {
             }}
           />
           <button
-            className={styles.exploreBtn}
+            className={`${styles.exploreBtn} cursor-target`}
             onClick={() => {
               navigate("/products");
             }}

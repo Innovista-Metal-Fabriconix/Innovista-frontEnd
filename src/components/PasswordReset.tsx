@@ -1,10 +1,15 @@
 import { Form, Input, Button } from "antd";
 import AxiosConfig from "../Context/AxiosConfig";
 
+interface PasswordResetFormValues {
+  password: string;
+  confirm: string;
+}
+
 function PasswordReset() {
   const [form] = Form.useForm();
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: PasswordResetFormValues) => {
     try {
       const response = AxiosConfig.post(
         `/auth/forgot-password?newPassword=${values.password}`
@@ -20,7 +25,6 @@ function PasswordReset() {
 
   return (
     <>
-      <h3 className="text-xl font-semibold mb-4">Reset Password</h3>
       <Form
         layout="vertical"
         form={form}

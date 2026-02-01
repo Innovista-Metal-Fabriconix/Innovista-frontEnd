@@ -10,7 +10,9 @@ import {
   Input,
   Typography,
   Spin,
+  Popconfirm,
 } from "antd";
+
 import AxiosConfig from "../Context/AxiosConfig";
 import SidebarOFADmin from "../components/SidebarOFADmin";
 
@@ -48,20 +50,21 @@ function ViewAllDesigns() {
   }, []);
 
   const handleDelete = (designId: number | string) => {
-    Modal.confirm({
-      title: "Are you sure you want to delete this design?",
-      onOk: () => {
-        AxiosConfig.delete(`/designs/deleteDesign?designId=${designId}`)
-          .then(() => {
-            setDesigns((prev) =>
-              prev.filter((design) => design.DesignID !== designId)
-            );
-          })
-          .catch((err) => {
-            console.error("Error deleting design:", err);
-          });
-      },
-    });
+    console.log(designId);
+
+    AxiosConfig.delete("/designs/deleteDesign", {
+      params: { designId },
+    })
+      .then(() => {
+        setDesigns((prev) =>
+          prev.filter(
+            (design) => design.DesignID.toString() !== designId.toString()
+          )
+        );
+      })
+      .catch((err) => {
+        console.error("Error deleting design:", err.response?.data || err);
+      });
   };
 
   const handleEdit = (design: Design) => {
@@ -188,14 +191,19 @@ function ViewAllDesigns() {
     {
       title: "Actions",
       key: "actions",
-      render: (_: any, record: Design) => (
+      render: (_: undefined, record: Design) => (
         <Space>
           <Button type="primary" onClick={() => handleEdit(record)}>
             Edit
           </Button>
-          <Button danger onClick={() => handleDelete(record.DesignID)}>
-            Delete
-          </Button>
+          <Popconfirm
+            title="Are you sure to delete this design?"
+            onConfirm={() => handleDelete(record.DesignID)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button danger>Delete</Button>
+          </Popconfirm>
         </Space>
       ),
     },
@@ -210,7 +218,10 @@ function ViewAllDesigns() {
         </Title>
 
         {loading ? (
-          <Spin size="large" style={{ display: "block", margin: "50px auto" }} />
+          <Spin
+            size="large"
+            style={{ display: "block", margin: "50px auto" }}
+          />
         ) : (
           <Table
             rowKey="DesignID"

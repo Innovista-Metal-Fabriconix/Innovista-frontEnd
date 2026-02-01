@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Table, Tag, Image, Select, message, Button } from "antd";
+import { Table, Tag, Image, Select, message } from "antd";
 import AxiosConfig from "../../Context/AxiosConfig";
+import XlfileGenerate from "./XlfileGenerate";
 
 export const OrderStatus = {
   PENDING: "PENDING",
@@ -8,18 +9,33 @@ export const OrderStatus = {
   VIEWORDER: "VIEWORDER",
   COMPLETED: "COMPLETED",
 } as const;
-type OrderStatus = typeof OrderStatus[keyof typeof OrderStatus];
+
+type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
+
+type Order = {
+  OrderID: number;
+  Order_Date: string;
+  Order_Status: OrderStatus;
+  Client_Name: string;
+  Client_Email: string;
+  Customer?: {
+    Cus_CompanyName?: string;
+    Cus_Logo?: string;
+    Purchase_Goods?: string[];
+  };
+  Designs?: any[];
+  // Add other fields as needed
+};
 
 function ViewAllorder() {
-  const [orders, setOrders] = useState<any[]>([]);
-  const [selectedStatuses, setSelectedStatuses] = useState<Record<number, OrderStatus>>({});
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loadingOrder, setLoadingOrder] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const response = await AxiosConfig.get("/order/getAllOrders");
         setOrders(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
@@ -27,33 +43,25 @@ function ViewAllorder() {
     fetchOrders();
   }, []);
 
-  const handleSelectChange = (orderId: number, status: OrderStatus) => {
-    setSelectedStatuses((prev) => ({ ...prev, [orderId]: status }));
-  };
-
-  const handleSubmitStatus = async (orderId: number) => {
-    const status = selectedStatuses[orderId];
-    if (!status) {
-      message.warning("Please select a status before submitting.");
-      return;
-    }
-
+  const updateOrderStatus = async (orderId: number, status: OrderStatus) => {
     try {
-      await AxiosConfig.put(`/order/ChangeStates?orderId=${orderId}&Status=${status}`);
-      message.success("Order status updated!");
+      setLoadingOrder(orderId);
+      await AxiosConfig.put(
+        `/order/ChangeStates?orderId=${orderId}&Status=${status}`
+      );
+
       setOrders((prev) =>
         prev.map((order) =>
           order.OrderID === orderId ? { ...order, Order_Status: status } : order
         )
       );
-      setSelectedStatuses((prev) => {
-        const copy = { ...prev };
-        delete copy[orderId];
-        return copy;
-      });
+
+      message.success(`Status updated to ${status}!`);
     } catch (error) {
-      console.error("Error updating order status:", error);
-      message.error("Failed to update order status.");
+      console.error("Error updating status:", error);
+      message.error("Failed to update status.");
+    } finally {
+      setLoadingOrder(null);
     }
   };
 
@@ -77,13 +85,15 @@ function ViewAllorder() {
       title: "Order Date",
       dataIndex: "Order_Date",
       key: "Order_Date",
-      render: (text: string) => new Date(text).toLocaleString(),
+      render: (date: string) => new Date(date).toLocaleString(),
     },
     {
       title: "Status",
       dataIndex: "Order_Status",
       key: "Order_Status",
-      render: (status: OrderStatus) => <Tag color={getStatusColor(status)}>{status}</Tag>,
+      render: (status: OrderStatus) => (
+        <Tag color={getStatusColor(status)}>{status}</Tag>
+      ),
     },
     {
       title: "Client Name",
@@ -104,7 +114,7 @@ function ViewAllorder() {
       title: "Company Logo",
       dataIndex: ["Customer", "Cus_Logo"],
       key: "Cus_Logo",
-      render: (logo: string) => <Image src={logo} alt="logo" width={50} />,
+      render: (logo: string) => <Image src={logo} width={50} />,
     },
     {
       title: "Purchase Goods",
@@ -113,46 +123,74 @@ function ViewAllorder() {
       render: (goods: string[]) => goods?.map((g, i) => <Tag key={i}>{g}</Tag>),
     },
     {
-      title: "Design Name",
-      dataIndex: ["Designs", 0, "Design", "Design_Name"],
-      key: "Design_Name",
+      title: "Design Names",
+      dataIndex: "Designs",
+      key: "Design_Names",
+      render: (designs: any[]) =>
+        designs?.map((item, i) => (
+          <Tag key={i} color="blue">
+            {item.Design?.Design_Name}{" "}
+          </Tag>
+        )),
     },
     {
-      title: "Design Image",
-      dataIndex: ["Designs", 0, "Design", "Design_Image"],
-      key: "Design_Image",
-      render: (images: string[]) =>
-        images?.map((src, i) => <Image key={i} src={src} alt="design" width={70} />),
+      title: "Design Images",
+      dataIndex: "Designs",
+      key: "Design_Images",
+      render: (designs: any[]) =>
+        designs?.flatMap((item, i) =>
+          (Array.isArray(item.Design?.Design_Image)
+            ? item.Design.Design_Image
+            : [item.Design.Design_Image]
+          ).map((img: string, index: number) => (
+            <Image
+              key={`${i}-${index}`}
+              src={img}
+              width={70}
+              style={{ marginRight: 8 }}
+            />
+          ))
+        ),
     },
     {
-      title: "Action",
+      title: "Update Status",
       key: "action",
-      render: (_: any, record: any) => (
-        <div style={{ display: "flex", gap: 8 }}>
-          <Select
-            value={selectedStatuses[record.OrderID] ?? record.Order_Status}
-            style={{ width: 150 }}
-            onChange={(value) => handleSelectChange(record.OrderID, value as OrderStatus)}
-          >
-            {Object.values(OrderStatus).map((status) => (
-              <Select.Option key={status} value={status}>
-                {status}
-              </Select.Option>
-            ))}
-          </Select>
-          <Button type="primary" onClick={() => handleSubmitStatus(record.OrderID)}>
-            Submit
-          </Button>
-        </div>
+      render: (_: string, record: Order) => (
+        <Select
+          value={record.Order_Status}
+          style={{ width: 160 }}
+          loading={loadingOrder === record.OrderID}
+          onChange={(value) =>
+            updateOrderStatus(record.OrderID, value as OrderStatus)
+          }
+        >
+          {Object.values(OrderStatus).map((status) => (
+            <Select.Option key={status} value={status}>
+              {status}
+            </Select.Option>
+          ))}{" "}
+        </Select>
       ),
     },
   ];
 
   return (
     <div style={{ padding: 20 }}>
-      <h2>All Orders</h2>
+      <h2
+        style={{
+          marginBottom: 10,
+          textAlign: "center",
+          fontSize: "24px",
+          padding: "10px",
+        }}
+      >
+        📦 All Orders{" "}
+      </h2>
+
+      <XlfileGenerate orders={orders} />
+
       <Table
-        rowKey={(record) => record.OrderID}
+        rowKey={(r) => r.OrderID}
         columns={columns}
         dataSource={orders}
         bordered

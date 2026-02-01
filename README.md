@@ -69,3 +69,5 @@ export default tseslint.config([
 ```
 
 Run command : npm run dev
+
+<!--  Blog post page i need to know on that page we add only the product blogs or company Bolgs  -->
