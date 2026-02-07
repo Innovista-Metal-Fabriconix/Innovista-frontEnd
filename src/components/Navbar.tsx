@@ -52,7 +52,7 @@ export default function Navbar() {
             `${isActive ? styles.activeLink : styles.link} cursor-target`
           }
         >
-          About
+          About Us
         </NavLink>
         <NavLink
           to="/products"
@@ -132,7 +132,7 @@ export default function Navbar() {
               }
               onClick={handleLinkClick}
             >
-              About
+              About Us
             </NavLink>
             <NavLink
               to="/products"
