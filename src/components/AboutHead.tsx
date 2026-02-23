@@ -1,13 +1,33 @@
 import style from "../cssModules/AboutHead.module.css";
 import image from "../assets/Images/AboutUsPage/aboutus.jpg";
+import gsap from "gsap";
+import { useEffect, useRef } from "react";
 
 export default function AboutHead() {
+  const imageRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+    tl.fromTo(
+      imageRef.current,
+      { opacity: 0, y: -80 },
+      { opacity: 1, y: 0, duration: 1 }
+    ).fromTo(
+      contentRef.current,
+      { opacity: 0, y: -80 },
+      { opacity: 1, y: 0, duration: 1 },
+      "-=0.5"
+    );
+  }, []);
+
   return (
     <section className={style.aboutHead}>
-      <div className={style.imageWrapper}>
+      <div className={style.imageWrapper} ref={imageRef}>
         <img src={image} alt="About Us" />
       </div>
-      <div className={style.contentWrapper}>
+      <div className={style.contentWrapper} ref={contentRef}>
         <h2>
           <span className={style.openQuote}>"</span>
           SHAPING INNOVATION
