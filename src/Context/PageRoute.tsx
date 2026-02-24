@@ -22,6 +22,7 @@ import TargetCursor from "../components/cursor/TragetCursor";
 import AddProjects from "../pages/Adminpages/AddProjects";
 import DesignViwe from "../pages/DesignViwe";
 import OrderCart from "../pages/OrderCart";
+import Milestones from "../pages/Milestones";
 
 function PageRoute() {
   return (
@@ -51,6 +52,7 @@ function PageRoute() {
             <Route path="/AddProjects" element={<AddProjects />} />
             <Route path="/DesignViwe" element={<DesignViwe />} />
             <Route path="/OrderCart" element={<OrderCart />} />
+            <Route path="/milestones" element={<Milestones />} />
           </Routes>
         </main>
         <Footer />

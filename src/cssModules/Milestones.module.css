@@ -1,0 +1,300 @@
+/* ===== Page ===== */
+.page {
+  padding: 40px 5% 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ===== Timeline ===== */
+.timeline {
+  position: relative;
+  margin-top: 60px;
+  padding: 20px 0;
+}
+
+.centerLine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(
+    to bottom,
+    var(--color-logo-red),
+    var(--color-primary)
+  );
+  transform-origin: top center;
+  border-radius: 3px;
+}
+
+/* ===== Timeline Item ===== */
+.timelineItem {
+  position: relative;
+  width: 50%;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  margin-bottom: 40px;
+}
+
+.timelineItem.left {
+  left: 0;
+  padding-right: 60px;
+  text-align: right;
+}
+
+.timelineItem.right {
+  left: 50%;
+  padding-left: 60px;
+  text-align: left;
+}
+
+/* ===== Dot on Timeline ===== */
+.dot {
+  position: absolute;
+  top: 30px;
+  width: 50px;
+  height: 50px;
+  background: var(--color-logo-red);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  box-shadow: 0 0 0 5px rgba(230, 0, 0, 0.15);
+}
+
+.left .dot {
+  right: -25px;
+}
+
+.right .dot {
+  left: -25px;
+}
+
+.year {
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 1px;
+}
+
+/* ===== Card ===== */
+.card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.cardImage {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+}
+
+.cardImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.card:hover .cardImage img {
+  transform: scale(1.05);
+}
+
+.cardContent {
+  padding: 20px;
+}
+
+.cardContent h3 {
+  font-size: var(--text-subheading);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.cardContent p {
+  font-size: var(--text-paragraph-sm);
+  color: #555;
+  line-height: 1.7;
+  text-align: left;
+}
+
+/* ===== Responsive: 1024px ===== */
+@media (max-width: 1024px) {
+  .timelineItem {
+    padding: 15px 30px;
+    margin-bottom: 30px;
+  }
+
+  .timelineItem.left {
+    padding-right: 50px;
+  }
+
+  .timelineItem.right {
+    padding-left: 50px;
+  }
+
+  .cardImage {
+    height: 150px;
+  }
+
+  .cardContent {
+    padding: 16px;
+  }
+}
+
+/* ===== Responsive: 768px - Single column ===== */
+@media (max-width: 768px) {
+  .centerLine {
+    left: 25px;
+  }
+
+  .timelineItem {
+    width: 100%;
+    padding: 15px 15px 15px 70px;
+    text-align: left;
+  }
+
+  .timelineItem.left {
+    left: 0;
+    padding-right: 15px;
+    text-align: left;
+  }
+
+  .timelineItem.right {
+    left: 0;
+    padding-left: 70px;
+  }
+
+  .left .dot,
+  .right .dot {
+    left: 0;
+    right: auto;
+  }
+
+  .dot {
+    width: 44px;
+    height: 44px;
+  }
+
+  .year {
+    font-size: 0.65rem;
+  }
+
+  .cardImage {
+    height: 160px;
+  }
+
+  .cardContent h3 {
+    font-size: var(--text-paragraph-lg);
+  }
+
+  .page {
+    padding: 30px 4% 60px;
+  }
+
+  .timeline {
+    margin-top: 40px;
+  }
+}
+
+/* ===== Responsive: 576px ===== */
+@media (max-width: 576px) {
+  .timelineItem {
+    padding: 12px 10px 12px 60px;
+    margin-bottom: 20px;
+  }
+
+  .timelineItem.left {
+    padding-right: 10px;
+  }
+
+  .timelineItem.right {
+    padding-left: 60px;
+  }
+
+  .centerLine {
+    left: 20px;
+  }
+
+  .dot {
+    width: 38px;
+    height: 38px;
+  }
+
+  .year {
+    font-size: 0.6rem;
+  }
+
+  .cardImage {
+    height: 140px;
+  }
+
+  .cardContent {
+    padding: 14px;
+  }
+
+  .cardContent h3 {
+    font-size: var(--text-paragraph);
+  }
+
+  .cardContent p {
+    font-size: var(--text-caption);
+  }
+
+  .page {
+    padding: 25px 3% 50px;
+  }
+}
+
+/* ===== Responsive: 400px ===== */
+@media (max-width: 400px) {
+  .centerLine {
+    left: 16px;
+  }
+
+  .timelineItem {
+    padding: 10px 8px 10px 50px;
+  }
+
+  .timelineItem.left {
+    padding-right: 8px;
+  }
+
+  .timelineItem.right {
+    padding-left: 50px;
+  }
+
+  .dot {
+    width: 34px;
+    height: 34px;
+  }
+
+  .year {
+    font-size: 0.55rem;
+  }
+
+  .cardImage {
+    height: 120px;
+  }
+
+  .cardContent {
+    padding: 12px;
+  }
+
+  .page {
+    padding: 20px 2% 40px;
+  }
+}
