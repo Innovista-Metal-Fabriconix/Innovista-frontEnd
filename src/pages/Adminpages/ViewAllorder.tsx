@@ -13,7 +13,7 @@ export const OrderStatus = {
 type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
 
 type Order = {
-  OrderID: number;
+  OrderID: string;
   Order_Date: string;
   Order_Status: OrderStatus;
   Client_Name: string;
@@ -40,7 +40,7 @@ function ViewAllorder() {
   const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(0);
 
-  const [loadingOrder, setLoadingOrder] = useState<number | null>(null);
+  const [loadingOrder, setLoadingOrder] = useState<string | null>(null);
 
   // Fetch orders with pagination
   const fetchOrders = async (page = 1, limit = 10) => {
@@ -70,7 +70,7 @@ function ViewAllorder() {
   }, []);
 
   // Update order status
-  const updateOrderStatus = async (orderId: number, status: OrderStatus) => {
+  const updateOrderStatus = async (orderId: string, status: OrderStatus) => {
     try {
       setLoadingOrder(orderId);
 

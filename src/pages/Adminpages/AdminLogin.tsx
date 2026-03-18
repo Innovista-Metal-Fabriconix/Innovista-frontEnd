@@ -26,11 +26,10 @@ function AdminLogin() {
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/auth/login?email=${values.username}&password=${values.password}`
+        `http://localhost:4000/auth/login?email=${values.username}&password=${values.password}`,
       );
 
-      message.success("Login successful!");
-
+      alert(response.data.message);
       sessionStorage.setItem("accessToken", response.data.tokens.accessToken);
       localStorage.setItem("refreshToken", response.data.tokens.refreshToken);
 
@@ -41,7 +40,7 @@ function AdminLogin() {
   };
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-    errorInfo
+    errorInfo,
   ) => {
     console.log("Validation Failed:", errorInfo);
   };
@@ -52,11 +51,10 @@ function AdminLogin() {
   const HandleEmailSubmit = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/auth/ResetPassword?email=${AdminEmail}`
+        `http://localhost:4000/auth/ResetPassword?email=${AdminEmail}`,
       );
-
-      console.log("Email submitted successfully", response);
-      setIsModalOpen(true); // open dialog box
+      alert(response.data.message);
+      setIsModalOpen(false); 
     } catch (error) {
       console.error("Error submitting email:", error);
       Modal.error({

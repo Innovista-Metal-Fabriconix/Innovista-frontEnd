@@ -1,12 +1,41 @@
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
-export default function XlfileGenerate({ orders }: any) {
+interface Design {
+  Design_Name?: string;
+  Design_Image?: string | string[];
+}
+
+interface DesignItem {
+  Design?: Design;
+}
+
+interface Customer {
+  Cus_CompanyName?: string;
+  Cus_Logo?: string;
+  Purchase_Goods?: string[];
+}
+
+interface Order {
+  OrderID: string;
+  Order_Date: string;
+  Order_Status: string;
+  Client_Name: string;
+  Client_Email: string;
+  Customer?: Customer;
+  Designs?: DesignItem[];
+}
+
+interface XlfileGenerateProps {
+  orders: Order[];
+}
+
+export default function XlfileGenerate({ orders }: XlfileGenerateProps) {
   const downloadExcel = () => {
     if (!orders || orders.length === 0) return;
 
-    const excelData = orders.flatMap((order: any) =>
-      order.Designs?.map((designItem: any) => ({
+    const excelData = orders.flatMap((order: Order) =>
+      order.Designs?.map((designItem: DesignItem) => ({
         OrderID: order.OrderID,
         OrderDate: new Date(order.Order_Date).toLocaleString(),
         OrderStatus: order.Order_Status,
