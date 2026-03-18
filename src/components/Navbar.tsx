@@ -52,7 +52,7 @@ export default function Navbar() {
             `${isActive ? styles.activeLink : styles.link} cursor-target`
           }
         >
-          About
+          About Us
         </NavLink>
         <NavLink
           to="/products"
@@ -98,7 +98,7 @@ export default function Navbar() {
       <button className={`${styles.quoteBtn} cursor-target`}>Get a Free Quote</button>
 
       <div
-        className={`${styles.showButton} ${isOpen ? styles.hidden : styles.visible}`}
+        className={`${styles.showButton} ${isOpen ? styles.hidden : styles.visible} cursor-target`}
         onClick={() => setIsOpen(true)}
       >
         <FontAwesomeIcon icon={faBars} size="2xl" />
@@ -109,7 +109,7 @@ export default function Navbar() {
           <div className={styles.mobileMenuHeader}>
             <img src={logo} alt="Company Logo" className={styles.mobileLogo} />
             <Button
-              className={styles.closeBtn}
+              className={`${styles.closeBtn} cursor-target`}
               onClick={() => setIsOpen(false)}
             >
               <FontAwesomeIcon icon={faTimes} size="lg" />
@@ -119,7 +119,7 @@ export default function Navbar() {
             <NavLink
               to="/"
               className={({ isActive }) =>
-                isActive ? styles.activeLink : styles.link
+                `${isActive ? styles.activeLink : styles.link} cursor-target`
               }
               onClick={handleLinkClick}
             >
@@ -128,16 +128,16 @@ export default function Navbar() {
             <NavLink
               to="/about"
               className={({ isActive }) =>
-                isActive ? styles.activeLink : styles.link
+                `${isActive ? styles.activeLink : styles.link} cursor-target`
               }
               onClick={handleLinkClick}
             >
-              About
+              About Us
             </NavLink>
             <NavLink
               to="/products"
               className={({ isActive }) =>
-                isActive ? styles.activeLink : styles.link
+                `${isActive ? styles.activeLink : styles.link} cursor-target`
               }
               onClick={handleLinkClick}
             >
@@ -149,7 +149,7 @@ export default function Navbar() {
             <NavLink
               to="/blogs"
               className={({ isActive }) =>
-                isActive ? styles.activeLink : styles.link
+                `${isActive ? styles.activeLink : styles.link} cursor-target`
               }
               onClick={handleLinkClick}
             >
@@ -158,7 +158,7 @@ export default function Navbar() {
             <NavLink
               to="/projects"
               className={({ isActive }) =>
-                isActive ? styles.activeLink : styles.link
+                `${isActive ? styles.activeLink : styles.link} cursor-target`
               }
               onClick={handleLinkClick}
             >
