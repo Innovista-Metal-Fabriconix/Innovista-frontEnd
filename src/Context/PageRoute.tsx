@@ -23,10 +23,12 @@ import AddProjects from "../pages/Adminpages/AddProjects";
 import DesignViwe from "../pages/DesignViwe";
 import OrderCart from "../pages/OrderCart";
 import Milestones from "../pages/Milestones";
+import ScrollToTop from "../components/ScrollToTop";
 
 function PageRoute() {
   return (
     <Router>
+      <ScrollToTop />
       <div style={{ position: "relative", minHeight: "100vh" }}>
         <TargetCursor spinDuration={2} hideDefaultCursor={true} />
         <Navbar />

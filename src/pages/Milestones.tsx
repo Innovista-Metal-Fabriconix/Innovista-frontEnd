@@ -70,7 +70,6 @@ function Milestones() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Animate the center line growing
       const line = timelineRef.current?.querySelector(`.${styles.centerLine}`);
       if (line) {
         gsap.fromTo(
@@ -88,7 +87,6 @@ function Milestones() {
         );
       }
 
-      // Animate each card
       cardsRef.current.forEach((card, index) => {
         if (!card) return;
         const isLeft = index % 2 === 0;
@@ -97,36 +95,61 @@ function Milestones() {
           card,
           {
             opacity: 0,
-            x: isLeft ? -120 : 120,
-            scale: 0.9,
+            x: isLeft ? -150 : 150,
+            y: 40,
+            scale: 0.85,
+            rotateY: isLeft ? -8 : 8,
           },
           {
             opacity: 1,
             x: 0,
+            y: 0,
             scale: 1,
-            duration: 0.8,
+            rotateY: 0,
+            duration: 1,
             ease: "power3.out",
             scrollTrigger: {
               trigger: card,
-              start: "top 85%",
+              start: "top 88%",
+              end: "top 60%",
               toggleActions: "play none none none",
             },
           },
         );
 
-        // Animate the dot
         const dot = card.querySelector(`.${styles.dot}`);
         if (dot) {
           gsap.fromTo(
             dot,
-            { scale: 0 },
+            { scale: 0, rotate: -180 },
             {
               scale: 1,
-              duration: 0.4,
+              rotate: 0,
+              duration: 0.6,
               ease: "back.out(3)",
+              delay: 0.3,
               scrollTrigger: {
                 trigger: card,
-                start: "top 85%",
+                start: "top 88%",
+              },
+            },
+          );
+        }
+
+        const content = card.querySelector(`.${styles.card}`);
+        if (content) {
+          gsap.fromTo(
+            content,
+            { opacity: 0, y: 20 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.6,
+              ease: "power2.out",
+              delay: 0.2,
+              scrollTrigger: {
+                trigger: card,
+                start: "top 88%",
               },
             },
           );
