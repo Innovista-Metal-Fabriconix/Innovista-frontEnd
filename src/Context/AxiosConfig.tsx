@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const AxiosConfig = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: "https://innovista-backend-hvt3.vercel.app",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -68,7 +68,7 @@ AxiosConfig.interceptors.response.use(
 
       try {
         const response = await axios.get(
-          `http://localhost:4000/auth/refresh?refreshToken=${refreshToken}`
+          `https://innovista-backend-hvt3.vercel.app/auth/refresh?refreshToken=${refreshToken}`
         );
 
         const newAccessToken = response.data.accessToken;

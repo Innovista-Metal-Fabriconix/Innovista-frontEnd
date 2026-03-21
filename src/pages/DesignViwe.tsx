@@ -25,7 +25,7 @@ function DesignView() {
   const fetchCategoryDetails = async (categoryName: string) => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/designs/byCategory?category=${categoryName}`
+        `https://innovista-backend-hvt3.vercel.app/designs/byCategory?category=${categoryName}`
       );
       setDesigns(response.data);
     } catch (error) {

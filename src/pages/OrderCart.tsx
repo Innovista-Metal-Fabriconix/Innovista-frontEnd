@@ -38,7 +38,7 @@ function OrderCart() {
     try {
       const ids = cart.join(",");
       const response = await axios.get(
-        `http://localhost:4000/designs/DesignDetails?ids=${ids}`
+        `https://innovista-backend-hvt3.vercel.app/designs/DesignDetails?ids=${ids}`
       );
       setCardDetails(response.data);
     } catch (error) {
@@ -77,7 +77,7 @@ function OrderCart() {
 
     try {
       const res = await axios.post(
-        "http://localhost:4000/order/createOrder",
+        "https://innovista-backend-hvt3.vercel.app/order/createOrder",
         orderPayload
       );
       console.log("Order created successfully:", res.data);

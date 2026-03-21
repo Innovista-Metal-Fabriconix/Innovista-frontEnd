@@ -73,16 +73,8 @@ function ViewAllorder() {
   const updateOrderStatus = async (orderId: string, status: OrderStatus) => {
     try {
       setLoadingOrder(orderId);
-
-      await AxiosConfig.put("/order/ChangeStates", null, {
-        params: {
-          orderId,
-          Status: status,
-        },
-      });
-
+      await AxiosConfig.put(`/order/ChangeStates?orderId=${orderId}&Status=${status}`);
       message.success(`Status updated to ${status}!`);
-
       // Refetch current page after update (industry standard)
       fetchOrders(currentPage, pageSize);
     } catch (error) {

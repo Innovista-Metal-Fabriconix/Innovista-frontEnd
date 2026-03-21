@@ -17,7 +17,7 @@ function AdminFeedback() {
     try {
       setLoading(true);
       const response = await axios.get(
-        "http://localhost:4000/feedback/allFeedbacks",{
+        "https://innovista-backend-hvt3.vercel.app/feedback/allFeedbacks",{
           params: { page, limit },  
         }
       );
