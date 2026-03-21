@@ -67,7 +67,7 @@ const AdminRegisterForm: React.FC = () => {
   };
 
   return (
-    <Card title="Admin Registration" style={{ maxWidth: 600, margin: "auto" }}>
+    <Card title="Admin Registration" style={{ maxWidth: 600, margin: "auto"  }}>
       <Form
         form={form}
         layout="vertical"

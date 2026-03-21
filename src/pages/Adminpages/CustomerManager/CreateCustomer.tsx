@@ -59,7 +59,7 @@ function CreateCustomer() {
 
   return (
     <div style={{ maxWidth: 600, margin: "0 auto", padding: 20 }}>
-      <h2 style={{ textAlign: "center", marginBottom: 20 }}>
+      <h2 style={{ textAlign: "center", marginBottom: 20 , color: "#1890ff" }}>
         Register Customer
       </h2>
       <Form form={form} layout="vertical" onFinish={onFinish}>
