@@ -4,6 +4,7 @@ import PathSection from "../components/PathSection";
 import ValuesSection from "../components/ValuesSection";
 import visionImg1 from "../assets/Images/AboutUsPage/vision/vision1.jpg";
 import visionImg2 from "../assets/Images/AboutUsPage/vision/vision2.jpg";
+import PartnersSection from "../components/PartnersSection";
 
 function About() {
   return (
@@ -25,6 +26,7 @@ function About() {
       />
       <PathSection />
       <ValuesSection />
+      <PartnersSection />
     </div>
   );
 }
