@@ -59,48 +59,54 @@ function ValuesSection() {
   const iconRefs = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const cards = cardRefs.current.filter(Boolean);
-      const icons = iconRefs.current.filter(Boolean);
+    const mm = gsap.matchMedia();
 
-      if (!sectionRef.current || cards.length === 0) return;
+    mm.add("(min-width: 481px)", () => {
+      const ctx = gsap.context(() => {
+        const cards = cardRefs.current.filter(Boolean);
+        const icons = iconRefs.current.filter(Boolean);
 
-      gsap.fromTo(
-        cards,
-        { y: 48, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power3.out",
-          stagger: 0.12,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 78%",
-            once: true,
+        if (!sectionRef.current || cards.length === 0) return;
+
+        gsap.fromTo(
+          cards,
+          { y: 48, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power3.out",
+            stagger: 0.12,
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 78%",
+              once: true,
+            },
           },
-        },
-      );
+        );
 
-      gsap.fromTo(
-        icons,
-        { scale: 0.65, opacity: 0 },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 0.65,
-          ease: "back.out(1.7)",
-          stagger: 0.1,
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 75%",
-            once: true,
+        gsap.fromTo(
+          icons,
+          { scale: 0.65, opacity: 0 },
+          {
+            scale: 1,
+            opacity: 1,
+            duration: 0.65,
+            ease: "back.out(1.7)",
+            stagger: 0.1,
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 75%",
+              once: true,
+            },
           },
-        },
-      );
-    }, sectionRef);
+        );
+      }, sectionRef);
 
-    return () => ctx.revert();
+      return () => ctx.revert();
+    });
+
+    return () => mm.revert();
   }, []);
 
   return (

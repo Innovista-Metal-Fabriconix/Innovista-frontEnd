@@ -3,9 +3,17 @@ import PartnersGallery from "./PartnersGallery";
 import MainHeading from "./MainHeading";
 
 function PartnersSection() {
+  const [disableMotion, setDisableMotion] = useState(() =>
+    typeof globalThis.matchMedia === "function"
+      ? globalThis.matchMedia("(max-width: 480px)").matches
+      : false,
+  );
   const [params, setParams] = useState({
     fit: 1,
     minRadius: 1000,
+    maxRadius: Infinity,
+    padFactor: 0.25,
+    dragSensitivity: 20,
     maxVerticalRotationDeg: 0,
     segments: 34,
     dragDampening: 5,
@@ -17,6 +25,7 @@ function PartnersSection() {
       const width = window.innerWidth;
 
       if (width <= 480) {
+        setDisableMotion(true);
         setParams({
           fit: 0.5,
           minRadius: 180,
@@ -29,6 +38,7 @@ function PartnersSection() {
           grayscale: false,
         });
       } else if (width <= 768) {
+        setDisableMotion(false);
         setParams({
           fit: 0.7,
           minRadius: 380,
@@ -41,6 +51,7 @@ function PartnersSection() {
           grayscale: false,
         });
       } else if (width <= 1024) {
+        setDisableMotion(false);
         setParams({
           fit: 0.62,
           minRadius: 420,
@@ -53,6 +64,7 @@ function PartnersSection() {
           grayscale: false,
         });
       } else {
+        setDisableMotion(false);
         setParams({
           fit: 1,
           minRadius: 1000,
@@ -73,7 +85,7 @@ function PartnersSection() {
   }, []);
 
   return (
-    <div>
+    <section className="about-section-spacing">
       <MainHeading
         heading="Powered by Trusted Partners"
         description="We collaborate with industry leaders to deliver exceptional results."
@@ -88,8 +100,9 @@ function PartnersSection() {
         maxVerticalRotationDeg={params.maxVerticalRotationDeg}
         dragDampening={params.dragDampening}
         grayscale={params.grayscale}
+        disableMotion={disableMotion}
       />
-    </div>
+    </section>
   );
 }
 
