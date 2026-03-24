@@ -199,13 +199,6 @@ main.sphere-main {
   }
 }
 
-@media (max-aspect-ratio: 1/1) {
-  .viewer .frame {
-    height: auto;
-    width: 100%;
-  }
-}
-
 .viewer .scrim {
   position: absolute;
   inset: 0;
