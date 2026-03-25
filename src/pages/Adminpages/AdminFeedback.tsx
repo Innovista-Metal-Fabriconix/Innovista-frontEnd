@@ -128,7 +128,17 @@ function AdminFeedback() {
   return (
     <div style={{ padding: 20 }}>
       <SidebarOFADmin />
-      <h2 style={{ textAlign: "center", margin: "20px 0" }}>
+      <h2
+        style={{
+          textAlign: "center",
+          marginTop: "30px",
+          marginBottom: "25px",
+          fontSize: "28px",
+          fontWeight: "600",
+          letterSpacing: "0.5px",
+          fontFamily: "revert-layer",
+        }}
+      >
         Admin Feedback Page
       </h2>
       <Table

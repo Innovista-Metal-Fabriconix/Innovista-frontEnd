@@ -32,10 +32,6 @@ function ViewallProjects() {
       const response = await AxiosConfig.get("/projects/getAllProjects", {
         params: { page, limit },
       });
-
-      // Expected response:
-      // { data: Project[], total: number, page: number, limit: number }
-
       setAllProjects(response.data.data);
       setTotal(response.data.total);
       setCurrentPage(response.data.page);
@@ -137,7 +133,7 @@ function ViewallProjects() {
       dataIndex: "Budget",
       key: "Budget",
       width: 120,
-      render: (value: number) => `$ ${value}`,
+      render: (value: number) => `RS.  ${value}`,
     },
     {
       title: "Actions",
@@ -159,7 +155,19 @@ function ViewallProjects() {
 
   return (
     <div style={{ padding: 40, textAlign: "center", fontSize: "18px" }}>
-      <h2>All Projects</h2>
+      <h2
+        style={{
+          textAlign: "center",
+          marginTop: "30px",
+          marginBottom: "25px",
+          fontSize: "28px",
+          fontWeight: "600",
+          letterSpacing: "0.5px",
+          fontFamily: "revert-layer",
+        }}
+      >
+        All Projects
+      </h2>
 
       <Table
         columns={columns}

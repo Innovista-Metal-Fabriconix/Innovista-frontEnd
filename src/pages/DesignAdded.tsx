@@ -4,7 +4,6 @@ import {
   Card,
   Input,
   Form,
-  Typography,
   Space,
   Divider,
   message,
@@ -12,7 +11,7 @@ import {
 import AxiosConfig from "../Context/AxiosConfig";
 import SidebarOFADmin from "../components/SidebarOFADmin";
 
-const { Title } = Typography;
+// Removed unused Title destructuring
 const { TextArea } = Input;
 
 /* ✅ 1. Define Type */
@@ -134,9 +133,18 @@ export default function DesignForm() {
   if (submitted) {
     return (
       <Card style={{ maxWidth: 600, margin: "40px auto", textAlign: "center" }}>
-        <Title level={3} style={{ color: "green" }}>
+        <h2 style={{
+          textAlign: "center",
+          marginTop: "30px",
+          marginBottom: "25px",
+          fontSize: "28px",
+          fontWeight: "600",
+          letterSpacing: "0.5px",
+          fontFamily: "revert-layer",
+          color: "green"
+        }}>
           🎉 Design Added Successfully!
-        </Title>
+        </h2>
 
         <Button type="primary" onClick={() => setSubmitted(false)}>
           Add Another
@@ -149,11 +157,21 @@ export default function DesignForm() {
     <>
       <SidebarOFADmin />
 
-      <Card style={{ maxWidth: 650, margin: "40px auto" }}>
-        <Title level={3} style={{ textAlign: "center" }}>
+      <Card style={{ maxWidth: 650, margin: "40px auto", marginBottom: "100px" }}>
+        <h2
+          style={{
+            textAlign: "center",
+            marginTop: "30px",
+            marginBottom: "25px",
+            fontSize: "28px",
+            fontWeight: "600",
+            letterSpacing: "0.5px",
+            fontFamily: "revert-layer",
+          }}
+        >
           Add New Design
-        </Title>
-        <Divider />
+        </h2>
+     
 
         <Form layout="vertical" onFinish={handleSubmit}>
           <Form.Item label="Design Name">

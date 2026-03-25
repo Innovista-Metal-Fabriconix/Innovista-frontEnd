@@ -204,19 +204,21 @@ function ViewAllorder() {
   ];
 
   return (
-    <div style={{ padding: 20 }}>
+    <div style={{ padding: 20, marginTop: "20px" }}>
       <h2
         style={{
-          marginBottom: 10,
           textAlign: "center",
-          fontSize: "24px",
-          padding: "10px",
+          marginTop: "30px",
+          marginBottom: "25px",
+          fontSize: "28px",
+          fontWeight: "600",
+          letterSpacing: "0.5px",
+          fontFamily: "revert-layer",
         }}
       >
-        📦 All Orders
+        All Orders
       </h2>
 
-      {/* Export only current page OR all? (depends on backend support) */}
       <XlfileGenerate orders={orders} />
 
       <Table
