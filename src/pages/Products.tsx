@@ -17,6 +17,8 @@ import WardrobeImg from "../assets/Images/Productpage.jpg";
 import PantryImg from "../assets/Images/Productpage.jpg";
 import SteelImage from "../assets/Images/Productpage.jpg";
 
+import { useNavigate } from "react-router-dom";
+
 const categories = [
   { name: "Doors", img: DoorsImg },
   { name: "Windows", img: WindowsImg },
@@ -33,10 +35,9 @@ const categories = [
 ];
 
 function Products() {
+  const navigate = useNavigate();
   const handleNavigate = (categoryName: string) => {
-    window.location.href = `/DesignViwe?category=${encodeURIComponent(
-      categoryName
-    )}`;
+    navigate(`/DesignViwe?category=${encodeURIComponent(categoryName)}`);
   };
 
   return (

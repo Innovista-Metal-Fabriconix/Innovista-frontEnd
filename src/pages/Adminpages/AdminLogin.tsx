@@ -15,6 +15,7 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import AdminLogo from "../../assets/Images/logo/AdminLogin.jpg";
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type FieldType = {
   username?: string;
@@ -23,6 +24,7 @@ type FieldType = {
 };
 
 function AdminLogin() {
+  const navigate = useNavigate();
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     try {
       console.log(values.username, values.password);
@@ -34,7 +36,7 @@ function AdminLogin() {
       sessionStorage.setItem("accessToken", response.data.tokens.accessToken);
       localStorage.setItem("refreshToken", response.data.tokens.refreshToken);
 
-      window.location.href = "/admin-home";
+      navigate("/admin-home");
     } catch {
       message.error("Login failed! Please check your credentials.");
     }
