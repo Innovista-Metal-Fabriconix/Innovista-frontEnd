@@ -108,8 +108,6 @@ export default function ImageSlider() {
         </span>
         <div className={styles.buttonGroup}>
           <ContactButton
-            size="small"
-            variant="accent"
             onClick={() => {
               navigate("/contact");
             }}

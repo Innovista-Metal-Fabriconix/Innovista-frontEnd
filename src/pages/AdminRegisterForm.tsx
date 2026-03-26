@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Form, Input, Upload, message, Card } from "antd";
+import { Button, Form, Input, Upload, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import AxiosConfig from "../Context/AxiosConfig";
 

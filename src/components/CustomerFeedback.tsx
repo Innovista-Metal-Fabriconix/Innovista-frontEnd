@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "../cssModules/CustomerFeedback.module.css";
 import SimpleScrollStack, { ScrollStackItem } from "./SimpleScrollStack";
 import MainHeading from "./MainHeading";

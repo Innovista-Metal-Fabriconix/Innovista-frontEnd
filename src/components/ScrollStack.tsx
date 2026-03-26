@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useCallback } from "react";
+import { useLayoutEffect, useRef, useCallback } from "react";
 import type { ReactNode } from "react";
 import Lenis from "lenis";
 import styles from "../cssModules/ScrollStack.module.css";
@@ -111,10 +111,6 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
 
     const { scrollTop, containerHeight } = getScrollData();
     const stackPositionPx = parsePercentage(stackPosition, containerHeight);
-    const scaleEndPositionPx = parsePercentage(
-      scaleEndPosition,
-      containerHeight
-    );
 
     const endElement = useWindowScroll
       ? (document.querySelector(`.${styles.scrollStackEnd}`) as HTMLElement)
@@ -125,57 +121,16 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     const endElementTop = endElement ? getElementOffset(endElement) : 0;
 
     // Get the last card's position to determine when ALL cards should start moving
-    const lastCard = cardsRef.current[cardsRef.current.length - 1];
-    const lastCardTop = lastCard ? getElementOffset(lastCard) : 0;
 
-    // Check if last card has reached and is stuck at its sticky position (10% from top)
-    const lastCardRect = lastCard ? lastCard.getBoundingClientRect() : null;
-    const lastCardStickyTop = containerHeight * 0.1; // 10% of viewport
-
-    // The last card is stuck when its top is at or very close to its sticky position
-    // AND won't go any higher (meaning scroll has continued past the stick point)
-    const lastCardIsStuck = lastCardRect
-      ? lastCardRect.top <= lastCardStickyTop + 2 &&
-        scrollTop > lastCardTop - lastCardStickyTop
-      : false;
 
     cardsRef.current.forEach((card, i) => {
       if (!card) return;
 
       const cardTop = getElementOffset(card);
-      const triggerStart = cardTop - stackPositionPx;
-      const triggerEnd = cardTop - scaleEndPositionPx;
       const pinStart = cardTop - stackPositionPx;
       const pinEnd = endElementTop - stackPositionPx;
 
-      const scaleProgress = calculateProgress(
-        scrollTop,
-        triggerStart,
-        triggerEnd
-      );
-      const targetScale = baseScale + i * itemScale;
-      const scale = 1 - scaleProgress * (1 - targetScale);
-      const rotation = rotationAmount ? i * rotationAmount * scaleProgress : 0;
 
-      let blur = 0;
-      if (blurAmount) {
-        let topCardIndex = 0;
-        for (let j = 0; j < cardsRef.current.length; j++) {
-          const jCardTop = getElementOffset(cardsRef.current[j]);
-          const jTriggerStart = jCardTop - stackPositionPx;
-          if (scrollTop >= jTriggerStart) {
-            topCardIndex = j;
-          }
-        }
-
-        if (i < topCardIndex) {
-          const depthInStack = topCardIndex - i;
-          blur = Math.max(0, depthInStack * blurAmount);
-        }
-      }
-
-      let translateY = 0;
-      const isLastCard = i === cardsRef.current.length - 1;
 
       // Let CSS sticky positioning handle everything
       // Don't apply any transforms - pure CSS stack
