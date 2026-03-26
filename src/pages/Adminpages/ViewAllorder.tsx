@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table, Tag, Image, Select, message } from "antd";
 import AxiosConfig from "../../Context/AxiosConfig";
-import XlfileGenerate from "./XlfileGenerate"
+import XlfileGenerate from "./XlfileGenerate";
 
 export const OrderStatus = {
   PENDING: "PENDING",
@@ -12,36 +12,71 @@ export const OrderStatus = {
 
 type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
 
+type Order = {
+  OrderID: string;
+  Order_Date: string;
+  Order_Status: OrderStatus;
+  Client_Name: string;
+  Client_Email: string;
+  Customer?: {
+    Cus_CompanyName?: string;
+    Cus_Logo?: string;
+    Purchase_Goods?: string[];
+  };
+  Designs?: {
+    Design?: {
+      Design_Name?: string;
+      Design_Image?: string | string[];
+    };
+  }[];
+};
+
 function ViewAllorder() {
-  const [orders, setOrders] = useState<any[]>([]);
-  const [loadingOrder, setLoadingOrder] = useState<number | null>(null);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [total, setTotal] = useState(0);
+
+  const [loadingOrder, setLoadingOrder] = useState<string | null>(null);
+
+  // Fetch orders with pagination
+  const fetchOrders = async (page = 1, limit = 10) => {
+    try {
+      setLoading(true);
+
+      const response = await AxiosConfig.get("/order/getAllOrders", {
+        params: { page, limit },
+      });
+
+      // Expected response:
+      // { data: Order[], total: number, page: number, limit: number }
+
+      setOrders(response.data.data);
+      setTotal(response.data.total);
+      setCurrentPage(response.data.page);
+      setPageSize(response.data.limit);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await AxiosConfig.get("/order/getAllOrders");
-        setOrders(response.data);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      }
-    };
-    fetchOrders();
+    fetchOrders(currentPage, pageSize);
   }, []);
 
-  const updateOrderStatus = async (orderId: number, status: OrderStatus) => {
+  // Update order status
+  const updateOrderStatus = async (orderId: string, status: OrderStatus) => {
     try {
       setLoadingOrder(orderId);
-      await AxiosConfig.put(
-        `/order/ChangeStates?orderId=${orderId}&Status=${status}`
-      );
-
-      setOrders((prev) =>
-        prev.map((order) =>
-          order.OrderID === orderId ? { ...order, Order_Status: status } : order
-        )
-      );
-
+      await AxiosConfig.put(`/order/ChangeStates?orderId=${orderId}&Status=${status}`);
       message.success(`Status updated to ${status}!`);
+      // Refetch current page after update (industry standard)
+      fetchOrders(currentPage, pageSize);
     } catch (error) {
       console.error("Error updating status:", error);
       message.error("Failed to update status.");
@@ -99,22 +134,27 @@ function ViewAllorder() {
       title: "Company Logo",
       dataIndex: ["Customer", "Cus_Logo"],
       key: "Cus_Logo",
-      render: (logo: string) => <Image src={logo} width={50} />,
+      render: (logo: string) => (logo ? <Image src={logo} width={50} /> : "-"),
     },
     {
       title: "Purchase Goods",
       dataIndex: ["Customer", "Purchase_Goods"],
       key: "Purchase_Goods",
-      render: (goods: string[]) => goods?.map((g, i) => <Tag key={i}>{g}</Tag>),
+      render: (goods: string[]) =>
+        goods?.length ? (
+          goods.map((g, i) => <Tag key={i}>{g}</Tag>)
+        ) : (
+          <Tag color="default">None</Tag>
+        ),
     },
     {
       title: "Design Names",
       dataIndex: "Designs",
       key: "Design_Names",
-      render: (designs: any[]) =>
+      render: (designs: Order["Designs"]) =>
         designs?.map((item, i) => (
           <Tag key={i} color="blue">
-            {item.Design?.Design_Name}{" "}
+            {item.Design?.Design_Name}
           </Tag>
         )),
     },
@@ -122,25 +162,29 @@ function ViewAllorder() {
       title: "Design Images",
       dataIndex: "Designs",
       key: "Design_Images",
-      render: (designs: any[]) =>
+      render: (designs: Order["Designs"]) =>
         designs?.flatMap((item, i) =>
-          (Array.isArray(item.Design?.Design_Image)
-            ? item.Design.Design_Image
-            : [item.Design.Design_Image]
-          ).map((img: string, index: number) => (
-            <Image
-              key={`${i}-${index}`}
-              src={img}
-              width={70}
-              style={{ marginRight: 8 }}
-            />
-          ))
+          (item.Design
+            ? Array.isArray(item.Design.Design_Image)
+              ? item.Design.Design_Image
+              : [item.Design.Design_Image]
+            : []
+          )
+            .filter((img): img is string => typeof img === "string" && !!img)
+            .map((img, index) => (
+              <Image
+                key={`${i}-${index}`}
+                src={img}
+                width={70}
+                style={{ marginRight: 8 }}
+              />
+            )),
         ),
     },
     {
       title: "Update Status",
       key: "action",
-      render: (_: any, record: any) => (
+      render: (_: unknown, record: Order) => (
         <Select
           value={record.Order_Status}
           style={{ width: 160 }}
@@ -153,23 +197,26 @@ function ViewAllorder() {
             <Select.Option key={status} value={status}>
               {status}
             </Select.Option>
-          ))}{" "}
+          ))}
         </Select>
       ),
     },
   ];
 
   return (
-    <div style={{ padding: 20 }}>
+    <div style={{ padding: 20, marginTop: "20px" }}>
       <h2
         style={{
-          marginBottom: 10,
           textAlign: "center",
-          fontSize: "24px",
-          padding: "10px",
+          marginTop: "30px",
+          marginBottom: "25px",
+          fontSize: "28px",
+          fontWeight: "600",
+          letterSpacing: "0.5px",
+          fontFamily: "revert-layer",
         }}
       >
-        📦 All Orders{" "}
+        All Orders
       </h2>
 
       <XlfileGenerate orders={orders} />
@@ -178,8 +225,19 @@ function ViewAllorder() {
         rowKey={(r) => r.OrderID}
         columns={columns}
         dataSource={orders}
+        loading={loading}
         bordered
         scroll={{ x: true }}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: total,
+          showSizeChanger: true,
+          pageSizeOptions: ["5", "10", "20", "50"],
+          onChange: (page, limit) => {
+            fetchOrders(page, limit);
+          },
+        }}
       />
     </div>
   );

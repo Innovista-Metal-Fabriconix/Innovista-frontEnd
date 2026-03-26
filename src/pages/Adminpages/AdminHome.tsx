@@ -57,6 +57,7 @@ function AdminHome() {
           fontSize: "28px",
           fontWeight: "600",
           letterSpacing: "0.5px",
+          fontFamily: "revert-layer",
         }}
       >
         Create Admin

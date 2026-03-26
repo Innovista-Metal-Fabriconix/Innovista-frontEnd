@@ -1,4 +1,4 @@
-  import ServiceComponent from "./ServiceComponent";
+import ServiceComponent from "./ServiceComponent";
 import { services } from "../Context/services.tsx";
 import MainHeading from "./MainHeading.tsx";
 

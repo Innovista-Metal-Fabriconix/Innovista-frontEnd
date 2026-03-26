@@ -1,21 +1,41 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Table, Button, Popconfirm, message, Image, Tooltip } from "antd";
 import AxiosConfig from "../../Context/AxiosConfig";
 
+type Project = {
+  ProjectID: number;
+  Project_Title: string;
+  Project_Description: string;
+  Project_Images: string[];
+  Location: string;
+  Client_Name: string;
+  Client_Email: string;
+  Budget: number;
+};
+
 function ViewallProjects() {
-  const [allProjects, setAllProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [hoveredRow, setHoveredRow] = useState(null);
+  const [allProjects, setAllProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
+  // Pagination state (industry standard)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [total, setTotal] = useState(0);
 
-  const fetchProjects = async () => {
+  const [hoveredRow, setHoveredRow] = useState<number | null>(null);
+
+  // Fetch projects with pagination
+  const fetchProjects = async (page = 1, limit = 10) => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        "http://localhost:4000/projects/getAllProjects"
-      );
-      setAllProjects(response.data.projects || []);
+
+      const response = await AxiosConfig.get("/projects/getAllProjects", {
+        params: { page, limit },
+      });
+      setAllProjects(response.data.data);
+      setTotal(response.data.total);
+      setCurrentPage(response.data.page);
+      setPageSize(response.data.limit);
     } catch (err) {
       console.error(err);
       message.error("Failed to load projects.");
@@ -25,14 +45,20 @@ function ViewallProjects() {
   };
 
   useEffect(() => {
-    fetchProjects();
+    fetchProjects(currentPage, pageSize);
   }, []);
 
+  // Delete project
   const deleteProject = async (id: number) => {
     try {
-      await AxiosConfig.delete(`/projects/deleteProject?ProjectID=${id}`);
+      await AxiosConfig.delete("/projects/deleteProject", {
+        params: { ProjectID: id },
+      });
+
       message.success("Project deleted successfully!");
-      fetchProjects();
+
+      // Refetch current page after delete
+      fetchProjects(currentPage, pageSize);
     } catch (err) {
       console.error(err);
       message.error("Failed to delete project.");
@@ -52,7 +78,7 @@ function ViewallProjects() {
       key: "Project_Description",
       width: 250,
       ellipsis: true,
-      render: (text, record) => (
+      render: (text: string, record: Project) => (
         <Tooltip
           title={text}
           open={hoveredRow === record.ProjectID}
@@ -66,8 +92,8 @@ function ViewallProjects() {
       title: "Images",
       dataIndex: "Project_Images",
       key: "Project_Images",
-        width: 150,
-      render: (images) =>
+      width: 180,
+      render: (images: string[]) =>
         images?.length ? (
           <div style={{ display: "flex", gap: 10 }}>
             {images.map((url, i) => (
@@ -81,7 +107,7 @@ function ViewallProjects() {
             ))}
           </div>
         ) : (
-          "No Images"
+          <span>No Images</span>
         ),
     },
     {
@@ -106,14 +132,14 @@ function ViewallProjects() {
       title: "Budget",
       dataIndex: "Budget",
       key: "Budget",
-      width: 100,
-      render: (value) => `$ ${value}`,
+      width: 120,
+      render: (value: number) => `RS.  ${value}`,
     },
     {
       title: "Actions",
       key: "actions",
       width: 120,
-      render: (_, record) => (
+      render: (_: unknown, record: Project) => (
         <Popconfirm
           title="Delete Project?"
           description="Are you sure you want to delete this project?"
@@ -128,8 +154,20 @@ function ViewallProjects() {
   ];
 
   return (
-    <div style={{ padding: 40 , textAlign: 'center' , fontSize: '18px' }}>
-      <h2>All Projects</h2>
+    <div style={{ padding: 40, textAlign: "center", fontSize: "18px" }}>
+      <h2
+        style={{
+          textAlign: "center",
+          marginTop: "30px",
+          marginBottom: "25px",
+          fontSize: "28px",
+          fontWeight: "600",
+          letterSpacing: "0.5px",
+          fontFamily: "revert-layer",
+        }}
+      >
+        All Projects
+      </h2>
 
       <Table
         columns={columns}
@@ -137,11 +175,20 @@ function ViewallProjects() {
         loading={loading}
         rowKey="ProjectID"
         bordered
-        pagination={{ pageSize: 5 }}
         onRow={(record) => ({
           onMouseEnter: () => setHoveredRow(record.ProjectID),
           onMouseLeave: () => setHoveredRow(null),
         })}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: total,
+          showSizeChanger: true,
+          pageSizeOptions: ["5", "10", "20", "50"],
+          onChange: (page, limit) => {
+            fetchProjects(page, limit);
+          },
+        }}
       />
     </div>
   );

@@ -1,23 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Button,
   Card,
   Input,
   Form,
-  Typography,
   Space,
-  Divider,
   DatePicker,
   InputNumber,
   message,
-  Upload,
 } from "antd";
-import { UploadOutlined, DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined } from "@ant-design/icons";
 import SidebarOFADmin from "../../components/SidebarOFADmin";
 import ViewallProjects from "./ViewallProjects";
 import AxiosConfig from "../../Context/AxiosConfig";
 
-const { Title } = Typography;
+// Removed unused Title destructuring
 const { TextArea } = Input;
 
 function AddProjects() {
@@ -56,11 +53,10 @@ function AddProjects() {
       setImages((prev) => [...prev, result.secure_url]);
 
       message.success("Image uploaded successfully!");
-    } catch (error) {
+    } catch {
       message.error("Upload error");
     }
   };
-
 
   const removeImage = (url: string) => {
     setImages(images.filter((img) => img !== url));
@@ -80,7 +76,7 @@ function AddProjects() {
       message.success("Project created successfully!");
       form.resetFields();
       setImages([]);
-    } catch (error) {
+    } catch {
       message.error("Failed to create project");
     }
   };
@@ -89,10 +85,19 @@ function AddProjects() {
     <>
       <SidebarOFADmin />
 
-      <Card style={{ maxWidth: 700, margin: "20px auto", padding: 20 }}>
-        <Title level={3}>Add New Project</Title>
-        <Divider />
-
+      <Card style={{ maxWidth: 700, margin: "60px auto", padding: 10}}>
+        <h2
+          style={{
+            textAlign: "center",
+            fontSize: "28px",
+            marginBottom:"10px",
+            fontWeight: "600",
+            letterSpacing: "0.5px",
+            fontFamily: "revert-layer",
+          }}
+        >
+          Add New Project
+        </h2>
         <Form form={form} layout="vertical" onFinish={onFinish}>
           <Form.Item
             label="Project Title"
@@ -110,9 +115,8 @@ function AddProjects() {
             <TextArea rows={4} placeholder="Enter project description" />
           </Form.Item>
 
-
           <Form.Item label="Upload Project Images">
-            <input
+            <Input
               type="file"
               accept="image/*"
               onChange={(e) => handleImageUpload(e, "Project_Images")}
@@ -139,7 +143,6 @@ function AddProjects() {
               ))}
             </div>
           </Form.Item>
-        
 
           <Form.Item
             label="Location"
@@ -182,16 +185,19 @@ function AddProjects() {
               style={{ width: "100%" }}
               min={0}
               placeholder="Enter budget"
-              formatter={(value) => `$ ${value}`}
+              formatter={(value) => `RS .  ${value}`}
             />
           </Form.Item>
 
           <Form.Item>
-            <Space>
+            <Space style={{ width: "100%", justifyContent: "space-between" }}>
               <Button type="primary" htmlType="submit">
                 Submit
               </Button>
-              <Button onClick={() => form.resetFields()}>Reset</Button>
+
+              <Button onClick={() => form.resetFields()}>
+                Reset
+              </Button>
             </Space>
           </Form.Item>
         </Form>

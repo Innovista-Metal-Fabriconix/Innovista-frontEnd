@@ -52,14 +52,27 @@ function CreateCustomer() {
       } else {
         message.error("Failed to register customer");
       }
-    } catch (err: any) {
-      message.error("Error: " + err.message);
+    } catch  {
+      message.error("An error occurred while registering the customer");
     }
   };
 
+
+    
+
   return (
-    <div style={{ maxWidth: 600, margin: "0 auto", padding: 20 }}>
-      <h2 style={{ textAlign: "center", marginBottom: 20 }}>
+      <div style={{ maxWidth: 600, margin: "0 auto", padding: 20, border: "solid gray 1px" , marginTop:"60px" }}>
+      <h2
+        style={{
+          textAlign: "center",
+          marginTop: "30px",
+          marginBottom: "25px",
+          fontSize: "28px",
+          fontWeight: "600",
+          letterSpacing: "0.5px",
+          fontFamily: "revert-layer",
+        }}
+      >
         Register Customer
       </h2>
       <Form form={form} layout="vertical" onFinish={onFinish}>

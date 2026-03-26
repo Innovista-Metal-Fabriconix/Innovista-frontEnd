@@ -1,16 +1,36 @@
 import React, { useState } from "react";
-import { Button, Card, Input, Form, Typography, Space, Divider } from "antd";
+import {
+  Button,
+  Card,
+  Input,
+  Form,
+  Space,
+  Divider,
+  message,
+} from "antd";
 import AxiosConfig from "../Context/AxiosConfig";
 import SidebarOFADmin from "../components/SidebarOFADmin";
 
-const { Title } = Typography;
+// Removed unused Title destructuring
 const { TextArea } = Input;
 
-export default function DesignForm() {
-  const [submitted, setSubmitted] = useState(false);
+/* ✅ 1. Define Type */
+interface DesignFormData {
+  DesignID: number;
+  Design_Name: string;
+  Design_Image: string[];
+  Design_Description: string;
+  Categories: string[];
+  Design_Colors: string[];
+  Design_BlogPosts: string[];
+  Design_Sizes: string[];
+}
 
-  const [formData, setFormData] = useState({
-    DesignID:0,
+export default function DesignForm() {
+  const [submitted, setSubmitted] = useState<boolean>(false);
+
+  const [formData, setFormData] = useState<DesignFormData>({
+    DesignID: 0,
     Design_Name: "",
     Design_Image: [],
     Design_Description: "",
@@ -20,8 +40,11 @@ export default function DesignForm() {
     Design_Sizes: [],
   });
 
-  const handleImageUpload = async (event) => {
-    const file = event.target.files[0];
+  /* ✅ 2. Fix event type */
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
     if (!file) return;
 
     const data = new FormData();
@@ -39,8 +62,9 @@ export default function DesignForm() {
       );
 
       const result = await res.json();
+
       if (!result.secure_url) {
-        alert("Upload failed");
+        message.error("Upload failed");
         return;
       }
 
@@ -48,20 +72,26 @@ export default function DesignForm() {
         ...prev,
         Design_Image: [...prev.Design_Image, result.secure_url],
       }));
-    } catch (error) {
-      alert("Upload error");
+    } catch {
+      message.error("Upload error");
     }
   };
 
-  const handleDeleteImage = (index) => {
+  /* ✅ 3. Fix index typing */
+  const handleDeleteImage = (index: number) => {
     const updated = [...formData.Design_Image];
     updated.splice(index, 1);
     setFormData({ ...formData, Design_Image: updated });
   };
 
-  const handleChange = (e, field, index) => {
+  /* ✅ 4. Strong typing for field */
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    field: keyof DesignFormData,
+    index?: number
+  ) => {
     if (index !== undefined) {
-      const arr = [...formData[field]];
+      const arr = [...(formData[field] as string[])];
       arr[index] = e.target.value;
       setFormData({ ...formData, [field]: arr });
     } else {
@@ -69,17 +99,24 @@ export default function DesignForm() {
     }
   };
 
-  const addArrayField = (field) => {
-    setFormData({ ...formData, [field]: [...formData[field], ""] });
+  const addArrayField = (field: keyof DesignFormData) => {
+    const current = formData[field];
+
+    if (Array.isArray(current)) {
+      setFormData({
+        ...formData,
+        [field]: [...current, ""],
+      });
+    }
   };
 
   const handleSubmit = async () => {
-    console.log(formData);
     try {
       await AxiosConfig.post("/designs/create", formData);
       setSubmitted(true);
+
       setFormData({
-        DesignID:0,
+        DesignID: 0,
         Design_Name: "",
         Design_Image: [],
         Design_Description: "",
@@ -88,17 +125,26 @@ export default function DesignForm() {
         Design_BlogPosts: [],
         Design_Sizes: [],
       });
-    } catch (error) {
-      alert("Error submitting design.");
+    } catch {
+      message.error("Error submitting design.");
     }
   };
 
   if (submitted) {
     return (
       <Card style={{ maxWidth: 600, margin: "40px auto", textAlign: "center" }}>
-        <Title level={3} style={{ color: "green" }}>
+        <h2 style={{
+          textAlign: "center",
+          marginTop: "30px",
+          marginBottom: "25px",
+          fontSize: "28px",
+          fontWeight: "600",
+          letterSpacing: "0.5px",
+          fontFamily: "revert-layer",
+          color: "green"
+        }}>
           🎉 Design Added Successfully!
-        </Title>
+        </h2>
 
         <Button type="primary" onClick={() => setSubmitted(false)}>
           Add Another
@@ -111,11 +157,21 @@ export default function DesignForm() {
     <>
       <SidebarOFADmin />
 
-      <Card style={{ maxWidth: 650, margin: "40px auto" }}>
-        <Title level={3} style={{ textAlign: "center" }}>
+      <Card style={{ maxWidth: 650, margin: "40px auto", marginBottom: "100px" }}>
+        <h2
+          style={{
+            textAlign: "center",
+            marginTop: "30px",
+            marginBottom: "25px",
+            fontSize: "28px",
+            fontWeight: "600",
+            letterSpacing: "0.5px",
+            fontFamily: "revert-layer",
+          }}
+        >
           Add New Design
-        </Title>
-        <Divider />
+        </h2>
+     
 
         <Form layout="vertical" onFinish={handleSubmit}>
           <Form.Item label="Design Name">
@@ -134,7 +190,7 @@ export default function DesignForm() {
           </Form.Item>
 
           <Form.Item label="Upload Images">
-            <input type="file" onChange={handleImageUpload} />
+            <Input type="file" onChange={handleImageUpload} />
 
             <Space direction="vertical" style={{ marginTop: 10 }}>
               {formData.Design_Image.map((img, i) => (
@@ -166,15 +222,17 @@ export default function DesignForm() {
             </Space>
           </Form.Item>
 
-          {[
-            "Categories",
-            "Design_Colors",
-            "Design_BlogPosts",
-            "Design_Sizes",
-          ].map((field) => (
+          {(
+            [
+              "Categories",
+              "Design_Colors",
+              "Design_BlogPosts",
+              "Design_Sizes",
+            ] as (keyof DesignFormData)[]
+          ).map((field) => (
             <Form.Item key={field} label={field.replace(/_/g, " ")}>
               <Space direction="vertical" style={{ width: "100%" }}>
-                {formData[field].map((val, i) => (
+                {(formData[field] as string[]).map((val, i) => (
                   <Input
                     key={i}
                     value={val}

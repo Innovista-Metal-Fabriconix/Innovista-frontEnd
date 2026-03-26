@@ -9,7 +9,6 @@ import {
   Form,
   Input,
   Typography,
-  Spin,
   Popconfirm,
 } from "antd";
 
@@ -31,45 +30,65 @@ interface Design {
 
 function ViewAllDesigns() {
   const [designs, setDesigns] = useState<Design[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  // Pagination state (industry standard)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [total, setTotal] = useState(0);
+
   const [editingDesign, setEditingDesign] = useState<Design | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    fetch("http://localhost:4000/designs/all")
-      .then((res) => res.json())
-      .then((data) => {
-        setDesigns(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching designs:", err);
-        setLoading(false);
-      });
-  }, []);
+  // Fetch designs with pagination
+  const fetchDesigns = async (page = 1, limit = 10) => {
+    try {
+      setLoading(true);
 
-  const handleDelete = (designId: number | string) => {
-    console.log(designId);
-
-    AxiosConfig.delete("/designs/deleteDesign", {
-      params: { designId },
-    })
-      .then(() => {
-        setDesigns((prev) =>
-          prev.filter(
-            (design) => design.DesignID.toString() !== designId.toString()
-          )
-        );
-      })
-      .catch((err) => {
-        console.error("Error deleting design:", err.response?.data || err);
+      const res = await AxiosConfig.get("/designs/all", {
+        params: { page, limit },
       });
+
+      setDesigns(res.data.data);
+      setTotal(res.data.total);
+      setCurrentPage(res.data.page);
+      setPageSize(res.data.limit);
+    } catch (err) {
+      console.error("Error fetching designs:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  useEffect(() => {
+    fetchDesigns(currentPage, pageSize);
+  }, []);
+
+  // Delete
+  const handleDelete = async (designId: number | string) => {
+    try {
+      await AxiosConfig.delete("/designs/deleteDesign", {
+        params: { designId },
+      });
+
+      // Refetch current page after delete
+      fetchDesigns(currentPage, pageSize);
+    } catch (err: unknown) {
+      if (err && typeof err === "object" && "response" in err) {
+        // @ts-expect-error: err.response might exist
+        console.error("Error deleting design:", err.response?.data || err);
+      } else {
+        console.error("Error deleting design:", err);
+      }
+    }
+  };
+
+  // Edit
   const handleEdit = (design: Design) => {
     setEditingDesign(design);
     setIsModalVisible(true);
+
     form.setFieldsValue({
       ...design,
       Categories: design.Categories?.join(", "),
@@ -80,8 +99,11 @@ function ViewAllDesigns() {
     });
   };
 
-  const handleUpdate = () => {
-    form.validateFields().then((values) => {
+  // Update
+  const handleUpdate = async () => {
+    try {
+      const values = await form.validateFields();
+
       const payload: Design = {
         ...values,
         DesignID: editingDesign?.DesignID || 0,
@@ -102,19 +124,22 @@ function ViewAllDesigns() {
           : [],
       };
 
-      AxiosConfig.put("/designs/updateDesign", payload)
-        .then(() => {
-          setDesigns((prev) =>
-            prev.map((d) => (d.DesignID === payload.DesignID ? payload : d))
-          );
-          setIsModalVisible(false);
-          setEditingDesign(null);
-          form.resetFields();
-        })
-        .catch((err) => {
-          console.error("Error updating design:", err.response?.data || err);
-        });
-    });
+      await AxiosConfig.put("/designs/updateDesign", payload);
+
+      setIsModalVisible(false);
+      setEditingDesign(null);
+      form.resetFields();
+
+      // Refetch current page
+      fetchDesigns(currentPage, pageSize);
+    } catch (err: unknown) {
+      if (err && typeof err === "object" && "response" in err) {
+        // @ts-expect-error: err.response might exist
+        console.error("Error updating design:", err.response?.data || err);
+      } else {
+        console.error("Error updating design:", err);
+      }
+    }
   };
 
   const columns = [
@@ -191,7 +216,7 @@ function ViewAllDesigns() {
     {
       title: "Actions",
       key: "actions",
-      render: (_: any, record: Design) => (
+      render: (_: unknown, record: Design) => (
         <Space>
           <Button type="primary" onClick={() => handleEdit(record)}>
             Edit
@@ -212,25 +237,29 @@ function ViewAllDesigns() {
   return (
     <>
       <SidebarOFADmin />
-      <div style={{ padding: "20px" }}>
+
+      <div style={{ padding: "20px", margin:"40px 0px" , marginBottom:"20px" }}>
         <Title level={3} style={{ textAlign: "center" }}>
           View All Designs
         </Title>
 
-        {loading ? (
-          <Spin
-            size="large"
-            style={{ display: "block", margin: "50px auto" }}
-          />
-        ) : (
-          <Table
-            rowKey="DesignID"
-            columns={columns}
-            dataSource={designs}
-            bordered
-            pagination={{ pageSize: 5 }}
-          />
-        )}
+        <Table
+          rowKey="DesignID"
+          columns={columns}
+          dataSource={designs}
+          loading={loading}
+          bordered
+          pagination={{
+            current: currentPage,
+            pageSize: pageSize,
+            total: total,
+            showSizeChanger: true,
+            pageSizeOptions: ["5", "10", "20", "50"],
+            onChange: (page, limit) => {
+              fetchDesigns(page, limit);
+            },
+          }}
+        />
 
         {/* Edit Modal */}
         <Modal

@@ -22,10 +22,13 @@ import TargetCursor from "../components/cursor/TragetCursor";
 import AddProjects from "../pages/Adminpages/AddProjects";
 import DesignViwe from "../pages/DesignViwe";
 import OrderCart from "../pages/OrderCart";
+import Milestones from "../pages/Milestones";
+import ScrollToTop from "../components/ScrollToTop";
 
 function PageRoute() {
   return (
     <Router>
+      <ScrollToTop />
       <div style={{ position: "relative", minHeight: "100vh" }}>
         <TargetCursor spinDuration={2} hideDefaultCursor={true} />
         <Navbar />
@@ -51,6 +54,7 @@ function PageRoute() {
             <Route path="/AddProjects" element={<AddProjects />} />
             <Route path="/DesignViwe" element={<DesignViwe />} />
             <Route path="/OrderCart" element={<OrderCart />} />
+            <Route path="/milestones" element={<Milestones />} />
           </Routes>
         </main>
         <Footer />

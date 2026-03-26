@@ -1,0 +1,57 @@
+.section {
+  padding: 50px 5%;
+  text-align: center;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.findOutBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  font-size: var(--text-paragraph-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  background: transparent;
+  border: 2px solid var(--color-primary);
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+}
+
+.findOutBtn:hover {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.arrow {
+  font-size: 1.1em;
+  transition: transform 0.3s ease;
+}
+
+.findOutBtn:hover .arrow {
+  transform: translate(3px, -3px);
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 40px 20px;
+  }
+
+  .findOutBtn {
+    padding: 10px 24px;
+    font-size: var(--text-caption);
+  }
+}
+
+@media (max-width: 400px) {
+  .section {
+    padding: 30px 15px;
+  }
+}

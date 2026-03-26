@@ -25,24 +25,23 @@ type FieldType = {
 function AdminLogin() {
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     try {
+      console.log(values.username, values.password);
       const response = await axios.post(
-        `http://localhost:4000/auth/login?email=${values.username}&password=${values.password}`
+        `https://innovista-backend-hvt3.vercel.app/auth/login?email=${values.username}&password=${values.password}`,
       );
 
-      message.success("Login successful!");
-
+      alert(response.data.message);
       sessionStorage.setItem("accessToken", response.data.tokens.accessToken);
       localStorage.setItem("refreshToken", response.data.tokens.refreshToken);
 
       window.location.href = "/admin-home";
-    } catch (error: any) {
-      
-      alert(error.response?.data?.message);
+    } catch {
+      message.error("Login failed! Please check your credentials.");
     }
   };
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-    errorInfo
+    errorInfo,
   ) => {
     console.log("Validation Failed:", errorInfo);
   };
@@ -53,11 +52,10 @@ function AdminLogin() {
   const HandleEmailSubmit = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/auth/ResetPassword?email=${AdminEmail}`
+        `https://innovista-backend-hvt3.vercel.app/auth/ResetPassword?email=${AdminEmail}`,
       );
-
-      console.log("Email submitted successfully", response);
-      setIsModalOpen(true); // open dialog box
+      alert(response.data.message);
+      setIsModalOpen(false);
     } catch (error) {
       console.error("Error submitting email:", error);
       Modal.error({
@@ -176,7 +174,7 @@ function AdminLogin() {
               </Form>
             </Card>
           </Col>
-          <div >
+          <div>
             <p
               style={{
                 textAlign: "center",
@@ -194,7 +192,7 @@ function AdminLogin() {
               onCancel={() => setIsModalOpen(false)}
               footer={null}
               style={{
-                marginTop:"240px"
+                marginTop: "240px",
               }}
             >
               <p
