@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { Table, Tag, Image, Select, message } from "antd";
 import AxiosConfig from "../../Context/AxiosConfig";
 import XlfileGenerate from "./XlfileGenerate";
