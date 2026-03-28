@@ -81,3 +81,28 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+.submit-btn-red {
+  border-radius: 10px;
+  border: 1px solid transparent;
+  padding: 11px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--color-logo-red);
+  color: var(--color-white);
+  box-shadow: 0 8px 22px rgba(230, 0, 0, 0.22);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.submit-btn-red:hover {
+  transform: translateY(-1px);
+}
+
+.submit-btn-red:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
