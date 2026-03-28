@@ -50,9 +50,6 @@ function ViewAllDesigns() {
         params: { page, limit },
       });
 
-      // Expected response shape:
-      // { data: Design[], total: number, page: number, limit: number }
-
       setDesigns(res.data.data);
       setTotal(res.data.total);
       setCurrentPage(res.data.page);
@@ -241,7 +238,7 @@ function ViewAllDesigns() {
     <>
       <SidebarOFADmin />
 
-      <div style={{ padding: "20px" }}>
+      <div style={{ padding: "20px", margin:"40px 0px" , marginBottom:"20px" }}>
         <Title level={3} style={{ textAlign: "center" }}>
           View All Designs
         </Title>

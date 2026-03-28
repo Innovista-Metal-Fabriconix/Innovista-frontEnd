@@ -183,7 +183,7 @@ function Projects() {
                       >
                         <Tag color="blue">📍 {project.Location}</Tag>
                         <Tag color="green">
-                          ${project.Budget.toLocaleString()}
+                          RS. {project.Budget.toLocaleString()} .00
                         </Tag>
                       </div>
 

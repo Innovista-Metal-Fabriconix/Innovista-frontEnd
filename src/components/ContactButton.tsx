@@ -1,15 +1,24 @@
+import React from 'react';
 import styled from 'styled-components';
 
-const ContactButton = () => {
+interface ContactButtonProps {
+  onClick?: () => void;
+  [key: string]: any;
+}
+
+const ContactButton: React.FC<ContactButtonProps> = ({ onClick, ...props }) => {
   return (
-    <StyledWrapper>
+    <StyledWrapper {...props}>
       <div>
-        <button className="btn cursor-target"><i className="animation" />Contact Us<i className="animation" />
+        <button className="btn cursor-target" onClick={onClick}>
+          <i className="animation" />
+          Contact Us
+          <i className="animation" />
         </button>
       </div>
     </StyledWrapper>
   );
-}
+};
 
 const StyledWrapper = styled.div`
   .btn {

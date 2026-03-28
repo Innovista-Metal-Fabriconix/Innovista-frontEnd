@@ -1,6 +1,19 @@
-import { Button, Modal, Input, Form, message } from "antd";
+import {
+  Button,
+  Modal,
+  Input,
+  Form,
+  message,
+  Card,
+  Row,
+  Col,
+  Typography,
+  Empty,
+} from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
+
+const { Title, Text } = Typography;
 
 interface DesignDetails {
   DesignID: number;
@@ -14,10 +27,7 @@ function OrderCart() {
   const [cart, setCart] = useState<number[]>([]);
   const [cardDetails, setCardDetails] = useState<DesignDetails[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const [clientName, setClientName] = useState("");
-  const [clientEmail, setClientEmail] = useState("");
-  const [clientNumber, setClientNumber] = useState("");
+  const [form] = Form.useForm();
 
   useEffect(() => {
     loadCart();
@@ -26,6 +36,8 @@ function OrderCart() {
   useEffect(() => {
     if (cart.length > 0) {
       fetchCardDetails();
+    } else {
+      setCardDetails([]);
     }
   }, [cart]);
 
@@ -37,12 +49,12 @@ function OrderCart() {
   const fetchCardDetails = async () => {
     try {
       const ids = cart.join(",");
-      const response = await axios.get(
-        `http://localhost:4000/designs/DesignDetails?ids=${ids}`
+      const { data } = await axios.get(
+        `https://innovista-backend-hvt3.vercel.app/designs/DesignDetails?ids=${ids}`
       );
-      setCardDetails(response.data);
+      setCardDetails(data);
     } catch (error) {
-      console.error("Error fetching card details:", error);
+      message.error("Failed to load cart items");
     }
   };
 
@@ -50,175 +62,134 @@ function OrderCart() {
     const updatedCart = cart.filter((item) => item !== id);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     setCart(updatedCart);
-    setCardDetails(cardDetails.filter((item) => item.DesignID !== id));
+    message.success("Item removed from cart");
   };
 
   const openOrderDialog = () => {
-    if (cart.length === 0) {
-      message.error("Your cart is empty!");
+    if (!cart.length) {
+      message.warning("Your cart is empty!");
       return;
     }
     setIsModalOpen(true);
   };
 
-  const createOrder = async () => {
-    if (!clientName || !clientEmail || !clientNumber) {
-      message.error("Please fill all client details.");
-      return;
-    }
-
-    const orderPayload = {
+  const createOrder = async (values: any) => {
+    const payload = {
       Order_Status: "PENDING",
-      Client_Name: clientName,
-      Client_Email: clientEmail,
-      Client_Number: clientNumber,
+      Client_Name: values.name,
+      Client_Email: values.email,
+      Client_Number: values.phone,
       Designs: cart.map((id) => ({ DesignID: id })),
     };
 
     try {
-      const res = await axios.post(
-        "http://localhost:4000/order/createOrder",
-        orderPayload
+      await axios.post(
+        "https://innovista-backend-hvt3.vercel.app/order/createOrder",
+        payload
       );
-      console.log("Order created successfully:", res.data);
-      message.success("Order successfully created!");
 
+      message.success("Order placed successfully!");
       localStorage.removeItem("cart");
       setCart([]);
-      setCardDetails([]);
       setIsModalOpen(false);
+      form.resetFields();
     } catch (error) {
       message.error("Failed to create order");
-      console.error("Order creation error:", error);
     }
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1
-        style={{
-          textAlign: "center",
-          color: "gray",
-          fontFamily: "revert-layer",
-          fontSize: "30px",
-          margin: "20px",
-        }}
-      >
+    <div style={{ padding: "24px" , margin:"30px 0" }}>
+      <Title level={2} style={{ textAlign: "center", color: "#555" , marginBottom:"30px" }}>
         Order Cart
-      </h1>
+      </Title>
 
-      <div
-        style={{
-          border: "2px solid black",
-          borderRadius: "10px",
-          padding: "20px",
-        }}
-      >
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-            gap: "20px",
-            marginTop: "20px",
-          }}
-        >
+      {cardDetails.length === 0 ? (
+        <Empty description="No items in your cart" />
+      ) : (
+        <Row gutter={[16, 16]}>
           {cardDetails.map((design) => (
-            <div
-              key={design.DesignID}
-              style={{
-                border: "1px solid #ddd",
-                borderRadius: "10px",
-                padding: "15px",
-                boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
-                backgroundColor: "white",
-              }}
-            >
-              <img
-                src={design.Design_Image[0]}
-                alt={design.Design_Name}
-                style={{
-                  width: "100%",
-                  height: "200px",
-                  objectFit: "cover",
-                  borderRadius: "10px",
-                }}
-              />
-
-              <h2 style={{ marginTop: "10px" }}>{design.Design_Name}</h2>
-              <p style={{ color: "#666" }}>{design.Design_Description}</p>
-
-              {design?.price && (
-                <p style={{ fontWeight: "bold" }}>Price: ₹{design.price}</p>
-              )}
-
-              <button
-                onClick={() => removeDesign(design.DesignID)}
-                style={{
-                  marginTop: "10px",
-                  backgroundColor: "red",
-                  color: "white",
-                  padding: "10px 15px",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                  width: "100%",
-                }}
+            <Col xs={24} sm={12} md={8} lg={6} key={design.DesignID}>
+              <Card
+                hoverable
+                cover={
+                  <img
+                    src={design.Design_Image[0]}
+                    alt={design.Design_Name}
+                    style={{ height: 200, objectFit: "cover" }}
+                  />
+                }
               >
-                Remove
-              </button>
-            </div>
-          ))}
-        </div>
+                <Title level={5}>{design.Design_Name}</Title>
+                <Text type="secondary">
+                  {design.Design_Description}
+                </Text>
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: "20px",
-          }}
-        >
-          <Button
-            style={{ backgroundColor: "blueviolet", color: "white" }}
-            onClick={openOrderDialog}
-          >
-            Order
-          </Button>
-        </div>
+                {design.price && (
+                  <div style={{ marginTop: 10 }}>
+                    <Text strong>Price: ₹{design.price}</Text>
+                  </div>
+                )}
+
+                <Button
+                  danger
+                  block
+                  style={{ marginTop: 12 }}
+                  onClick={() => removeDesign(design.DesignID)}
+                >
+                  Remove
+                </Button>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      )}
+
+      <div style={{ textAlign: "center", marginTop: 30 ,marginBottom:"30px" }}>
+        <Button type="primary" size="large" onClick={openOrderDialog}>
+          Place Order
+        </Button>
       </div>
 
-      {/* Order Dialog */}
+      {/* Order Modal */}
       <Modal
         title="Place Your Order"
         open={isModalOpen}
-        onOk={createOrder}
         onCancel={() => setIsModalOpen(false)}
-        okText="Submit Order"
+        footer={null}
       >
-        <Form layout="vertical">
-          <Form.Item label="Client Name" required>
-            <Input
-              value={clientName}
-              onChange={(e) => setClientName(e.target.value)}
-              placeholder="Enter client name"
-            />
+        <Form layout="vertical" form={form} onFinish={createOrder}>
+          <Form.Item
+            label="Client Name"
+            name="name"
+            rules={[{ required: true, message: "Please enter your name" }]}
+          >
+            <Input placeholder="Enter client name" />
           </Form.Item>
 
-          <Form.Item label="Client Email" required>
-            <Input
-              type="email"
-              value={clientEmail}
-              onChange={(e) => setClientEmail(e.target.value)}
-              placeholder="Enter client email"
-            />
+          <Form.Item
+            label="Client Email"
+            name="email"
+            rules={[
+              { required: true, message: "Please enter your email" },
+              { type: "email", message: "Enter a valid email" },
+            ]}
+          >
+            <Input placeholder="Enter client email" />
           </Form.Item>
 
-          <Form.Item label="Client Number" required>
-            <Input
-              value={clientNumber}
-              onChange={(e) => setClientNumber(e.target.value)}
-              placeholder="Enter client phone number"
-            />
+          <Form.Item
+            label="Client Number"
+            name="phone"
+            rules={[{ required: true, message: "Enter phone number" }]}
+          >
+            <Input placeholder="Enter phone number" />
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" block>
+              Submit Order
+            </Button>
           </Form.Item>
         </Form>
       </Modal>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -17,7 +17,7 @@ function CustomerVerify() {
     }
 
     axios
-      .post(`http://localhost:4000/customer/verifyCustomer?customerId=${customerId}`)
+      .post(`https://innovista-backend-hvt3.vercel.app/customer/verifyCustomer?customerId=${customerId}`)
       .then((res) => {
         if (res.data && res.data.message === "Email verified successfully") {
           setMessage("✅ You verified your account successfully!");

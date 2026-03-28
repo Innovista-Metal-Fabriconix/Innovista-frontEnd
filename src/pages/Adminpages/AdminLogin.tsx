@@ -25,8 +25,9 @@ type FieldType = {
 function AdminLogin() {
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     try {
+      console.log(values.username, values.password);
       const response = await axios.post(
-        `http://localhost:4000/auth/login?email=${values.username}&password=${values.password}`,
+        `https://innovista-backend-hvt3.vercel.app/auth/login?email=${values.username}&password=${values.password}`,
       );
 
       alert(response.data.message);
@@ -51,10 +52,10 @@ function AdminLogin() {
   const HandleEmailSubmit = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/auth/ResetPassword?email=${AdminEmail}`,
+        `https://innovista-backend-hvt3.vercel.app/auth/ResetPassword?email=${AdminEmail}`,
       );
       alert(response.data.message);
-      setIsModalOpen(false); 
+      setIsModalOpen(false);
     } catch (error) {
       console.error("Error submitting email:", error);
       Modal.error({

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import {
   Table,
   Tag,
   Image,
-  Typography,
   Space,
   Button,
   Modal,
@@ -14,7 +13,7 @@ import {
 } from "antd";
 import AxiosConfig from "../../../Context/AxiosConfig";
 
-const { Title } = Typography;
+// Removed unused Title destructuring
 
 type Customer = {
   CustomerId: number;
@@ -49,9 +48,6 @@ function PreviewCustomer() {
       const response = await AxiosConfig.get("/customer/getAllCustomers", {
         params: { page, limit },
       });
-
-      // Expected response:
-      // { data: Customer[], total: number, page: number, limit: number }
 
       setCustomers(response.data.data);
       setTotal(response.data.total);
@@ -119,7 +115,6 @@ function PreviewCustomer() {
       setEditingCustomer(null);
       form.resetFields();
 
-      // Refetch current page after update
       fetchCustomers(currentPage, pageSize);
     } catch (error) {
       console.error("Error updating customer:", error);
@@ -127,11 +122,7 @@ function PreviewCustomer() {
   };
 
   const columns = [
-    {
-      title: "Customer ID",
-      dataIndex: "CustomerId",
-      key: "CustomerId",
-    },
+
     {
       title: "Name",
       dataIndex: "Cus_Name",
@@ -207,8 +198,20 @@ function PreviewCustomer() {
   ];
 
   return (
-    <div style={{ maxWidth: 1200, margin: "0 auto", padding: "20px" }}>
-      <Title level={3}>Customer List</Title>
+    <div style={{ margin: "30px", padding: "20px" }}>
+      <h2
+        style={{
+          textAlign: "center",
+          marginTop: "30px",
+          marginBottom: "25px",
+          fontSize: "28px",
+          fontWeight: "600",
+          letterSpacing: "0.5px",
+          fontFamily: "revert-layer",
+        }}
+      >
+        Customer List
+      </h2>
 
       <Table
         rowKey="CustomerId"

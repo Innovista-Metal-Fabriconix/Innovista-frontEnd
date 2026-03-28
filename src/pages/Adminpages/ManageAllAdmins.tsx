@@ -63,6 +63,7 @@ const ManageAllAdmins: React.FC = () => {
       title: "Name",
       dataIndex: "Admin_Name",
       key: "Admin_Name",
+      
     },
     {
       title: "Email",
@@ -111,13 +112,26 @@ const ManageAllAdmins: React.FC = () => {
 
   return (
     <Spin spinning={loading} tip="Loading admins...">
+      <h2
+        style={{
+          textAlign: "center",
+          marginTop: "30px",
+          marginBottom: "25px",
+          fontSize: "28px",
+          fontWeight: "600",
+          letterSpacing: "0.5px",
+          fontFamily: "revert-layer",
+        }}
+      >
+        Manage Admins
+      </h2>
       <Table<AdminType>
         columns={columns}
         dataSource={data}
         rowKey="AdminId"
         pagination={{ pageSize: 5 }}
         style={{
-          margin: "20px",
+          margin: "50px",
         }}
       />
     </Spin>

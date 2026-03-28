@@ -17,7 +17,7 @@ function AdminFeedback() {
     try {
       setLoading(true);
       const response = await axios.get(
-        "http://localhost:4000/feedback/allFeedbacks",{
+        "https://innovista-backend-hvt3.vercel.app/feedback/allFeedbacks",{
           params: { page, limit },  
         }
       );
@@ -128,7 +128,17 @@ function AdminFeedback() {
   return (
     <div style={{ padding: 20 }}>
       <SidebarOFADmin />
-      <h2 style={{ textAlign: "center", margin: "20px 0" }}>
+      <h2
+        style={{
+          textAlign: "center",
+          marginTop: "30px",
+          marginBottom: "25px",
+          fontSize: "28px",
+          fontWeight: "600",
+          letterSpacing: "0.5px",
+          fontFamily: "revert-layer",
+        }}
+      >
         Admin Feedback Page
       </h2>
       <Table

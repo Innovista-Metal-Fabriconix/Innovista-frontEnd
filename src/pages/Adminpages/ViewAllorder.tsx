@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { Table, Tag, Image, Select, message } from "antd";
 import AxiosConfig from "../../Context/AxiosConfig";
 import XlfileGenerate from "./XlfileGenerate";
@@ -73,16 +73,8 @@ function ViewAllorder() {
   const updateOrderStatus = async (orderId: string, status: OrderStatus) => {
     try {
       setLoadingOrder(orderId);
-
-      await AxiosConfig.put("/order/ChangeStates", null, {
-        params: {
-          orderId,
-          Status: status,
-        },
-      });
-
+      await AxiosConfig.put(`/order/ChangeStates?orderId=${orderId}&Status=${status}`);
       message.success(`Status updated to ${status}!`);
-
       // Refetch current page after update (industry standard)
       fetchOrders(currentPage, pageSize);
     } catch (error) {
@@ -212,19 +204,21 @@ function ViewAllorder() {
   ];
 
   return (
-    <div style={{ padding: 20 }}>
+    <div style={{ padding: 20, marginTop: "20px" }}>
       <h2
         style={{
-          marginBottom: 10,
           textAlign: "center",
-          fontSize: "24px",
-          padding: "10px",
+          marginTop: "30px",
+          marginBottom: "25px",
+          fontSize: "28px",
+          fontWeight: "600",
+          letterSpacing: "0.5px",
+          fontFamily: "revert-layer",
         }}
       >
-        📦 All Orders
+        All Orders
       </h2>
 
-      {/* Export only current page OR all? (depends on backend support) */}
       <XlfileGenerate orders={orders} />
 
       <Table
