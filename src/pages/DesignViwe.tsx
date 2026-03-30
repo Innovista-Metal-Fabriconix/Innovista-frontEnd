@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import { Button } from "antd";
+import { Button, Spin, Empty, message } from "antd";
 
 interface Design {
   DesignID: string;
@@ -18,18 +18,31 @@ interface Design {
 function DesignView() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-
-  const [designs, setDesigns] = useState<Design[]>([]);
   const category = params.get("category");
 
+  const [designs, setDesigns] = useState<Design[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // ✅ Axios instance (cleaner for future scaling)
+  const api = axios.create({
+    baseURL: import.meta.env.VITE_API_URL || "http://localhost:4000",
+  });
+
   const fetchCategoryDetails = async (categoryName: string) => {
+    setLoading(true);
+    setError("");
+
     try {
-      const response = await axios.get(
-        `https://innovista-backend-hvt3.vercel.app/designs/byCategory?category=${categoryName}`
+      const { data } = await api.get(
+        `/designs/byCategory?category=${categoryName}`
       );
-      setDesigns(response.data);
-    } catch (error) {
-      console.error("Error fetching category details:", error);
+      setDesigns(data);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to load designs. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -37,158 +50,164 @@ function DesignView() {
     if (category) fetchCategoryDetails(category);
   }, [category]);
 
+  // ✅ Better cart logic (prevent duplicates cleanly)
+  const addToCart = (designID: string) => {
+    try {
+      const cart: string[] = JSON.parse(
+        localStorage.getItem("cart") || "[]"
+      );
 
-const AddtoCart = (designID: string) => {
-  try {
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      if (cart.includes(designID)) {
+        message.warning("Already in cart");
+        return;
+      }
 
+      const updatedCart = [...cart, designID];
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
 
-    if (!cart.includes(designID)) {
-      cart.push(designID);
+      message.success("Added to cart 🛒");
+    } catch (error) {
+      console.error(error);
+      message.error("Something went wrong");
     }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-    alert("Design added to cart!");
-  } catch (error) {
-    console.error("Error adding to cart:", error);
-  }
-};
+  };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1 style={{ marginBottom: "10px" }}>Designs Under Category</h1>
-      <h2 style={{ color: "#007bff" }}>Selected Category: {category}</h2>
+    <div style={{
+      margin: "30px "
+    }}>
+      <h1 style={{ textAlign: "center" }}>
+        Designs Under Category
+      </h1>
 
-      {designs.length === 0 ? (
-        <p style={{ marginTop: "20px", fontSize: "18px" }}>
-          No designs found under this category.
-        </p>
-      ) : (
-        <div
-          style={{
-            marginTop: "20px",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-            gridGap: "20px",
-          }}
-        >
-          {designs.map((design) => (
-            <div
-              key={design.DesignID}
+      <h2 style={{ color: "#1677ff", textAlign: "center" }}>
+        ( {category || "No Category Selected"} )
+      </h2>
+
+      <div style={{ padding: "20px", maxWidth: "1200px", margin:"30px" }}>
+        {loading && (
+          <div style={{ textAlign: "center", marginTop: "50px" }}>
+            <Spin size="large" />
+          </div>
+        )}
+        {error && (
+          <p style={{ color: "red", textAlign: "center" }}>{error}</p>
+        )}
+
+        {!loading && designs.length === 0 && !error && (
+          <Empty description="No designs found" />
+        )}
+
+      </div>
+      <div
+        style={{
+          marginTop: "30px",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+          gap: "20px",
+          
+        }}
+      >
+        {designs.map((design) => (
+          <div
+            key={design.DesignID}
+            style={{
+              background: "#fff",
+              padding: "15px",
+              borderRadius: "16px",
+              boxShadow: "0 6px 18px rgba(0,0,0,0.08)",
+              transition: "0.3s",
+            }}
+          >
+            <img
+              src={design.Design_Image?.[0]}
+              alt={design.Design_Name}
               style={{
-                background: "#fff",
-                padding: "15px",
+                width: "100%",
+                height: "200px",
+                objectFit: "cover",
                 borderRadius: "12px",
-                boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
               }}
-            >
-              <img
-                src={design.Design_Image[0]}
-                alt={design.Design_Name}
-                style={{
-                  width: "100%",
-                  height: "200px",
-                  objectFit: "cover",
-                  borderRadius: "10px",
-                }}
-              />
+            />
 
-              <h3 style={{ marginTop: "12px" }}>{design.Design_Name}</h3>
+            <h3 style={{ marginTop: "10px" }}>
+              {design.Design_Name}
+            </h3>
 
-              <p style={{ fontSize: "15px", color: "#666" }}>
-                {design.Design_Description}
-              </p>
+            <p style={{ color: "#666", fontSize: "14px" }}>
+              {design.Design_Description?.slice(0, 80)}...
+            </p>
 
-              <div style={{ marginTop: "10px" }}>
-                <strong>Categories:</strong>
-                <div
+            {/* Categories */}
+            <div style={{ marginTop: "10px" }}>
+              {design.Categories?.map((cat) => (
+                <span
+                  key={cat}
                   style={{
-                    marginTop: "5px",
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "8px",
+                    background: "#f0f5ff",
+                    padding: "4px 10px",
+                    borderRadius: "20px",
+                    fontSize: "12px",
+                    marginRight: "5px",
                   }}
                 >
-                  {design.Categories.map((cat: string) => (
-                    <span
-                      key={cat}
-                      style={{
-                        background: "#e7f1ff",
-                        padding: "5px 10px",
-                        borderRadius: "20px",
-                        fontSize: "13px",
-                      }}
-                    >
-                      {cat}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div style={{ marginTop: "12px" }}>
-                <strong>Colors:</strong>
-                <div style={{ display: "flex", gap: "10px", marginTop: "5px" }}>
-                  {design.Design_Colors.map((color: string) => (
-                    <div
-                      key={color}
-                      style={{
-                        width: "22px",
-                        height: "22px",
-                        borderRadius: "50%",
-                        background: color,
-                        border: "1px solid #ccc",
-                      }}
-                    ></div>
-                  ))}
-                </div>
-              </div>
-
-              <div style={{ marginTop: "12px" }}>
-                <strong>Available Sizes:</strong>
-                <p>{design.Design_Sizes.join(", ")}</p>
-              </div>
-
-              {design.Design_BlogPosts.length > 0 && (
-                <div style={{ marginTop: "12px" }}>
-                  <strong>Related Blog:</strong>
-                  <div>
-                    {design.Design_BlogPosts.map((blog: string) => (
-                      <a
-                        key={blog}
-                        href={blog}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          display: "block",
-                          color: "#007bff",
-                          marginTop: "5px",
-                        }}
-                      >
-                        {blog}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <div
-                style={{ marginTop: "12px", fontSize: "14px", color: "#555" }}
-              >
-                <strong>Created:</strong>{" "}
-                {new Date(design.Design_CreatedAt).toLocaleDateString()}
-              </div>
-              <Button
-                style={{
-                  margin: "10px",
-                }}
-                onClick={() => AddtoCart(design.DesignID)}
-              >
-                Add to Cart
-              </Button>
+                  {cat}
+                </span>
+              ))}
             </div>
-          ))}
-        </div>
-      )}
+
+            {/* Colors */}
+            <div style={{ marginTop: "10px", display: "flex", gap: "6px" }}>
+              {design.Design_Colors?.map((color) => (
+                <div
+                  key={color}
+                  style={{
+                    width: "18px",
+                    height: "18px",
+                    borderRadius: "50%",
+                    background: color,
+                    border: "1px solid #ddd",
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Sizes */}
+            <p style={{ marginTop: "8px", fontSize: "13px" }}>
+              Sizes: {design.Design_Sizes?.join(", ")}
+            </p>
+
+            {/* Blog */}
+            {design.Design_BlogPosts?.length > 0 && (
+              <a
+                href={design.Design_BlogPosts[0]}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ fontSize: "13px", color: "#1677ff" }}
+              >
+                Read Blog →
+              </a>
+            )}
+
+            {/* Date */}
+            <p style={{ fontSize: "12px", color: "#999" }}>
+              {new Date(
+                design.Design_CreatedAt
+              ).toLocaleDateString()}
+            </p>
+
+            <Button
+              type="primary"
+              block
+              style={{ marginTop: "10px", borderRadius: "8px" }}
+              onClick={() => addToCart(design.DesignID)}
+            >
+              Add to Cart
+            </Button>
+          </div>
+        ))}
+
+      </div>
     </div>
   );
 }

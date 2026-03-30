@@ -74,12 +74,11 @@ function ViewAllorder() {
     try {
       setLoadingOrder(orderId);
       await AxiosConfig.put(`/order/ChangeStates?orderId=${orderId}&Status=${status}`);
-      message.success(`Status updated to ${status}!`);
+      alert(`Status updated to ${status}!`);
       // Refetch current page after update (industry standard)
       fetchOrders(currentPage, pageSize);
     } catch (error) {
-      console.error("Error updating status:", error);
-      message.error("Failed to update status.");
+      alert(error);
     } finally {
       setLoadingOrder(null);
     }

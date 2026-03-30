@@ -42,7 +42,7 @@ const ManageAllAdmins: React.FC = () => {
 
       setData(formattedData);
     } catch {
-      message.error("Error fetching admins");
+      alert("Error fetching admins");
     } finally {
       setLoading(false);
     }
@@ -51,10 +51,10 @@ const ManageAllAdmins: React.FC = () => {
   const handleDelete = async (adminId: number) => {
     try {
       await AxiosConfig.delete(`/auth/RemoveAdmin?adminId=${adminId}`);
-      message.success("Admin deleted successfully!");
+      alert("Admin deleted successfully!");
       fetchAdmins();
     } catch {
-      message.error("Failed to delete admin");
+      alert("Failed to delete admin");
     }
   };
 

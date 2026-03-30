@@ -29,7 +29,7 @@ function AdminLogin() {
     try {
       console.log(values.username, values.password);
       const response = await axios.post(
-        `https://innovista-backend-hvt3.vercel.app/auth/login?email=${values.username}&password=${values.password}`,
+        `http://localhost:4000/auth/login?email=${values.username}&password=${values.password}`,
       );
 
       alert(response.data.message);
@@ -38,7 +38,7 @@ function AdminLogin() {
 
       navigate("/admin-home");
     } catch {
-      message.error("Login failed! Please check your credentials.");
+      alert("Login failed! Please check your credentials.");
     }
   };
 
@@ -54,7 +54,7 @@ function AdminLogin() {
   const HandleEmailSubmit = async () => {
     try {
       const response = await axios.post(
-        `https://innovista-backend-hvt3.vercel.app/auth/ResetPassword?email=${AdminEmail}`,
+        `http://localhost:4000/auth/ResetPassword?email=${AdminEmail}`,
       );
       alert(response.data.message);
       setIsModalOpen(false);

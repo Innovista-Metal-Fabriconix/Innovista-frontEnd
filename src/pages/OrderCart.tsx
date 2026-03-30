@@ -50,7 +50,7 @@ function OrderCart() {
     try {
       const ids = cart.join(",");
       const { data } = await axios.get(
-        `https://innovista-backend-hvt3.vercel.app/designs/DesignDetails?ids=${ids}`
+        `http://localhost:4000/designs/DesignDetails?ids=${ids}`
       );
       setCardDetails(data);
     } catch (error) {
@@ -84,17 +84,17 @@ function OrderCart() {
 
     try {
       await axios.post(
-        "https://innovista-backend-hvt3.vercel.app/order/createOrder",
+        "http://localhost:4000/order/createOrder",
         payload
       );
 
-      message.success("Order placed successfully!");
+      alert("Order placed successfully!");
       localStorage.removeItem("cart");
       setCart([]);
       setIsModalOpen(false);
       form.resetFields();
     } catch (error) {
-      message.error("Failed to create order");
+      alert("Failed to create order");
     }
   };
 

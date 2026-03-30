@@ -20,7 +20,7 @@ function LogoutButton() {
   const handleLogout = async () => {
     try {
       console.log(userID);
-      await axios.post(`https://innovista-backend-hvt3.vercel.app/auth/logout?adminId=${userID}`);
+      await axios.post(`http://localhost:4000/auth/logout?adminId=${userID}`);
       sessionStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       alert("Logout successful");

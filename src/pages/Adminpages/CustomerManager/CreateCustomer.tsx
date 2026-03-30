@@ -47,10 +47,10 @@ function CreateCustomer() {
         res.data && res.data.message ===
         "Customer registered successfully. Check your email for verification."
       ) {
-        message.success("Customer registered successfully!");
+        alert("Customer registered successfully!");
         form.resetFields();
       } else {
-        message.error("Failed to register customer");
+        alert("Failed to register customer");
       }
     } catch  {
       message.error("An error occurred while registering the customer");

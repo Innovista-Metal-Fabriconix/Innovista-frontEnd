@@ -52,9 +52,9 @@ function AddProjects() {
 
       setImages((prev) => [...prev, result.secure_url]);
 
-      message.success("Image uploaded successfully!");
+      alert("Image uploaded successfully!");
     } catch {
-      message.error("Upload error");
+      alert("Upload error");
     }
   };
 
@@ -73,11 +73,11 @@ function AddProjects() {
 
     try {
       await AxiosConfig.post("/projects/createProject", projectData);
-      message.success("Project created successfully!");
+      alert("Project created successfully!");
       form.resetFields();
       setImages([]);
     } catch {
-      message.error("Failed to create project");
+      alert("Failed to create project");
     }
   };
 

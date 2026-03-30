@@ -17,19 +17,19 @@ function CustomerVerify() {
     }
 
     axios
-      .post(`https://innovista-backend-hvt3.vercel.app/customer/verifyCustomer?customerId=${customerId}`)
+      .post(`http://localhost:4000/customer/verifyCustomer?customerId=${customerId}`)
       .then((res) => {
         if (res.data && res.data.message === "Email verified successfully") {
-          setMessage("✅ You verified your account successfully!");
+          setMessage("You verified your account successfully!");
           setTimeout(() => navigate("/"), 2000);
         } else {
-          setMessage("❌ Verification failed. Please try again.");
+          setMessage("Verification failed. Please try again.");
         }
         console.log("Verified Customer ID:", customerId);
       })
       .catch((error) => {
         console.error(error);
-        setMessage("❌ Server error. Please try again later.");
+        setMessage(" Server error. Please try again later.");
       });
   }, [customerId, navigate]);
 

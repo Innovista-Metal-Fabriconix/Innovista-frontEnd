@@ -6,14 +6,36 @@ import {
   Form,
   Space,
   message,
+  Select,
 } from "antd";
 import AxiosConfig from "../Context/AxiosConfig";
 import SidebarOFADmin from "../components/SidebarOFADmin";
+import { AxiosError } from "axios";
 
-// Removed unused Title destructuring
+
 const { TextArea } = Input;
+const { Option } = Select;
 
-/* ✅ 1. Define Type */
+/* ✅ Categories List */
+const CATEGORY_OPTIONS = [
+  "Doors",
+  "Windows",
+  "Partition",
+  "Shop Front",
+  "Louvers",
+  "Bathrooms",
+  "Roof",
+  "Tile Skirting",
+  "Ladders",
+  "Racks",
+  "Wardrobe",
+  "Pantry Cupboard",
+];
+
+/* ✅ Sizes */
+const SIZE_OPTIONS = ["Small", "Medium", "Large"];
+
+/* ✅ Type */
 interface DesignFormData {
   DesignID: number;
   Design_Name: string;
@@ -26,7 +48,7 @@ interface DesignFormData {
 }
 
 export default function DesignForm() {
-  const [submitted, setSubmitted] = useState<boolean>(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const [formData, setFormData] = useState<DesignFormData>({
     DesignID: 0,
@@ -39,7 +61,7 @@ export default function DesignForm() {
     Design_Sizes: [],
   });
 
-  /* ✅ 2. Fix event type */
+  /* ✅ Image Upload */
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -63,7 +85,7 @@ export default function DesignForm() {
       const result = await res.json();
 
       if (!result.secure_url) {
-        message.error("Upload failed");
+        alert("Upload failed");
         return;
       }
 
@@ -72,35 +94,35 @@ export default function DesignForm() {
         Design_Image: [...prev.Design_Image, result.secure_url],
       }));
     } catch {
-      message.error("Upload error");
+      alert("Upload error");
     }
   };
 
-  /* ✅ 3. Fix index typing */
   const handleDeleteImage = (index: number) => {
     const updated = [...formData.Design_Image];
     updated.splice(index, 1);
     setFormData({ ...formData, Design_Image: updated });
   };
 
-  /* ✅ 4. Strong typing for field */
+  /* ✅ Normal input */
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    field: keyof DesignFormData,
-    index?: number
+    field: keyof DesignFormData
   ) => {
-    if (index !== undefined) {
-      const arr = [...(formData[field] as string[])];
-      arr[index] = e.target.value;
-      setFormData({ ...formData, [field]: arr });
-    } else {
-      setFormData({ ...formData, [field]: e.target.value });
-    }
+    setFormData({ ...formData, [field]: e.target.value });
   };
 
+  /* ✅ Multi Select handler */
+  const handleSelectChange = (
+    value: string[],
+    field: keyof DesignFormData
+  ) => {
+    setFormData({ ...formData, [field]: value });
+  };
+
+  /* ✅ Dynamic fields (colors + blog only) */
   const addArrayField = (field: keyof DesignFormData) => {
     const current = formData[field];
-
     if (Array.isArray(current)) {
       setFormData({
         ...formData,
@@ -109,9 +131,20 @@ export default function DesignForm() {
     }
   };
 
+  const handleArrayChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: keyof DesignFormData,
+    index: number
+  ) => {
+    const arr = [...(formData[field] as string[])];
+    arr[index] = e.target.value;
+    setFormData({ ...formData, [field]: arr });
+  };
+
   const handleSubmit = async () => {
     try {
       await AxiosConfig.post("/designs/create", formData);
+
       setSubmitted(true);
 
       setFormData({
@@ -124,24 +157,33 @@ export default function DesignForm() {
         Design_BlogPosts: [],
         Design_Sizes: [],
       });
-    } catch {
-      message.error("Error submitting design.");
+
+    } catch (err) {
+      const error = err as AxiosError;
+
+      if (error.response) {
+        const status = error.response.status;
+
+        if (status === 400) {
+          alert("Check All fields are fill correctly");
+
+        } else if (status === 500) {
+          alert("Internal server error");
+
+        } else {
+          alert("Error submitting design");
+
+        }
+      } else {
+        message.error("Network error. Please try again.");
+      }
     }
   };
 
   if (submitted) {
     return (
       <Card style={{ maxWidth: 600, margin: "40px auto", textAlign: "center" }}>
-        <h2 style={{
-          textAlign: "center",
-          marginTop: "30px",
-          marginBottom: "25px",
-          fontSize: "28px",
-          fontWeight: "600",
-          letterSpacing: "0.5px",
-          fontFamily: "revert-layer",
-          color: "green"
-        }}>
+        <h2 style={{ color: "green" }}>
           🎉 Design Added Successfully!
         </h2>
 
@@ -156,21 +198,8 @@ export default function DesignForm() {
     <>
       <SidebarOFADmin />
 
-      <Card style={{ maxWidth: 650, margin: "40px auto", marginBottom: "100px" }}>
-        <h2
-          style={{
-            textAlign: "center",
-            marginTop: "30px",
-            marginBottom: "25px",
-            fontSize: "28px",
-            fontWeight: "600",
-            letterSpacing: "0.5px",
-            fontFamily: "revert-layer",
-          }}
-        >
-          Add New Design
-        </h2>
-     
+      <Card style={{ maxWidth: 650, margin: "40px auto" }}>
+        <h2 style={{ textAlign: "center" }}>Add New Design</h2>
 
         <Form layout="vertical" onFinish={handleSubmit}>
           <Form.Item label="Design Name">
@@ -188,30 +217,50 @@ export default function DesignForm() {
             />
           </Form.Item>
 
+          {/* ✅ CATEGORY SELECT */}
+          <Form.Item label="Categories">
+            <Select
+              mode="multiple"
+              placeholder="Select Categories"
+              value={formData.Categories}
+              onChange={(val) => handleSelectChange(val, "Categories")}
+            >
+              {CATEGORY_OPTIONS.map((cat) => (
+                <Option key={cat} value={cat}>
+                  {cat}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          {/* ✅ SIZE SELECT */}
+          <Form.Item label="Design Sizes">
+            <Select
+              mode="multiple"
+              placeholder="Select Sizes"
+              value={formData.Design_Sizes}
+              onChange={(val) => handleSelectChange(val, "Design_Sizes")}
+            >
+              {SIZE_OPTIONS.map((size) => (
+                <Option key={size} value={size}>
+                  {size}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          {/* Images */}
           <Form.Item label="Upload Images">
             <Input type="file" onChange={handleImageUpload} />
 
             <Space direction="vertical" style={{ marginTop: 10 }}>
               {formData.Design_Image.map((img, i) => (
                 <div key={i} style={{ position: "relative" }}>
-                  <img
-                    src={img}
-                    alt="Preview"
-                    style={{
-                      width: 120,
-                      borderRadius: 8,
-                      border: "1px solid #ddd",
-                    }}
-                  />
+                  <img src={img} style={{ width: 120 }} />
                   <Button
                     danger
-                    type="primary"
                     size="small"
-                    style={{
-                      position: "absolute",
-                      top: 5,
-                      right: 5,
-                    }}
+                    style={{ position: "absolute", top: 5, right: 5 }}
                     onClick={() => handleDeleteImage(i)}
                   >
                     X
@@ -221,35 +270,41 @@ export default function DesignForm() {
             </Space>
           </Form.Item>
 
-          {(
-            [
-              "Categories",
-              "Design_Colors",
-              "Design_BlogPosts",
-              "Design_Sizes",
-            ] as (keyof DesignFormData)[]
-          ).map((field) => (
-            <Form.Item key={field} label={field.replace(/_/g, " ")}>
-              <Space direction="vertical" style={{ width: "100%" }}>
-                {(formData[field] as string[]).map((val, i) => (
-                  <Input
-                    key={i}
-                    value={val}
-                    placeholder={`Enter ${field}`}
-                    onChange={(e) => handleChange(e, field, i)}
-                  />
-                ))}
+          {/* Colors */}
+          <Form.Item label="Design Colors">
+            <Space direction="vertical" style={{ width: "100%" }}>
+              {formData.Design_Colors.map((val, i) => (
+                <Input
+                  key={i}
+                  value={val}
+                  onChange={(e) =>
+                    handleArrayChange(e, "Design_Colors", i)
+                  }
+                />
+              ))}
+              <Button onClick={() => addArrayField("Design_Colors")}>
+                + Add Color
+              </Button>
+            </Space>
+          </Form.Item>
 
-                <Button
-                  type="dashed"
-                  block
-                  onClick={() => addArrayField(field)}
-                >
-                  + Add {field}
-                </Button>
-              </Space>
-            </Form.Item>
-          ))}
+          {/* Blog */}
+          <Form.Item label="Blog Posts">
+            <Space direction="vertical" style={{ width: "100%" }}>
+              {formData.Design_BlogPosts.map((val, i) => (
+                <Input
+                  key={i}
+                  value={val}
+                  onChange={(e) =>
+                    handleArrayChange(e, "Design_BlogPosts", i)
+                  }
+                />
+              ))}
+              <Button onClick={() => addArrayField("Design_BlogPosts")}>
+                + Add Blog
+              </Button>
+            </Space>
+          </Form.Item>
 
           <Form.Item>
             <Button type="primary" htmlType="submit" block>

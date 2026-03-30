@@ -29,13 +29,13 @@ const AdminRegisterForm: React.FC = () => {
 
       if (cloudinaryData.url) {
         setImageUrl(cloudinaryData.url);
-        message.success("Image uploaded successfully!");
+        alert("Image uploaded successfully!");
         form.setFieldsValue({ Admin_Profile: cloudinaryData.url });
       } else {
         throw new Error("Image upload failed");
       }
     } catch {
-      message.error("Image upload error!");
+      alert("Image upload error!");
     } finally {
       setUploading(false);
     }

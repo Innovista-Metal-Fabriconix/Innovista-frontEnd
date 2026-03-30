@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   Tag,
@@ -73,8 +73,10 @@ function PreviewCustomer() {
 
       // Refetch current page after delete
       fetchCustomers(currentPage, pageSize);
+      alert("Customer deleted successfully!");
     } catch (error) {
-      console.error("Error deleting customer:", error);
+      alert(error);
+
     }
   };
 
@@ -116,8 +118,9 @@ function PreviewCustomer() {
       form.resetFields();
 
       fetchCustomers(currentPage, pageSize);
+      alert("Customer updated successfully!");
     } catch (error) {
-      console.error("Error updating customer:", error);
+      alert(error);
     }
   };
 

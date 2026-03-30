@@ -17,7 +17,7 @@ function AdminFeedback() {
     try {
       setLoading(true);
       const response = await axios.get(
-        "https://innovista-backend-hvt3.vercel.app/feedback/allFeedbacks",{
+        "http://localhost:4000/feedback/allFeedbacks",{
           params: { page, limit },  
         }
       );
@@ -27,7 +27,7 @@ function AdminFeedback() {
       setPageSize(response.data.limit);
     } catch (error) {
       console.error("Error fetching feedbacks:", error);
-      message.error("Failed to load feedbacks");
+      alert("Failed to load feedbacks");
     } finally {
       setLoading(false);
     }
@@ -36,11 +36,11 @@ function AdminFeedback() {
   const handleDelete = async (id: number) => {
     try {
       await AxiosConfig.delete(`/feedback/deleteFeedback?feedbackId=${id}`);
-      message.success("Feedback deleted successfully");
+      alert("Feedback deleted successfully");
       fetchFeedbacks(currentPage, pageSize);
     } catch (error) {
       console.error("Error deleting feedback:", error);
-      message.error("Failed to delete feedback");
+      alert("Failed to delete feedback");
     }
   };
 
