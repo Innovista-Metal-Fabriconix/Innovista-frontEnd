@@ -8,28 +8,26 @@ import image5 from "../assets/Images/ImageSlider/image5.png";
 import CountUpComp from "./CountUpComp";
 import { useNavigate } from "react-router-dom";
 import ContactButton from "./ContactButton";
+import ContactModal from "./ContactModal";
 
 const images = [image1, image2, image3, image4, image5];
 
 export default function ImageSlider() {
   const [current, setCurrent] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
-  const [progress, setProgress] = useState<number>(0);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const navigate = useNavigate();
+
   const goToSlide = useCallback((index: number) => {
     setCurrent(index);
-    setProgress(0);
-    console.log(progress)
   }, []);
 
   const nextSlide = useCallback(() => {
     setCurrent((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-    setProgress(0);
   }, []);
 
   const prevSlide = useCallback(() => {
     setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-    setProgress(0);
   }, []);
 
   const togglePlayPause = useCallback(() => {
@@ -42,19 +40,6 @@ export default function ImageSlider() {
     const interval = setInterval(nextSlide, 10000);
     return () => clearInterval(interval);
   }, [isPlaying, nextSlide]);
-
-  useEffect(() => {
-    if (!isPlaying) return;
-
-    const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) return 0;
-        return prev + 100 / 60;
-      });
-    }, 100);
-
-    return () => clearInterval(progressInterval);
-  }, [current, isPlaying]);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -71,8 +56,8 @@ export default function ImageSlider() {
       }
     };
 
-    window.addEventListener("keydown", handleKeyPress);
-    return () => window.removeEventListener("keydown", handleKeyPress);
+    globalThis.addEventListener("keydown", handleKeyPress);
+    return () => globalThis.removeEventListener("keydown", handleKeyPress);
   }, [prevSlide, nextSlide, togglePlayPause]);
 
   return (
@@ -80,7 +65,7 @@ export default function ImageSlider() {
       <div className={styles.imageWrapper}>
         {images.map((img, index) => (
           <img
-            key={index}
+            key={img}
             src={img}
             alt={`Slide ${index + 1}`}
             className={`${styles.sliderImage} ${
@@ -109,7 +94,7 @@ export default function ImageSlider() {
         <div className={styles.buttonGroup}>
           <ContactButton
             onClick={() => {
-              navigate("/contact");
+              setIsContactModalOpen(true);
             }}
           />
           <button
@@ -125,9 +110,9 @@ export default function ImageSlider() {
 
       <div className={styles.controlsContainer}>
         <div className={styles.buttonContainer}>
-          {images.map((_, index) => (
+          {images.map((img, index) => (
             <button
-              key={index}
+              key={img}
               onClick={() => goToSlide(index)}
               className={styles.dotButton}
               aria-label={`Go to slide ${index + 1}`}
@@ -144,6 +129,11 @@ export default function ImageSlider() {
           ))}
         </div>
       </div>
+
+      <ContactModal
+        isOpen={isContactModalOpen}
+        onClose={() => setIsContactModalOpen(false)}
+      />
     </div>
   );
 }
