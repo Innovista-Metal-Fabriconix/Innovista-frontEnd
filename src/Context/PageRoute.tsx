@@ -24,6 +24,7 @@ import DesignViwe from "../pages/DesignViwe";
 import OrderCart from "../pages/OrderCart";
 import Milestones from "../pages/Milestones";
 import ScrollToTop from "../components/ScrollToTop";
+import RequestQuotePage from "../pages/RequestQuotePage";
 
 function PageRoute() {
   return (
@@ -55,6 +56,7 @@ function PageRoute() {
             <Route path="/DesignViwe" element={<DesignViwe />} />
             <Route path="/OrderCart" element={<OrderCart />} />
             <Route path="/milestones" element={<Milestones />} />
+            <Route path="/request-quote" element={<RequestQuotePage />} />
           </Routes>
         </main>
         <Footer />
