@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import logo from "../assets/Images/logo/CompanyLogo.png";
 import styles from "../cssModules/Navbar.module.css";
@@ -13,7 +13,6 @@ import { Button } from "antd";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -32,11 +31,6 @@ export default function Navbar() {
   }, [isOpen]);
 
   const handleLinkClick = () => setIsOpen(false);
-
-  const handleQuoteClick = () => {
-    setIsOpen(false);
-    navigate("/request-quote");
-  };
 
   return (
     <nav className={styles.navbar}>
@@ -101,20 +95,14 @@ export default function Navbar() {
           />
         </NavLink>
       </div>
-      <button
-        className={`${styles.quoteBtn} cursor-target`}
-        onClick={handleQuoteClick}
-      >
-        Get a Free Quote
-      </button>
+      <button className={`${styles.quoteBtn} cursor-target`}>Get a Free Quote</button>
 
-      <button
-        type="button"
+      <div
         className={`${styles.showButton} ${isOpen ? styles.hidden : styles.visible} cursor-target`}
         onClick={() => setIsOpen(true)}
       >
         <FontAwesomeIcon icon={faBars} size="2xl" />
-      </button>
+      </div>
 
       {isOpen && (
         <div className={styles.mobileMenu} ref={menuRef}>
@@ -178,7 +166,7 @@ export default function Navbar() {
             </NavLink>
             <button
               className={`${styles.mobileQuoteBtn} cursor-target`}
-              onClick={handleQuoteClick}
+              onClick={handleLinkClick}
             >
               Get a Free Quote
             </button>

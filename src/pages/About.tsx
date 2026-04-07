@@ -1,15 +1,12 @@
 import AboutHead from "../components/AboutHead";
 import VisionSection from "../components/VisionSection";
 import PathSection from "../components/PathSection";
-import ValuesSection from "../components/ValuesSection";
 import visionImg1 from "../assets/Images/AboutUsPage/vision/vision1.jpg";
 import visionImg2 from "../assets/Images/AboutUsPage/vision/vision2.jpg";
-import PartnersSection from "../components/PartnersSection";
-import ClientsSection from "../components/ClientsSection";
 
 function About() {
   return (
-    <div className="about-page-stack">
+    <div>
       <AboutHead />
       <VisionSection
         title="OUR VISION"
@@ -26,9 +23,6 @@ function About() {
         imagePosition="right"
       />
       <PathSection />
-      <ValuesSection />
-      <PartnersSection />
-      <ClientsSection />
     </div>
   );
 }
