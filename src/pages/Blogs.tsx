@@ -1,5 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import styles from "../cssModules/BlogsPage.module.css";
+import blogCover from "../assets/images/Blogs/Blog-cover.avif";
+import { fetchBloggerFeedJsonp } from "../utils/bloggerFeed";
 
 type BlogItem = {
   id: number;
@@ -69,51 +71,6 @@ const stripHtml = (html: string) => {
     .trim();
 };
 
-const buildJsonpUrl = (url: string, callbackName: string) => {
-  const hasAlt = /[?&]alt=/i.test(url);
-  let jsonpUrl = url;
-  if (hasAlt) {
-    jsonpUrl = url.replace(/([?&]alt=)([^&]+)/i, "$1json-in-script");
-  } else {
-    jsonpUrl += url.includes("?")
-      ? "&alt=json-in-script"
-      : "?alt=json-in-script";
-  }
-  const joiner = jsonpUrl.includes("?") ? "&" : "?";
-  return `${jsonpUrl}${joiner}callback=${callbackName}`;
-};
-
-const fetchBloggerFeedJsonp = (url: string, timeoutMs = 12000) => {
-  return new Promise<BloggerResponse>((resolve, reject) => {
-    const callbackName = `__bloggerJsonp_${Date.now()}_${Math.random()
-      .toString(16)
-      .slice(2)}`;
-    const script = document.createElement("script");
-    const cleanup = () => {
-      script.remove();
-      delete (globalThis as Record<string, unknown>)[callbackName];
-    };
-
-    const timer = globalThis.setTimeout(() => {
-      cleanup();
-      reject(new Error("Blogger feed JSONP timeout"));
-    }, timeoutMs);
-
-    (globalThis as Record<string, unknown>)[callbackName] = (data: unknown) => {
-      globalThis.clearTimeout(timer);
-      cleanup();
-      resolve(data as BloggerResponse);
-    };
-
-    script.src = buildJsonpUrl(url, callbackName);
-    script.onerror = () => {
-      globalThis.clearTimeout(timer);
-      cleanup();
-      reject(new Error("Blogger feed JSONP failed"));
-    };
-    document.body.appendChild(script);
-  });
-};
 
 const IMG_SRC_DOUBLE_RE = /<img[^>]+src="([^"]+)"/i;
 const IMG_SRC_SINGLE_RE = /<img[^>]+src='([^']+)'/i;
@@ -297,7 +254,9 @@ function Blogs() {
     const load = async () => {
       try {
         setIsLoading(true);
-        const json = await fetchBloggerFeedJsonp(BLOGGER_FEED_URL);
+        const json = await fetchBloggerFeedJsonp<BloggerResponse>(
+          BLOGGER_FEED_URL,
+        );
         const entries = json.feed?.entry ?? [];
         const mapped = buildBlogItems(entries);
         if (isMounted) setBlogs(mapped);
@@ -358,7 +317,7 @@ function Blogs() {
     <div className={styles.page}>
       <section className={styles.hero}>
         <img
-          src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1800&auto=format&fit=crop"
+          src={blogCover}
           alt="Discover our latest blogs"
         />
         <div className={styles.heroOverlay} />
