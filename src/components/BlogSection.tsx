@@ -84,7 +84,8 @@ const mapToBlogCard = (entry: BloggerEntry, index: number): BlogMetaData => {
   const contentHtml = entry.content?.$t ?? "";
   const contentImage = extractFirstImageUrl(contentHtml);
   const thumbUrl = entry.media$thumbnail?.url ?? "";
-  const image = contentImage || upgradeBloggerImage(thumbUrl) || defaultBlogImage;
+  const image =
+    contentImage || upgradeBloggerImage(thumbUrl) || defaultBlogImage;
   const link = getPostUrl(entry);
 
   return {
@@ -105,7 +106,8 @@ function BlogSection() {
     const load = async () => {
       try {
         setIsLoading(true);
-        const json = await fetchBloggerFeedJsonp<BloggerResponse>(HOME_FEED_URL);
+        const json =
+          await fetchBloggerFeedJsonp<BloggerResponse>(HOME_FEED_URL);
         const entries = json.feed?.entry ?? [];
         const cards = entries
           .slice(0, MAX_HOME_BLOGS)

@@ -25,6 +25,7 @@ import OrderCart from "../pages/OrderCart";
 import Milestones from "../pages/Milestones";
 import ScrollToTop from "../components/ScrollToTop";
 import RequestQuotePage from "../pages/RequestQuotePage";
+import QuoteManagement from "../pages/Adminpages/QuoteManagement";
 
 function PageRoute() {
   return (
@@ -57,6 +58,7 @@ function PageRoute() {
             <Route path="/OrderCart" element={<OrderCart />} />
             <Route path="/milestones" element={<Milestones />} />
             <Route path="/request-quote" element={<RequestQuotePage />} />
+            <Route path="/AdminQuotes" element={<QuoteManagement />} />
           </Routes>
         </main>
         <Footer />
