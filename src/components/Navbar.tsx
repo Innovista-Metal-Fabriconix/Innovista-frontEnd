@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import logo from "../assets/Images/logo/CompanyLogo.png";
 import styles from "../cssModules/Navbar.module.css";
@@ -35,7 +35,9 @@ export default function Navbar() {
   return (
     <nav className={styles.navbar}>
       <div className={styles.logoContainer}>
-        <img src={logo} alt="Company Logo" />
+        <Link to="/" className="cursor-target" aria-label="Go to home page">
+          <img src={logo} alt="Company Logo" />
+        </Link>
       </div>
       <div className={styles.links}>
         <NavLink
@@ -95,11 +97,19 @@ export default function Navbar() {
           />
         </NavLink>
       </div>
-      <button className={`${styles.quoteBtn} cursor-target`}>Get a Free Quote</button>
+      <NavLink
+        to="/request-quote"
+        className={`${styles.quoteBtn} cursor-target`}
+      >
+        Get a Free Quote
+      </NavLink>
 
       <div
         className={`${styles.showButton} ${isOpen ? styles.hidden : styles.visible} cursor-target`}
         onClick={() => setIsOpen(true)}
+        role="button"
+        aria-label="Open navigation menu"
+        tabIndex={0}
       >
         <FontAwesomeIcon icon={faBars} size="2xl" />
       </div>
@@ -107,7 +117,14 @@ export default function Navbar() {
       {isOpen && (
         <div className={styles.mobileMenu} ref={menuRef}>
           <div className={styles.mobileMenuHeader}>
-            <img src={logo} alt="Company Logo" className={styles.mobileLogo} />
+            <Link
+              to="/"
+              className={`${styles.mobileLogo} cursor-target`}
+              aria-label="Go to home page"
+              onClick={handleLinkClick}
+            >
+              <img src={logo} alt="Company Logo" />
+            </Link>
             <Button
               className={`${styles.closeBtn} cursor-target`}
               onClick={() => setIsOpen(false)}
@@ -164,12 +181,13 @@ export default function Navbar() {
             >
               Projects
             </NavLink>
-            <button
+            <NavLink
+              to="/request-quote"
               className={`${styles.mobileQuoteBtn} cursor-target`}
               onClick={handleLinkClick}
             >
               Get a Free Quote
-            </button>
+            </NavLink>
           </div>
         </div>
       )}

@@ -1,4 +1,11 @@
-import { useRef, useState, type ChangeEvent, type DragEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type DragEvent,
+} from "react";
+import { Modal, Spin } from "antd";
 import styles from "../cssModules/RequestQuotePage.module.css";
 
 type ProjectType =
@@ -111,8 +118,20 @@ export default function RequestQuotePage() {
   const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
   const [otpInfoMessage, setOtpInfoMessage] = useState("");
   const [emailVerificationToken, setEmailVerificationToken] = useState("");
+  const [showUploadModal, setShowUploadModal] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const formStartedAtRef = useRef(Date.now());
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      if (!isSubmitting) return;
+      event.preventDefault();
+      event.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [isSubmitting]);
 
   const mergeFiles = (incomingFiles: File[]) => {
     setFiles((prev) => {
@@ -388,6 +407,7 @@ export default function RequestQuotePage() {
     }
 
     setIsSubmitting(true);
+    setShowUploadModal(true);
     setSubmitError("");
     setSuccessMessage("");
 
@@ -430,6 +450,7 @@ export default function RequestQuotePage() {
       setSubmitError(message);
     } finally {
       setIsSubmitting(false);
+      setShowUploadModal(false);
     }
   };
 
@@ -914,6 +935,33 @@ export default function RequestQuotePage() {
 
         {successMessage && <p className={styles.success}>{successMessage}</p>}
         {submitError && <p className={styles.error}>{submitError}</p>}
+
+        <Modal
+          open={showUploadModal}
+          footer={null}
+          closable={false}
+          maskClosable={false}
+          centered
+          destroyOnClose
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 16,
+              padding: "12px 0",
+            }}
+          >
+            <Spin size="large" />
+            <div style={{ textAlign: "center" }}>
+              <h3 style={{ margin: 0 }}>Uploading your request</h3>
+              <p style={{ margin: "8px 0 0", color: "#475569" }}>
+                Please stay on this page until the upload finishes.
+              </p>
+            </div>
+          </div>
+        </Modal>
       </form>
     </article>
   );

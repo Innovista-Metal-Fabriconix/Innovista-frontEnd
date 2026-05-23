@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Space,
-  Table,
-  Tag,
-  Avatar,
-  Spin,
-  message,
-  Popconfirm,
-  Button,
-} from "antd";
+import { Space, Table, Tag, Avatar, Spin, Popconfirm, Button } from "antd";
 import type { TableProps } from "antd";
 import AxiosConfig from "../../Context/AxiosConfig";
 import { DeleteOutlined } from "@ant-design/icons";
@@ -63,7 +54,6 @@ const ManageAllAdmins: React.FC = () => {
       title: "Name",
       dataIndex: "Admin_Name",
       key: "Admin_Name",
-      
     },
     {
       title: "Email",
