@@ -71,7 +71,6 @@ const stripHtml = (html: string) => {
     .trim();
 };
 
-
 const IMG_SRC_DOUBLE_RE = /<img[^>]+src="([^"]+)"/i;
 const IMG_SRC_SINGLE_RE = /<img[^>]+src='([^']+)'/i;
 
@@ -254,9 +253,8 @@ function Blogs() {
     const load = async () => {
       try {
         setIsLoading(true);
-        const json = await fetchBloggerFeedJsonp<BloggerResponse>(
-          BLOGGER_FEED_URL,
-        );
+        const json =
+          await fetchBloggerFeedJsonp<BloggerResponse>(BLOGGER_FEED_URL);
         const entries = json.feed?.entry ?? [];
         const mapped = buildBlogItems(entries);
         if (isMounted) setBlogs(mapped);
@@ -316,10 +314,7 @@ function Blogs() {
   return (
     <div className={styles.page}>
       <section className={styles.hero}>
-        <img
-          src={blogCover}
-          alt="Discover our latest blogs"
-        />
+        <img src={blogCover} alt="Discover our latest blogs" />
         <div className={styles.heroOverlay} />
         <div className={styles.heroContent}>
           <h1>Discover Our Latest Blogs</h1>
