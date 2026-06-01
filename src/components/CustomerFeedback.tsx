@@ -1,96 +1,81 @@
+import { useEffect, useState } from "react";
 import styles from "../cssModules/CustomerFeedback.module.css";
 import SimpleScrollStack, { ScrollStackItem } from "./SimpleScrollStack";
 import MainHeading from "./MainHeading";
+import HeshanImage from "../assets/Testimonials/Heshan.png";
+import KumaraImage from "../assets/Testimonials/Kumara.png";
+import RushilImage from "../assets/Testimonials/Rushil.png";
+import SisiraImage from "../assets/Testimonials/Sisira.png";
+
+type CustomerFeedbackEntry = {
+  name: string;
+  designation: string;
+  imageKey: string;
+  feedback: string;
+};
+
+const imageMap: Record<string, string> = {
+  Heshan: HeshanImage,
+  Kumara: KumaraImage,
+  Rushil: RushilImage,
+  Sisira: SisiraImage,
+};
 
 function CustomerFeedback() {
+  const [feedbackItems, setFeedbackItems] = useState<CustomerFeedbackEntry[]>(
+    [],
+  );
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadFeedback = async () => {
+      try {
+        const feedbackUrl = new URL(
+          "../assets/Testimonials/customer-feedback.json",
+          import.meta.url,
+        );
+        const response = await fetch(feedbackUrl);
+        if (!response.ok) {
+          throw new Error("Failed to load customer feedback");
+        }
+
+        const data = (await response.json()) as CustomerFeedbackEntry[];
+
+        if (isMounted) {
+          setFeedbackItems(data);
+        }
+      } catch {
+        if (isMounted) {
+          setFeedbackItems([]);
+        }
+      }
+    };
+
+    void loadFeedback();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   return (
     <div className={styles.container}>
       <MainHeading
         heading="What our Customer say"
-        description="All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks."
       />
       <SimpleScrollStack>
-        <ScrollStackItem>
-          <div className={styles.card}>
-            <div className={styles.avatar}>
-              <img
-                src="https://randomuser.me/api/portraits/men/32.jpg"
-                alt="John Doe"
-              />
+        {feedbackItems.map((item) => (
+          <ScrollStackItem key={item.name}>
+            <div className={styles.card}>
+              <div className={styles.avatar}>
+                <img src={imageMap[item.imageKey]} alt={item.name} />
+              </div>
+              <h3 className={styles.designation}>{item.designation}</h3>
+              <p className={styles.feedback}>"{item.feedback}"</p>
             </div>
-            <h3 className={styles.designation}>CEO of TechCorp</h3>
-            <p className={styles.feedback}>
-              "Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-              accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-              quae ab illo inventore veritatis et quasi architecto beatae vitae
-              dicta sunt explicabo."
-            </p>
-          </div>
-        </ScrollStackItem>
-        <ScrollStackItem>
-          <div className={styles.card}>
-            <div className={styles.avatar}>
-              <img
-                src="https://randomuser.me/api/portraits/women/44.jpg"
-                alt="Jane Smith"
-              />
-            </div>
-            <h3 className={styles.designation}>Director of Operations</h3>
-            <p className={styles.feedback}>
-              "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit
-              aut fugit, sed quia consequuntur magni dolores eos qui ratione
-              voluptatem sequi nesciunt."
-            </p>
-          </div>
-        </ScrollStackItem>
-        <ScrollStackItem>
-          <div className={styles.card}>
-            <div className={styles.avatar}>
-              <img
-                src="https://randomuser.me/api/portraits/men/67.jpg"
-                alt="Mike Johnson"
-              />
-            </div>
-            <h3 className={styles.designation}>Founder of BuildRight</h3>
-            <p className={styles.feedback}>
-              "Ut enim ad minima veniam, quis nostrum exercitationem ullam
-              corporis suscipit laboriosam, nisi ut aliquid ex ea commodi
-              consequatur."
-            </p>
-          </div>
-        </ScrollStackItem>
-        <ScrollStackItem>
-          <div className={styles.card}>
-            <div className={styles.avatar}>
-              <img
-                src="https://randomuser.me/api/portraits/women/28.jpg"
-                alt="Sarah Williams"
-              />
-            </div>
-            <h3 className={styles.designation}>CEO of ABC Company</h3>
-            <p className={styles.feedback}>
-              "Quis autem vel eum iure reprehenderit qui in ea voluptate velit
-              esse quam nihil molestiae consequatur, vel illum qui dolorem eum
-              fugiat."
-            </p>
-          </div>
-        </ScrollStackItem>
-        <ScrollStackItem>
-          <div className={styles.card}>
-            <div className={styles.avatar}>
-              <img
-                src="https://randomuser.me/api/portraits/men/52.jpg"
-                alt="David Brown"
-              />
-            </div>
-            <h3 className={styles.designation}>CTO of InnovateTech</h3>
-            <p className={styles.feedback}>
-              "At vero eos et accusamus et iusto odio dignissimos ducimus qui
-              blanditiis praesentium voluptatum deleniti atque corrupti quos
-              dolores et quas molestias excepturi sint."
-            </p>
-          </div>
-        </ScrollStackItem>
+          </ScrollStackItem>
+        ))}
       </SimpleScrollStack>
     </div>
   );
