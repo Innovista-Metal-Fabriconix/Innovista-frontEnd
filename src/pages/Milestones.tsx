@@ -3,64 +3,46 @@ import styles from "../cssModules/Milestones.module.css";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MainHeading from "../components/MainHeading";
+import image2019 from "../assets/Journey/2019.png";
+import image2022 from "../assets/Journey/2022.png";
+import image2025 from "../assets/Journey/2025.png";
+import image2010 from "../assets/Journey/2010.jpg"
 
 gsap.registerPlugin(ScrollTrigger);
 
 type Milestone = {
   year: string;
-  title: string;
   description: string;
   image: string;
 };
 
 const milestones: Milestone[] = [
   {
-    year: "2015",
-    title: "The Beginning",
+    year: "2010",
     description:
-      "Innovista Fabriconix was founded with a vision to revolutionize aluminium fabrication. Starting from a small workshop, we began our journey towards excellence.",
+      "Aluminium fabricator Nishantha Anura Senrathna started the business as his own and do business ",
     image:
-      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&h=300&fit=crop",
-  },
-  {
-    year: "2017",
-    title: "First Major Project",
-    description:
-      "Completed our first large-scale commercial project, establishing our reputation for quality craftsmanship and precision engineering in the industry.",
-    image:
-      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400&h=300&fit=crop",
+      image2010,
   },
   {
     year: "2019",
-    title: "Expanding Horizons",
     description:
-      "Expanded our operations with state-of-the-art machinery and a larger facility, enabling us to take on more ambitious projects across the region.",
+      "Registered the business as a sole proprietorship 2019 named ‘NISHANTHA PARTITION’",
     image:
-      "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=400&h=300&fit=crop",
+      image2019,
   },
   {
-    year: "2021",
-    title: "Innovation & Technology",
-    description:
-      "Integrated modern design tools and advanced fabrication technology, pushing the boundaries of what's possible in aluminium construction.",
+    year: "2022",
+    description: "We changed the the business name as ‘NP Contractors’",
     image:
-      "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400&h=300&fit=crop",
-  },
-  {
-    year: "2023",
-    title: "Industry Recognition",
-    description:
-      "Received industry awards for excellence in fabrication and design. Our commitment to quality earned us partnerships with leading construction firms.",
-    image:
-      "https://images.unsplash.com/photo-1531834685032-c34bf0d84c77?w=400&h=300&fit=crop",
+      image2022,
   },
   {
     year: "2025",
-    title: "Building the Future",
     description:
-      "Continuing to shape innovation and build trust. With a growing team and expanding capabilities, we are ready to take on the challenges of tomorrow.",
+      "Newly business start as a Private Limited Company, named as Innovista Metal fabriconix (PVT) Ltd",
     image:
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop",
+      image2025,
   },
 ];
 
@@ -185,10 +167,9 @@ function Milestones() {
             </div>
             <div className={styles.card}>
               <div className={styles.cardImage}>
-                <img src={milestone.image} alt={milestone.title} />
+                <img src={milestone.image} alt={milestone.year} />
               </div>
               <div className={styles.cardContent}>
-                <h3>{milestone.title}</h3>
                 <p>{milestone.description}</p>
               </div>
             </div>
