@@ -1,6 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
 import styles from "../cssModules/BlogsPage.module.css";
-import { Link } from "react-router-dom";
 import blogCover from "../assets/Images/Blogs/Blog-cover.avif";
 import { fetchBloggerFeedJsonp } from "../utils/bloggerFeed";
 

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Table, Button, Popconfirm, Tag, Image } from "antd";
-import axios from "axios";
 
 import AxiosConfig from "../../Context/AxiosConfig";
 import SidebarOFADmin from "../../components/SidebarOFADmin";

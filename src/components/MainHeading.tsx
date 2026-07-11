@@ -2,7 +2,7 @@
 import styles from "../cssModules/MainHeading.module.css";
 import { gsap } from "gsap";
 
-function MainHeading({ heading, description = "" }: Readonly<{ heading: string; description: string }>) {
+function MainHeading({ heading, description = "" }: Readonly<{ heading: string; description?: string }>) {
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     gsap.fromTo(
