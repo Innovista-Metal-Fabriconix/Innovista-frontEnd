@@ -18,7 +18,7 @@ function Home() {
         <ImageSlider />
       </div>
       <ServicesCarousel />
-      <FeaturedProducts />
+      {/* <FeaturedProducts /> */}
       <CustomerFeedback/>
       <BlogSection/>
     </>

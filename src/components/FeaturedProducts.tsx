@@ -1,7 +1,7 @@
 import React from "react";
 import ProductCard from "./ProductCard";
 import MainHeading from "./MainHeading";
-import doorImage from "../assets/Images/Product/Door.jpg";
+import doorImage from "../assets/Images/Products/alluminiumdoors.png";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -38,7 +38,7 @@ function FeaturedProducts() {
             start: "top 60%",
             toggleActions: "play none none reverse",
           },
-        }
+        },
       );
     }
 
@@ -64,7 +64,7 @@ function FeaturedProducts() {
                 start: `top ${80 - index * 5}%`,
                 toggleActions: "play none none reverse",
               },
-            }
+            },
           );
         } else {
           gsap.fromTo(
@@ -83,7 +83,7 @@ function FeaturedProducts() {
                 start: `top ${80 - index * 5}%`,
                 toggleActions: "play none none reverse",
               },
-            }
+            },
           );
         }
       });
@@ -110,7 +110,7 @@ function FeaturedProducts() {
               onEnter: () => console.log(`Card ${index + 1} entered viewport`),
               toggleActions: "play none none reverse",
             },
-          }
+          },
         );
       });
     });

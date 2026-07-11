@@ -4,7 +4,6 @@ import {
   Checkbox,
   Form,
   Input,
-  message,
   Flex,
   Col,
   Row,
@@ -16,6 +15,8 @@ import AdminLogo from "../../assets/Images/logo/AdminLogin.jpg";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 type FieldType = {
   username?: string;
@@ -29,11 +30,12 @@ function AdminLogin() {
     try {
       console.log(values.username, values.password);
       const response = await axios.post(
-        `http://localhost:4000/auth/login?email=${values.username}&password=${values.password}`,
+        `${API_BASE_URL}/auth/login?email=${values.username}&password=${values.password}`,
       );
 
       alert(response.data.message);
       sessionStorage.setItem("accessToken", response.data.tokens.accessToken);
+      localStorage.setItem("accessToken", response.data.tokens.accessToken);
       localStorage.setItem("refreshToken", response.data.tokens.refreshToken);
 
       navigate("/admin-home");
@@ -54,7 +56,7 @@ function AdminLogin() {
   const HandleEmailSubmit = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/auth/ResetPassword?email=${AdminEmail}`,
+        `${API_BASE_URL}/auth/ResetPassword?email=${AdminEmail}`,
       );
       alert(response.data.message);
       setIsModalOpen(false);

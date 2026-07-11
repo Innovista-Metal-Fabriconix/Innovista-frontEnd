@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Home from "../pages/Home";
 import Products from "../pages/Products";
@@ -24,6 +24,9 @@ import DesignViwe from "../pages/DesignViwe";
 import OrderCart from "../pages/OrderCart";
 import Milestones from "../pages/Milestones";
 import ScrollToTop from "../components/ScrollToTop";
+import RequestQuotePage from "../pages/RequestQuotePage";
+import QuoteManagement from "../pages/Adminpages/QuoteManagement";
+import QuoteSubmissionDetail from "../pages/Adminpages/QuoteSubmissionDetail";
 
 function PageRoute() {
   return (
@@ -55,6 +58,12 @@ function PageRoute() {
             <Route path="/DesignViwe" element={<DesignViwe />} />
             <Route path="/OrderCart" element={<OrderCart />} />
             <Route path="/milestones" element={<Milestones />} />
+            <Route path="/request-quote" element={<RequestQuotePage />} />
+            <Route path="/AdminQuotes" element={<QuoteManagement />} />
+            <Route
+              path="/AdminQuotes/:quoteId"
+              element={<QuoteSubmissionDetail />}
+            />
           </Routes>
         </main>
         <Footer />

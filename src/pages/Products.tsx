@@ -3,21 +3,23 @@ import Productpage from "../assets/Images/Productpage.jpg";
 import { Typography, Card, Row, Col, Button } from "antd";
 import { motion } from "framer-motion";
 
-import DoorsImg from "../assets/Images/Productpage.jpg";
-import WindowsImg from "../assets/Images/Productpage.jpg";
-import PartitionImg from "../assets/Images/Productpage.jpg";
-import ShopFrontImg from "../assets/Images/Productpage.jpg";
-import LouversImg from "../assets/Images/Productpage.jpg";
-import BathroomsImg from "../assets/Images/Productpage.jpg";
-import RoofImg from "../assets/Images/Productpage.jpg";
-import TileImg from "../assets/Images/Productpage.jpg";
-import LaddersImg from "../assets/Images/Productpage.jpg";
-import RacksImg from "../assets/Images/Productpage.jpg";
-import WardrobeImg from "../assets/Images/Productpage.jpg";
-import PantryImg from "../assets/Images/Productpage.jpg";
-import SteelImage from "../assets/Images/Productpage.jpg";
+import DoorsImg from "../assets/Images/Products/alluminiumdoors.png";
+import WindowsImg from "../assets/Images/Products/windows.png";
+import PartitionImg from "../assets/Images/Products/partition.png";
+import ShopFrontImg from "../assets/Images/Products/shopfront.png";
+import LouversImg from "../assets/Images/Products/louvers.png";
+import BathroomsImg from "../assets/Images/Products/bathrooms.png";
+import RoofImg from "../assets/Images/Products/roofing.png";
+import TileImg from "../assets/Images/Products/tileskirting.png";
+import LaddersImg from "../assets/Images/Products/ladders.png";
+import RacksImg from "../assets/Images/Products/racks.png";
+import WardrobeImg from "../assets/Images/Products/wardrobe.png";
+import PantryImg from "../assets/Images/Products/pantry.png";
+import SteelImage from "../assets/Images/Products/steelimage.png";
+
 
 import { useNavigate } from "react-router-dom";
+import MainHeading from "../components/MainHeading";
 
 const categories = [
   { name: "Doors", img: DoorsImg },
@@ -136,9 +138,7 @@ function Products() {
             display: "inline-block",
           }}
         >
-          <u style={{ textDecorationColor: "#4d97ff", paddingBottom: "4px" }}>
-            Product Categories
-          </u>
+          <MainHeading heading="product categories" description="" />
         </Typography.Text>
       </div>
 
