@@ -4,7 +4,6 @@ import {
   Checkbox,
   Form,
   Input,
-  message,
   Flex,
   Col,
   Row,
@@ -29,7 +28,7 @@ function AdminLogin() {
     try {
       console.log(values.username, values.password);
       const response = await axios.post(
-        `http://localhost:4000/auth/login?email=${values.username}&password=${values.password}`,
+        `http://13.203.97.145:3000/auth/login?email=${values.username}&password=${values.password}`,
       );
 
       alert(response.data.message);
@@ -54,7 +53,7 @@ function AdminLogin() {
   const HandleEmailSubmit = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:4000/auth/ResetPassword?email=${AdminEmail}`,
+        `http://13.203.97.145:3000/auth/ResetPassword?email=${AdminEmail}`,
       );
       alert(response.data.message);
       setIsModalOpen(false);

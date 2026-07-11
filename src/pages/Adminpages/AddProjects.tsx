@@ -1,4 +1,6 @@
 import { useState } from "react";
+import type { ChangeEvent } from "react";
+import type { Dayjs } from "dayjs";
 import {
   Button,
   Card,
@@ -17,15 +19,30 @@ import AxiosConfig from "../../Context/AxiosConfig";
 // Removed unused Title destructuring
 const { TextArea } = Input;
 
+interface ProjectFormValues {
+  Project_Title: string;
+  Project_Description: string;
+  Location: string;
+  Client_Name: string;
+  Client_Email: string;
+  Client_Number?: string;
+  Client_Company?: string;
+  Project_FinishedDate?: Dayjs;
+  Budget: number;
+}
+
 function AddProjects() {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<ProjectFormValues>();
   const [images, setImages] = useState<string[]>([]);
 
   const CLOUD_NAME = "dqabfysqj";
   const UPLOAD_PRESET = "InnovistaImage";
 
-  const handleImageUpload = async (event: any, folderName: string) => {
-    const file = event.target.files[0];
+  const handleImageUpload = async (
+    event: ChangeEvent<HTMLInputElement>,
+    folderName: string
+  ) => {
+    const file = event.target.files?.[0];
     if (!file) return;
 
     const data = new FormData();
@@ -62,7 +79,7 @@ function AddProjects() {
     setImages(images.filter((img) => img !== url));
   };
 
-  const onFinish = async (values: any) => {
+  const onFinish = async (values: ProjectFormValues) => {
     const projectData = {
       ...values,
       Project_Images: images,

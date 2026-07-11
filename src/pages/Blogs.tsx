@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import styles from "../cssModules/BlogsPage.module.css";
+import { Link } from "react-router-dom";
 
 type BlogItem = {
   id: number;

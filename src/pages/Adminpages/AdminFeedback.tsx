@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Table, Button, Popconfirm, message, Tag, Image } from "antd";
+import { Table, Button, Popconfirm, Tag, Image } from "antd";
 import axios from "axios";
 import AxiosConfig from "../../Context/AxiosConfig";
 import SidebarOFADmin from "../../components/SidebarOFADmin";
@@ -17,7 +17,7 @@ function AdminFeedback() {
     try {
       setLoading(true);
       const response = await axios.get(
-        "http://localhost:4000/feedback/allFeedbacks",{
+        "http://13.203.97.145:3000/feedback/allFeedbacks",{
           params: { page, limit },  
         }
       );
