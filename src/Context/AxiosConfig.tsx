@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const AxiosConfig = axios.create({
-  baseURL: "http://13.203.97.145:3000",
+  baseURL: import.meta.env.VITE_API_URL || "http://54.169.37.43:3000",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -30,13 +30,15 @@ const processQueue = (error: unknown, token: string | null = null) => {
 
 AxiosConfig.interceptors.request.use(
   (config) => {
-    const accessToken = sessionStorage.getItem("accessToken");
+    const accessToken =
+      sessionStorage.getItem("accessToken") ||
+      localStorage.getItem("accessToken");
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 AxiosConfig.interceptors.response.use(
@@ -60,19 +62,25 @@ AxiosConfig.interceptors.response.use(
       isRefreshing = true;
 
       const refreshToken = sessionStorage.getItem("refreshToken");
+      const fallbackRefreshToken = localStorage.getItem("refreshToken");
+      const effectiveRefreshToken = refreshToken || fallbackRefreshToken;
 
-      if (!refreshToken) {
+      if (!effectiveRefreshToken) {
         window.location.href = "/admin-login";
         return Promise.reject(error);
       }
 
       try {
         const response = await axios.get(
-          `http://localhost:4000/auth/refresh?refreshToken=${refreshToken}`
+          `${import.meta.env.VITE_API_URL || "http://54.169.37.43:3000"}/auth/refresh?refreshToken=${effectiveRefreshToken}`,
         );
 
         const newAccessToken = response.data.accessToken;
         sessionStorage.setItem("accessToken", newAccessToken);
+        localStorage.setItem("accessToken", newAccessToken);
+        if (response.data.refreshToken) {
+          localStorage.setItem("refreshToken", response.data.refreshToken);
+        }
 
         AxiosConfig.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
         processQueue(null, newAccessToken);
@@ -81,6 +89,8 @@ AxiosConfig.interceptors.response.use(
       } catch (err) {
         processQueue(err, null);
         sessionStorage.clear();
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
         window.location.href = "/admin-login";
         return Promise.reject(err);
       } finally {
@@ -89,7 +99,7 @@ AxiosConfig.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default AxiosConfig;

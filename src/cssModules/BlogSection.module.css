@@ -8,6 +8,13 @@
   position: relative;
 }
 
+.status {
+  text-align: center;
+  color: #5b6b7b;
+  font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+  padding: 20px 0 10px;
+}
+
 .blogCardsContainer :global(.swiper) {
   padding-bottom: 20px;
   overflow: hidden;

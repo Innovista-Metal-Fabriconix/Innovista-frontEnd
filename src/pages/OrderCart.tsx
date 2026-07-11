@@ -15,6 +15,8 @@ import { useEffect, useState } from "react";
 
 const { Title, Text } = Typography;
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://54.169.37.43:3000";
+
 interface DesignDetails {
   DesignID: number;
   Design_Name: string;
@@ -50,7 +52,7 @@ function OrderCart() {
     try {
       const ids = cart.join(",");
       const { data } = await axios.get(
-        `http://localhost:4000/designs/DesignDetails?ids=${ids}`
+        `${API_BASE_URL}/designs/DesignDetails?ids=${ids}`
       );
       setCardDetails(data);
     } catch (error) {
@@ -84,7 +86,7 @@ function OrderCart() {
 
     try {
       await axios.post(
-        "http://localhost:4000/order/createOrder",
+        `${API_BASE_URL}/order/createOrder`,
         payload
       );
 

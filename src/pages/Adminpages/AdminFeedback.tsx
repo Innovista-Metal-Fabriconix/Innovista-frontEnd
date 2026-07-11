@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Table, Button, Popconfirm, Tag, Image } from "antd";
 import axios from "axios";
+
 import AxiosConfig from "../../Context/AxiosConfig";
 import SidebarOFADmin from "../../components/SidebarOFADmin";
 
@@ -8,16 +9,16 @@ function AdminFeedback() {
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const[currentPage, setCurrentPage]=useState(1);
-  const[pageSize, setPageSize]=useState(10);
-  const[total, setTotal]=useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [total, setTotal] = useState(0);
 
   // Fetch all feedbacks
   const fetchFeedbacks = async (page = 1, limit = 10) => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        "http://13.203.97.145:3000/feedback/allFeedbacks",{
+      const response = await AxiosConfig.get(
+        "/feedback/allFeedbacks", {
           params: { page, limit },  
         }
       );
@@ -48,10 +49,9 @@ function AdminFeedback() {
     fetchFeedbacks(currentPage, pageSize);
   }, []);
 
-
   type Feedback = {
     Feed_backId: number;
-    Customer: { 
+    Customer: {
       Cus_Name: string;
       Cus_CompanyName: string;
     };
@@ -62,7 +62,6 @@ function AdminFeedback() {
       Design_Name: string;
     };
   };
-
 
   // Define table columns
   const columns = [

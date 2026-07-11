@@ -62,7 +62,6 @@ const ManageAllAdmins: React.FC = () => {
       title: "Name",
       dataIndex: "Admin_Name",
       key: "Admin_Name",
-      
     },
     {
       title: "Email",

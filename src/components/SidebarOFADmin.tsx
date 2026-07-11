@@ -7,6 +7,7 @@ import {
   ShoppingCartOutlined,
   MessageOutlined,
   AppstoreAddOutlined,
+  FileTextOutlined,
 } from "@ant-design/icons";
 import LogoutButton from "./LogoutButton";
 import Notification from "../pages/Adminpages/Notification";
@@ -97,6 +98,15 @@ function SidebarOFADmin() {
             style={{ display: "flex", alignItems: "center", gap: 5 }}
           >
             <AppstoreAddOutlined /> Add Projects
+          </Link>
+
+          <span style={{ color: "#999" }}>{">"}</span>
+
+          <Link
+            to="/AdminQuotes"
+            style={{ display: "flex", alignItems: "center", gap: 5 }}
+          >
+            <FileTextOutlined /> Quote Submissions
           </Link>
         </div>
 

@@ -1,0 +1,59 @@
+name: Deploy React Build on AWS S3
+on:
+  push:
+    branches:
+      - stable_branch
+
+concurrency:
+  group: reactapp-deploy-s3-main
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+      
+jobs:
+  build:
+    name: Build and Deploy React App on S3
+    runs-on: ubuntu-latest
+    env: 
+      DIST: dist
+
+    strategy:
+      matrix:
+        node-version: [24]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+          package-manager-cache: true
+
+      - name: Install Dependencies
+        run: npm i --legacy-peer-deps
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Copy files to the S3 bucket with AWS CLI
+        run: |
+          aws s3 sync --delete ${{ env.DIST }} s3://${{ secrets.AWS_BUCKET }}
+
+      - name: CloudFront invalidation
+        run: |
+          aws cloudfront create-invalidation \
+          --distribution-id ${{ secrets.DIST_ID }} \
+          --path "/*"
+
+

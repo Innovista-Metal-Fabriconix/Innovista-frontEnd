@@ -4,12 +4,16 @@ import { useEffect, useState } from "react";
 import { Button } from "antd";
 import axios from "axios";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://54.169.37.43:3000";
+
 function LogoutButton() {
   const [userID, setUserID] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = sessionStorage.getItem("accessToken");
+    const token =
+      sessionStorage.getItem("accessToken") ||
+      localStorage.getItem("accessToken");
     if (token) {
       const decodedToken: string = jwtDecode(token);
       setUserID(decodedToken.sub);
@@ -20,8 +24,9 @@ function LogoutButton() {
   const handleLogout = async () => {
     try {
       console.log(userID);
-      await axios.post(`http://localhost:4000/auth/logout?adminId=${userID}`);
+      await axios.post(`${API_BASE_URL}/auth/logout?adminId=${userID}`);
       sessionStorage.removeItem("accessToken");
+      localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       alert("Logout successful");
       navigate("/admin-login", { replace: true });

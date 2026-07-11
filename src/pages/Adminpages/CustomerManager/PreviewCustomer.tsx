@@ -13,7 +13,6 @@ import {
 } from "antd";
 import AxiosConfig from "../../../Context/AxiosConfig";
 
-// Removed unused Title destructuring
 
 type Customer = {
   CustomerId: number;
