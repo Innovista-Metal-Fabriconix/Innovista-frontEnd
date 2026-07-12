@@ -3,6 +3,7 @@ import { Card, Row, Col, Tag, Typography, Image, Pagination, Spin } from "antd";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import AxiosConfig from "../Context/AxiosConfig";
+import { usePageSEO } from "../utils/seo";
 
 dayjs.extend(duration);
 
@@ -26,6 +27,11 @@ interface Project {
 function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
+  usePageSEO(
+    "Our Projects | Innovista Metal Fabriconix Sri Lanka",
+    "Explore our gallery of completed aluminium and steel fabrication projects, including partitions, shopfronts, doors, and windows across Sri Lanka."
+  );
 
   // Preview state
   const [previewVisible, setPreviewVisible] = useState(false);
@@ -95,7 +101,7 @@ function Projects() {
         ))}
       </Image.PreviewGroup>
 
-      <div
+      <main
         style={{
           width: "100%",
           overflowX: "hidden",
@@ -104,6 +110,12 @@ function Projects() {
           paddingTop: 40,
         }}
       >
+        <div style={{ textAlign: "center", marginBottom: 40 }}>
+          <Title level={1}>Our Projects</Title>
+          <Paragraph style={{ fontSize: "16px", color: "#555" }}>
+            A showcase of our premium steel and aluminium fabrication works across Sri Lanka.
+          </Paragraph>
+        </div>
         {loading ? (
           <div style={{ textAlign: "center", padding: 50 }}>
             <Spin size="large" />
@@ -135,6 +147,7 @@ function Projects() {
                         <img
                           src={project.Project_Images[0]}
                           alt={project.Project_Title}
+                          loading="lazy"
                           style={{
                             width: "100%",
                             height: 200,
@@ -218,7 +231,7 @@ function Projects() {
             </div>
           </>
         )}
-      </div>
+      </main>
     </>
   );
 }

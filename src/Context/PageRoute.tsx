@@ -27,11 +27,13 @@ import ScrollToTop from "../components/ScrollToTop";
 import RequestQuotePage from "../pages/RequestQuotePage";
 import QuoteManagement from "../pages/Adminpages/QuoteManagement";
 import QuoteSubmissionDetail from "../pages/Adminpages/QuoteSubmissionDetail";
+import SeoStructuredData from "../components/SeoStructuredData";
 
 function PageRoute() {
   return (
     <Router>
       <ScrollToTop />
+      <SeoStructuredData />
       <div style={{ position: "relative", minHeight: "100vh" }}>
         <TargetCursor spinDuration={2} hideDefaultCursor={true} />
         <Navbar />

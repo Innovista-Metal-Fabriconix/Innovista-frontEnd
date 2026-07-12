@@ -44,7 +44,7 @@ function Footer() {
   ];
 
   return (
-    <div
+    <footer
       style={{
         background: "linear-gradient(180deg, #ffffff 0%, #f7f7f7 100%)",
         padding: "72px 24px 40px",
@@ -66,7 +66,7 @@ function Footer() {
         >
           <img
             src={companyLogo}
-            alt="Innovista company logo"
+            alt="Innovista Metal Fabriconix Logo"
             style={{
               width: "clamp(220px, 28vw, 360px)",
               height: "auto",
@@ -150,10 +150,16 @@ function Footer() {
           ))}
         </div>
 
+        <div style={{ marginTop: "30px", color: "#475569", fontSize: "0.95rem", lineHeight: "1.6" }}>
+          <p style={{ margin: "4px 0", fontWeight: 500 }}>Innovista Metal Fabriconix (PVT) Ltd</p>
+          <p style={{ margin: "4px 0" }}>📍 Western Province, Sri Lanka</p>
+          <p style={{ margin: "4px 0" }}>📞 +94 76 081 8098 &nbsp;|&nbsp; ✉️ innovistametal@gmail.com</p>
+        </div>
+
         <Typography.Text
           style={{
             display: "block",
-            marginTop: "44px",
+            marginTop: "30px",
             color: "#35506a",
             fontSize: "1rem",
             letterSpacing: "0.01em",
@@ -162,7 +168,7 @@ function Footer() {
           © Copyright {new Date().getFullYear()}, All Rights Reserved
         </Typography.Text>
       </div>
-    </div>
+    </footer>
   );
 }
 

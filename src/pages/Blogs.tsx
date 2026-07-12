@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import styles from "../cssModules/BlogsPage.module.css";
 import blogCover from "../assets/Images/Blogs/Blog-cover.avif";
 import { fetchBloggerFeedJsonp } from "../utils/bloggerFeed";
+import { usePageSEO } from "../utils/seo";
 
 type BlogItem = {
   id: number;
@@ -248,6 +249,11 @@ function Blogs() {
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
   const [isLoading, setIsLoading] = useState(true);
 
+  usePageSEO(
+    "Blog | Innovista Metal Fabriconix Sri Lanka — Aluminium Insights",
+    "Read our latest articles, trends, and expert insights on aluminium fabrication, office partitioning, shopfront designs, and steel works."
+  );
+
   useEffect(() => {
     let isMounted = true;
     const load = async () => {
@@ -312,7 +318,7 @@ function Blogs() {
   }
 
   return (
-    <div className={styles.page}>
+    <main className={styles.page}>
       <section className={styles.hero}>
         <img src={blogCover} alt="Discover our latest blogs" />
         <div className={styles.heroOverlay} />
@@ -391,7 +397,7 @@ function Blogs() {
           </div>
         </aside>
       </section>
-    </div>
+    </main>
   );
 }
 

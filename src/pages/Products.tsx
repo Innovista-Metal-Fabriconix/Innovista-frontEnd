@@ -20,6 +20,7 @@ import SteelImage from "../assets/Images/Products/steelimage.png";
 
 import { useNavigate } from "react-router-dom";
 import MainHeading from "../components/MainHeading";
+import { usePageSEO } from "../utils/seo";
 
 const categories = [
   { name: "Doors", img: DoorsImg },
@@ -42,8 +43,13 @@ function Products() {
     navigate(`/DesignViwe?category=${encodeURIComponent(categoryName)}`);
   };
 
+  usePageSEO(
+    "Products | Aluminium Doors, Windows, Partitions & Fabrication — Innovista Metal Fabriconix",
+    "Explore the high-quality product categories offered by Innovista Metal Fabriconix in Sri Lanka, including premium aluminium doors, windows, office partitions, shopfronts, and roofing."
+  );
+
   return (
-    <div style={{ width: "100%", overflow: "hidden" }}>
+    <main style={{ width: "100%", overflow: "hidden" }}>
       <motion.div
         initial={{ opacity: 0, scale: 1.05 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -81,7 +87,7 @@ function Products() {
           }}
         >
           <Typography.Title
-            level={2}
+            level={1}
             style={{
               color: "white",
               fontFamily: "revert-layer",
@@ -142,8 +148,11 @@ function Products() {
         </Typography.Text>
       </div>
 
-      <div style={{ padding: "40px 60px", backgroundColor: "#fff" }}>
-        <Row gutter={[24, 24]} justify="center">
+      <div
+        className="px-4 py-8 sm:px-8 md:px-12 lg:px-16"
+        style={{ backgroundColor: "#fff" }}
+      >
+        <Row gutter={[{ xs: 12, sm: 16, md: 24 }, { xs: 12, sm: 16, md: 24 }]} justify="center">
           {categories.map((cat, idx) => (
             <Col xs={12} sm={8} md={6} lg={4} key={idx}>
               <motion.div
@@ -156,9 +165,9 @@ function Products() {
                     <img
                       alt={cat.name}
                       src={cat.img}
+                      loading="lazy"
+                      className="h-32 sm:h-36 md:h-40 w-full object-cover"
                       style={{
-                        height: "150px",
-                        objectFit: "cover",
                         borderTopLeftRadius: "10px",
                         borderTopRightRadius: "10px",
                       }}
@@ -170,18 +179,26 @@ function Products() {
                     textAlign: "center",
                     boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                   }}
+                  styles={{
+                    body: {
+                      padding: "16px 12px",
+                    }
+                  }}
                 >
-                  <Typography.Text strong style={{ fontSize: "16px" }}>
-                    {cat.name}
-                  </Typography.Text>
-                  <Button
-                    style={{
-                      margin: 10,
-                    }}
-                    onClick={() => handleNavigate(cat.name)}
-                  >
-                    View Details
-                  </Button>
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                    <Typography.Text strong style={{ fontSize: "clamp(13px, 3.5vw, 16px)", minHeight: "44px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      {cat.name}
+                    </Typography.Text>
+                    <Button
+                      block
+                      style={{
+                        marginTop: "8px",
+                      }}
+                      onClick={() => handleNavigate(cat.name)}
+                    >
+                      View Details
+                    </Button>
+                  </div>
                 </Card>
               </motion.div>
             </Col>
@@ -288,6 +305,7 @@ function Products() {
             <motion.img
               src={SteelImage}
               alt="Why Choose Us"
+              loading="lazy"
               initial={{ scale: 0.9, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
               transition={{ duration: 1 }}
@@ -333,7 +351,7 @@ function Products() {
           </Col>
         </Row>
       </div>
-    </div>
+    </main>
   );
 }
 

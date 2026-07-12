@@ -7,6 +7,7 @@ import image2019 from "../assets/Journey/2019.png";
 import image2022 from "../assets/Journey/2022.png";
 import image2025 from "../assets/Journey/2025.png";
 import image2010 from "../assets/Journey/2010.jpg"
+import { usePageSEO } from "../utils/seo";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -49,6 +50,11 @@ const milestones: Milestone[] = [
 function Milestones() {
   const timelineRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  usePageSEO(
+    "Our Milestones | Innovista Metal Fabriconix Sri Lanka",
+    "Follow our history and key milestones since 2010. See how we transitioned from Nishantha Partition to Innovista Metal Fabriconix (PVT) Ltd."
+  );
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -143,7 +149,7 @@ function Milestones() {
   }, []);
 
   return (
-    <div className={styles.page}>
+    <main className={styles.page}>
       <MainHeading
         heading="Our Milestones"
         description="A journey of growth, innovation, and excellence that defines who we are today."
@@ -167,7 +173,7 @@ function Milestones() {
             </div>
             <div className={styles.card}>
               <div className={styles.cardImage}>
-                <img src={milestone.image} alt={milestone.year} />
+                <img src={milestone.image} alt={`Innovista Metal Fabriconix milestone in ${milestone.year}`} />
               </div>
               <div className={styles.cardContent}>
                 <p>{milestone.description}</p>
@@ -176,7 +182,7 @@ function Milestones() {
           </div>
         ))}
       </div>
-    </div>
+    </main>
   );
 }
 

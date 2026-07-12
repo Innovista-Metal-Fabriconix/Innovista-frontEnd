@@ -7,6 +7,7 @@ import {
 } from "react";
 import { Modal, Spin } from "antd";
 import styles from "../cssModules/RequestQuotePage.module.css";
+import { usePageSEO } from "../utils/seo";
 
 type ProjectType =
   | "Office Partition"
@@ -103,6 +104,11 @@ const ALLOWED_FILE_TYPES = new Set([
 ]);
 
 export default function RequestQuotePage() {
+  usePageSEO(
+    "Request a Free Quote | Innovista Metal Fabriconix Sri Lanka",
+    "Submit a Request for Quotation (RFQ) to Innovista Metal Fabriconix. Provide your custom aluminium or steel fabrication requirements to get a free price estimation."
+  );
+
   const [bannerImage] = useState<string>(
     "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1600&q=80",
   );
@@ -469,7 +475,7 @@ export default function RequestQuotePage() {
     Boolean(emailVerificationToken);
 
   return (
-    <article className={styles.page}>
+    <main className={styles.page}>
       <header className={styles.banner}>
         <img src={bannerImage} alt="Request quote banner" />
         <div className={styles.bannerOverlay} />
@@ -963,6 +969,6 @@ export default function RequestQuotePage() {
           </div>
         </Modal>
       </form>
-    </article>
+    </main>
   );
 }

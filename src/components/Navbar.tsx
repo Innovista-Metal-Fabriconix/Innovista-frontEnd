@@ -36,7 +36,7 @@ export default function Navbar() {
     <nav className={styles.navbar}>
       <div className={styles.logoContainer}>
         <Link to="/" className="cursor-target" aria-label="Go to home page">
-          <img src={logo} alt="Company Logo" />
+          <img src={logo} alt="Innovista Metal Fabriconix Logo" />
         </Link>
       </div>
       <div className={styles.links}>
@@ -123,7 +123,7 @@ export default function Navbar() {
               aria-label="Go to home page"
               onClick={handleLinkClick}
             >
-              <img src={logo} alt="Company Logo" />
+              <img src={logo} alt="Innovista Metal Fabriconix Logo" />
             </Link>
             <Button
               className={`${styles.closeBtn} cursor-target`}
