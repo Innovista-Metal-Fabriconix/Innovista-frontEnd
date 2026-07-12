@@ -10,12 +10,11 @@ import {
   Typography,
   Empty,
 } from "antd";
-import axios from "axios";
+import AxiosConfig from "../Context/AxiosConfig";
 import { useEffect, useState } from "react";
 
 const { Title, Text } = Typography;
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://54.169.37.43:3000";
 
 interface DesignDetails {
   DesignID: number;
@@ -51,8 +50,8 @@ function OrderCart() {
   const fetchCardDetails = async () => {
     try {
       const ids = cart.join(",");
-      const { data } = await axios.get(
-        `${API_BASE_URL}/designs/DesignDetails?ids=${ids}`
+      const { data } = await AxiosConfig.get(
+        `/designs/DesignDetails?ids=${ids}`
       );
       setCardDetails(data);
     } catch (error) {
@@ -85,8 +84,8 @@ function OrderCart() {
     };
 
     try {
-      await axios.post(
-        `${API_BASE_URL}/order/createOrder`,
+      await AxiosConfig.post(
+        `/order/createOrder`,
         payload
       );
 

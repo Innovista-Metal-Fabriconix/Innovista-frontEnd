@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
+import AxiosConfig from "../Context/AxiosConfig";
 import { Button, Spin, Empty, message } from "antd";
 
 interface Design {
@@ -24,17 +24,13 @@ function DesignView() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // ✅ Axios instance (cleaner for future scaling)
-  const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || "http://54.169.37.43:3000",
-  });
 
   const fetchCategoryDetails = async (categoryName: string) => {
     setLoading(true);
     setError("");
 
     try {
-      const { data } = await api.get(
+      const { data } = await AxiosConfig.get(
         `/designs/byCategory?category=${categoryName}`
       );
       setDesigns(data);

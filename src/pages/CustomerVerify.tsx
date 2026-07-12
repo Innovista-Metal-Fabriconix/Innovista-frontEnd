@@ -1,6 +1,6 @@
 import  { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+import AxiosConfig from "../Context/AxiosConfig";
 
 function CustomerVerify() {
   const location = useLocation();
@@ -16,8 +16,8 @@ function CustomerVerify() {
       return;
     }
 
-    axios
-      .post(`${import.meta.env.VITE_API_URL || "http://54.169.37.43:3000"}/customer/verifyCustomer?customerId=${customerId}`)
+    AxiosConfig
+      .post(`/customer/verifyCustomer?customerId=${customerId}`)
       .then((res) => {
         if (res.data && res.data.message === "Email verified successfully") {
           setMessage("You verified your account successfully!");

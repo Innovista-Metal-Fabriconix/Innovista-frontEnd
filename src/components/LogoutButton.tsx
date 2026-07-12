@@ -2,9 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import { Button } from "antd";
-import axios from "axios";
+import AxiosConfig from "../Context/AxiosConfig";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://54.169.37.43:3000";
 
 function LogoutButton() {
   const [userID, setUserID] = useState<string | null>(null);
@@ -24,7 +23,7 @@ function LogoutButton() {
   const handleLogout = async () => {
     try {
       console.log(userID);
-      await axios.post(`${API_BASE_URL}/auth/logout?adminId=${userID}`);
+      await AxiosConfig.post(`/auth/logout?adminId=${userID}`);
       sessionStorage.removeItem("accessToken");
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");

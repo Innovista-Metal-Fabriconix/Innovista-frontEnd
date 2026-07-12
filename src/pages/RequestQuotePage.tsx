@@ -93,7 +93,7 @@ const requiredLabels: Record<
 };
 
 const API_BASE_URL =
-  import.meta.env.VITE_BACKEND_BASE_URL || import.meta.env.VITE_API_URL || "http://54.169.37.43:3000";
+  import.meta.env.VITE_API_URL || "https://api.innovistametalfabriconix.com";
 const MAX_FILES = 3;
 const MAX_TOTAL_BYTES = 30 * 1024 * 1024;
 const ALLOWED_FILE_TYPES = new Set([

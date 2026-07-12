@@ -12,11 +12,10 @@ import {
 } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import AdminLogo from "../../assets/Images/logo/AdminLogin.jpg";
-import axios from "axios";
+import AxiosConfig from "../../Context/AxiosConfig";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://54.169.37.43:3000";
 
 type FieldType = {
   username?: string;
@@ -29,8 +28,8 @@ function AdminLogin() {
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     try {
       console.log(values.username, values.password);
-      const response = await axios.post(
-        `${API_BASE_URL}/auth/login?email=${values.username}&password=${values.password}`,
+      const response = await AxiosConfig.post(
+        `/auth/login?email=${values.username}&password=${values.password}`,
       );
 
       alert(response.data.message);
@@ -55,8 +54,8 @@ function AdminLogin() {
 
   const HandleEmailSubmit = async () => {
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}/auth/ResetPassword?email=${AdminEmail}`,
+      const response = await AxiosConfig.post(
+        `/auth/ResetPassword?email=${AdminEmail}`,
       );
       alert(response.data.message);
       setIsModalOpen(false);

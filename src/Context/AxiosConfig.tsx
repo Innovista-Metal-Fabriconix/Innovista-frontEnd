@@ -1,7 +1,10 @@
 import axios from "axios";
 
+const BASE_URL =
+  import.meta.env.VITE_API_URL || "https://api.innovistametalfabriconix.com";
+
 const AxiosConfig = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://54.169.37.43:3000",
+  baseURL: BASE_URL,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -72,7 +75,7 @@ AxiosConfig.interceptors.response.use(
 
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL || "http://54.169.37.43:3000"}/auth/refresh?refreshToken=${effectiveRefreshToken}`,
+          `${BASE_URL}/auth/refresh?refreshToken=${effectiveRefreshToken}`,
         );
 
         const newAccessToken = response.data.accessToken;
